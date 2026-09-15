@@ -14,16 +14,15 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 |---|---|---|---|---|
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
-| 1.1.1 | Monorepo Structure | 2026-09-15 | `make verify` (exit 0); `make setup` on an rsync'd clean copy (exit 0); `pnpm -r build`; `uv sync --frozen`; `make gates` | 6 TS packages + 2 Python packages, all stubs. Not yet committed. |
+| 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 1.1.1 is done and uncommitted; 1.1.2 has not begun.
+None. 1.1.2 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
-| 1.1.1 | First commit | Say "commit" and I will make the initial commit (no push). Nothing is committed yet. |
 | 1.1.2 | 🔧 Licences | Read `sim/LICENSE`, `LICENSE-DATA`, `DISCLAIMER.md`, `mobilegym-rl/LICENSE` in full before I purge. Needed before 1.1.2 starts. |
 
 ## Operator queue (not blocking code, time-sensitive)
@@ -69,5 +68,4 @@ None. 1.1.1 is done and uncommitted; 1.1.2 has not begun.
 |---|---|---|---|
 | Money type placement (core-semantic vs domain) not yet validated by the insurance stub | 2.1.1 | Stub does not exist yet | 2.1.3: if the stub cannot use `Money` without commerce vocabulary leaking, revisit |
 | `make verify` does not include `provenance` or `licence`; those targets exit 2 with a message | 1.1.1 | Not implemented until 1.1.3 / 4.1.1 | 1.1.3 adds `licence` to `verify`; 4.1.1 adds `provenance` |
-| "Clean clone" criterion tested with an rsync copy, not `git clone` | 1.1.1 | Nothing committed yet | First commit: rerun `git clone . <tmp> && cd <tmp> && make setup` |
 | `tools/expected-tree.txt` was generated from the tree, then cross-checked against Appendix A by script | 1.1.1 | Chicken-and-egg on the first run | Any future directory change must edit `expected-tree.txt` deliberately; that is the point |
