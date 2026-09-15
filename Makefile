@@ -13,8 +13,9 @@ verify: verify-tree gates lint licence test
 verify-tree:
 	@tools/verify_tree.sh
 
-## gates: negative tests proving each gate actually rejects what it should
+## gates: negative tests proving each gate actually rejects what it should (builds first: the boundary gate resolves packages through dist)
 gates:
+	@pnpm -r build >/dev/null
 	@tools/test_depcruise_gate.sh
 	@tools/test_verify_tree_gate.sh
 	@tools/test_licence_gate.sh
