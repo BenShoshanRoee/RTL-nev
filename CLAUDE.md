@@ -77,6 +77,7 @@ sub-chunk's name. More than one can apply: a pathology injector is `rtl` + `dete
 
 ## Commands (root `Makefile`)
 Node is pinned to 24 LTS in `.npmrc`; always go through `pnpm`, never bare `node`. TypeScript stays on 5.x.
+Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean before its negative test counts.
 | Command | Does |
 |---|---|
 | `make setup` | Install JS (pnpm) and Python (uv) workspaces from lockfiles |
@@ -86,14 +87,15 @@ Node is pinned to 24 LTS in `.npmrc`; always go through `pnpm`, never bare `node
 | `make test` | vitest + pytest |
 | `make lint` | ESLint (incl. no-Math.random, no-physical-CSS), dependency-cruiser, ruff |
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
-| `make licence` | NC guard, dependency licence allowlist, brand guard (same as CI) |
+| `make licence` | NC guard (`tools/licence/scan.py --mode nc`); 1.1.3 adds dependency and brand checks |
+| `make purge-audit` | Local only: purge manifest equals upstream minus `sim/` (needs `refs/upstream/mobilegym`) |
 | `make release` | Tag-driven: wheel, container, GHCR push, GitHub Release |
 
 ## Layout (see plan Appendix A for the full tree)
-`packages/` TS workspace · `sim/` MobileGym fork · `bench/` Python bench + tasks ·
+`packages/` TS workspace · `sim/` MobileGym fork (`UPSTREAM.md`; never edit `refs/upstream`) · `bench/` Python bench + tasks ·
 `packages_py/` shipped wheel · `content/` provenance-tracked assets · `refs/` gitignored
 survey captures · `tools/` CLIs · `docs/` · `.github/workflows/`
 
 ## Current phase
-**Phase 1 of 12 — Foundation & Infrastructure.** Next sub-chunk: **1.1.2 MobileGym Fork & NC Purge.**
+**Phase 1 of 12 — Foundation & Infrastructure.** Next sub-chunk: **1.1.3 Licence Firewall CI.**
 Authoritative state lives in `progress.md`; update that, not this line, unless the phase changes.

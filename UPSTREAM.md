@@ -15,7 +15,8 @@ what was removed, what we changed, and how to sync.
 | Purge record | `tools/licence/nc_purge_manifest.json` (every removed path, SHA-256, size, reason) |
 | Audit command | `uv run python tools/licence/scan.py --mode purge-audit` |
 
-Upstream tracked 6,676 files at the fork point. We kept 710 and removed 5,966.
+Upstream tracked 6,676 files at the fork point. We kept 463 and removed 6,213 (plus 5 files
+we replaced with our own content at the same path: README.md and four data stubs).
 The raw upstream tree was **never committed** to this repository: only the purged tree entered
 `sim/`, so no CC BY-NC content or brand asset exists anywhere in our git history. The
 upstream commit SHA above plus the per-file hashes in the manifest are the audit reference.
@@ -41,13 +42,14 @@ The separate downloadable MobileGym dataset (CC BY-NC 4.0) was **never fetched**
 | Reason | Files | What |
 |---|---|---|
 | `unused-upstream-app` | 3,444 | 11 of 13 apps, code included. Brand-named, dead without their data |
+| `unused-upstream-system-app` | 272 | 10 of 14 system apps: Browser, Calculator, Calculator2, Calendar, Compass, FileManager, Gallery, Notes, Settings, ThemeStore. Phone-vendor UI replicas the OS shell does not need |
 | `vendored-training-stack` | 1,520 | `mobilegym-rl/` (rLLM + verl). Phase 7 uses our own `training/` |
 | `nc-data` | 539 | `apps/*/data/`, `apps/*/assets/` for all 13 apps |
 | `upstream-benchmark` | 239 | `bench_env/task/`, `bench_env/tests/` (MobileGym-Bench tasks for deleted apps) |
 | `nc-public-asset` | 114 | `public/sdcard/`, `public/ime/`, `public/icons/` |
-| `system-app-data` | 56 | `system/*/data/`, `system/*/assets/` |
-| `project-surface` | 25 | website, README images, agent config, upstream CI, READMEs |
-| `dead-test` | 19 | tests importing a deleted app |
+| `system-app-data` | 21 | content files under the kept system apps' `data/` and `assets/`; the Apache-2.0 `data/index.ts` loaders stay and read our empty stubs |
+| `project-surface` | 26 | website, README images, agent config, upstream CI, READMEs, CONTRIBUTING |
+| `dead-test` | 28 | tests importing a deleted app or the removed website |
 | `brand-asset` | 4 | `public/logos/` (real bank and telecom logos) |
 | `nc-licence-text` | 2 | `LICENSE-DATA`, `DISCLAIMER.md` |
 | `unused-upstream-tooling` | 2 | IME and theme tooling for purged data |
@@ -61,13 +63,22 @@ for the app contract: manifest shape, navigation declaration, page wiring. Their
 `assets/` are gone; they will not run. **Sub-chunk 3.3.1 deletes both** once the Storefront
 exists. Until then the 1.1.3 brand guard carries a dated waiver for these two paths.
 
+## Kept system apps
+
+`AnswerSheet` (bench protocol), `Clock` (launcher widget), `Contacts` and `Sms` (OS providers; SMS
+flows are needed for checkout OTP tasks later). Their `data/` directories hold upstream's loader
+code plus our empty stubs (`defaults.json`, `cities.json`, `phoneSettingsPages.generated.ts`).
+
 ## Our delta from upstream (commit B of 1.1.2 onward)
 
 - `sim/package.json`: renamed `@rtl/sim`, joined the pnpm workspace, Map/Google Maps/puppeteer/eslint
   dependencies dropped. `package-lock.json` replaced by the workspace `pnpm-lock.yaml`.
 - Every `mobilegym-data` reference removed. The dev CDN plugin in `vite.config.ts` now serves
   our provenance-tracked `content/` directory.
-- `index.tsx` and `os/data/appRegistry.tsx` no longer reference deleted apps.
+- `index.tsx` no longer preloads deleted apps. The four app-discovery globs (`os/data/appRegistry.tsx`,
+  `os/PackageManagerService.ts`, `os/OSContext.tsx`, `os/providers/appProvidersBootstrap.ts`) exclude
+  the two reference apps; `tsconfig.json` excludes them from typecheck.
+- `system/Clock/navigation.types.ts` re-exports from `Sms` instead of the removed `Calendar` (identical file upstream).
 - `sim/README.md` written by us; upstream READMEs removed.
 - Later sub-chunks record their changes to `sim/os` and `sim/system` here.
 

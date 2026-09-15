@@ -57,14 +57,19 @@ def mode_nc() -> int:
         return 1
     manifest = load_manifest()
     for entry in manifest["entries"]:
-        if (SIM / entry["path"]).exists():
-            print(f"purged-path-present: sim/{entry['path']}")
+        target = SIM / entry["path"]
+        # A file of ours at a purged path is fine; upstream's bytes at that path are not.
+        if target.is_file() and sha256(target) == entry["sha256"]:
+            print(f"purged-content-present: sim/{entry['path']}")
             findings += 1
-    for parent in ("apps", "system"):
+    # apps/*/{data,assets} and system/*/assets must not exist at all. system/*/data may exist
+    # for kept system apps: it holds the Apache-2.0 loader plus our empty stubs, and any
+    # upstream bytes there are caught by the purged-content-present check above.
+    for parent, subs in (("apps", ("data", "assets")), ("system", ("assets",))):
         base = SIM / parent
         if base.is_dir():
             for app in sorted(base.iterdir()):
-                for sub in ("data", "assets"):
+                for sub in subs:
                     if (app / sub).exists():
                         print(f"nc-dir-present: {(app / sub).relative_to(ROOT)}")
                         findings += 1
@@ -107,12 +112,14 @@ def mode_purge_audit(upstream: Path) -> int:
         )
         findings += 1
     present = {str(p.relative_to(SIM)) for p in sim_files()}
-    deleted = upstream_set - present
-    listed = {e["path"] for e in manifest["entries"]}
-    for p in sorted(deleted - listed):
+    listed = {e["path"]: e["sha256"] for e in manifest["entries"]}
+    # "replaced": a listed path exists in sim/ with different bytes (our file, e.g. README.md)
+    replaced = {p for p in listed if p in present and sha256(SIM / p) != listed[p]}
+    deleted = (upstream_set - present) | replaced
+    for p in sorted(deleted - set(listed)):
         print(f"deleted-but-unlisted: {p}")
         findings += 1
-    for p in sorted(listed - deleted):
+    for p in sorted(set(listed) - deleted):
         print(f"listed-but-not-deleted: {p}")
         findings += 1
     for e in manifest["entries"]:
@@ -129,7 +136,8 @@ def mode_purge_audit(upstream: Path) -> int:
             findings += 1
     print(
         f"purge-audit: upstream={len(upstream_set)} kept={len(upstream_set & present)} "
-        f"deleted={len(deleted)} listed={len(listed)} added={len(present - upstream_set)}"
+        f"deleted={len(deleted)} listed={len(listed)} replaced={len(replaced)}"
+        f" added={len(present - upstream_set)}"
     )
     return findings
 

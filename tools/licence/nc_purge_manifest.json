@@ -12,7 +12,8 @@
   "reasons": {
     "nc-data": "CC BY-NC 4.0 per upstream LICENSE-DATA (apps/*/data, apps/*/assets)",
     "unused-upstream-app": "Apache-2.0 code for a brand-named app we do not ship; dead without its data",
-    "system-app-data": "Synthetic content and UI replicas bundled with system apps",
+    "system-app-data": "Synthetic content bundled with kept system apps; replaced by empty stubs",
+    "unused-upstream-system-app": "System app the OS shell does not need; phone-vendor UI replica",
     "nc-public-asset": "Fake storage, IME dictionary and icons; LICENSE-DATA names icons as data",
     "brand-asset": "Logos of real companies",
     "generated-artifact": "Build output; regenerated from source",
@@ -35312,118 +35313,652 @@
       "reason": "unused-upstream-tooling"
     },
     {
+      "path": "system/Browser/BrowserApp.tsx",
+      "sha256": "67c683de8531e15182c3188fc1426a130858a9af098ca87b0506f504a7fa3278",
+      "bytes": 17867,
+      "reason": "unused-upstream-system-app"
+    },
+    {
       "path": "system/Browser/data/defaults.json",
       "sha256": "46f3b0e7cf17ed562aedcac7f228e07b66af10134fee68eb6a3fc48011cd443b",
       "bytes": 103,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Browser/data/index.ts",
       "sha256": "179d59965dd811a4345c290b70cc4ba73b55565b5cba766eb171eac133988c6f",
       "bytes": 91,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/hooks/useBrowserGestures.ts",
+      "sha256": "8e3cc763e6c44bdc20540a905aca606a05cc9ed70cfc5089048a35f25a7a662a",
+      "bytes": 985,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/manifest.ts",
+      "sha256": "ada333383bc953302e9b22f856667ce8c424a8d1eb520b81877104f6c7dfcaab",
+      "bytes": 1132,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/navigation.declaration.ts",
+      "sha256": "0befdf4393dd3703c36f8a80021f9dc9c3418176e7360b9c02bb8b18793c04d6",
+      "bytes": 1579,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/navigation.ts",
+      "sha256": "98b8e5eef74acf3927f2c6796280d4c4596b5dcd31a93d0ef83821d8e5c799c7",
+      "bytes": 7177,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/navigation.types.ts",
+      "sha256": "e6a8d5fafe1e846839bc2312a9d44e3edc24928d433f12fa46d9fb572e0ad839",
+      "bytes": 46,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/anim.ts",
+      "sha256": "79b614fb1f1dc04da5a8e0ab914100cc05cb2ea38bbfb27e164571fd581b7456",
+      "bytes": 449,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/colors.ts",
+      "sha256": "f2acb94bab4a93a6e6fc11dc1d01750a1b469468d07c56b437e761f1da9adfe8",
+      "bytes": 453,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/dimens.ts",
+      "sha256": "f45a7b94c5e9da959f5ce7c6b1586de2b080801151fd8e92c492f357db4f91b2",
+      "bytes": 652,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/icons.tsx",
+      "sha256": "24ca275eced32be04f218a6ca9e804861c1ef56caeb3d8271583303528163dea",
+      "bytes": 1765,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/strings.en.ts",
+      "sha256": "7b8c418b222993e20a440d4b971cdf4c4859b33ff184afc02222c63a3fe82c5f",
+      "bytes": 338,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/res/strings.ts",
+      "sha256": "1f7f6b87ab5fc0c6b787332f52b91b7cf482a5386d4c87fe74f580095b88fd8c",
+      "bytes": 401,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Browser/state.ts",
+      "sha256": "f1a49d9e603e2263c9c95f440f7f55fcfc844740bc98f5c73d4bbf571dd2bcee",
+      "bytes": 3520,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/CalculatorApp.tsx",
+      "sha256": "c3f98097885b03ab29a241fb05611090454be7797f4da9af992c8a6c68b510ab",
+      "bytes": 8141,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/hooks/useCalculatorGestures.ts",
+      "sha256": "5bd037801fe764489408435f612b383b67b8e88f38d5bc9face9d2f5ba76542d",
+      "bytes": 988,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/manifest.ts",
+      "sha256": "2d7413097aa59c8e29509c3d16c38087b52569c7a9f33d933b78c51084ac3aeb",
+      "bytes": 731,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/navigation.declaration.ts",
+      "sha256": "ebed6090bd79a5b0a46730f7318eedf3d2011f2c943f6634d3dc11369891835d",
+      "bytes": 755,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/navigation.ts",
+      "sha256": "168456b98b4d36a4db423bc8ffa67cbd242602f14a8de2450bb674a18c1f8b80",
+      "bytes": 7178,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/navigation.types.ts",
+      "sha256": "e6a8d5fafe1e846839bc2312a9d44e3edc24928d433f12fa46d9fb572e0ad839",
+      "bytes": 46,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/anim.ts",
+      "sha256": "79b614fb1f1dc04da5a8e0ab914100cc05cb2ea38bbfb27e164571fd581b7456",
+      "bytes": 449,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/colors.ts",
+      "sha256": "658264da42a92b9f9ee9807cccfc92acd631ca0d7abb93249ced1af8b487edf9",
+      "bytes": 385,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/dimens.ts",
+      "sha256": "f2c2f8c50ba17c94da153514aa9b1cf609bbec83adb949943bc1063c198ac54c",
+      "bytes": 301,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/icons.tsx",
+      "sha256": "c184ff920a3eb0e0b496563c424675ed3464487a4c3253c427b7a41f2ff0a7f1",
+      "bytes": 608,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/strings.en.ts",
+      "sha256": "08b0f64a507831f8bd84cb78ccecd49c93c9721ac6411d5352a56cc0b988c445",
+      "bytes": 137,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator/res/strings.ts",
+      "sha256": "f738e83417a53d452ed7cae8cc3c7d5fc6630e8a58ca851dcfc4c2dfccdb6038",
+      "bytes": 186,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/Calculator2App.tsx",
+      "sha256": "aa3a47b3a91187d8c08374720441d264c4a57f3cef0b76a2b16bcf18652af920",
+      "bytes": 2785,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/AdvancedPad.tsx",
+      "sha256": "e0680b0e7b4c3f25f461c044fc61fe21462a4da1e1e6c61e3d4f8e92858c43da",
+      "bytes": 2873,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/CalcButton.tsx",
+      "sha256": "b582a0148d9dccd8de63ed38c9f6534dcd4e26ee1b671ada4b511ea084251208",
+      "bytes": 3297,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/Display.tsx",
+      "sha256": "fd1cb27a5d4dfaa4656d9524bbc55f9beed0db59d5efce8bbf89d3bcc13098bc",
+      "bytes": 3683,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/NumericPad.tsx",
+      "sha256": "29299c89a160557bc3ede18a41f56e0bab1f020aa8e17d58e5779d8bba17bed7",
+      "bytes": 2456,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/OperatorPad.tsx",
+      "sha256": "1ccea42c19af90dca3808f4f6008ccca08ffc80c13aa9da2aa36347f743590e7",
+      "bytes": 2509,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/components/SwipeablePads.tsx",
+      "sha256": "f5d21cd945b70059725985bbd165cdfd115fd2a6d356625c26fb95b1163898de",
+      "bytes": 8051,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/constants.ts",
+      "sha256": "7cec5d674241a416a1378ed81dd67c522e08b21e899ef3e1edff2d7523afc24f",
+      "bytes": 462,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calculator2/data/defaults.json",
       "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
       "bytes": 2,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calculator2/data/index.ts",
       "sha256": "e64e3ae0a9a68936bb72dcb2b4572002fdc95a445f9c558a6588906399269db9",
       "bytes": 193,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/hooks/useCalculator2Gestures.ts",
+      "sha256": "cb516ad8c33d50cca76cc9155ab35fe89a94740f4d2bac0e854286096dd52290",
+      "bytes": 746,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/manifest.ts",
+      "sha256": "795634b7f872782c6c36007c0e7a563ea86c69a35b9ce3dd2d8eaa44c22f01e0",
+      "bytes": 974,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/navigation.declaration.ts",
+      "sha256": "9b89fd78aa29b14bdf3f4f7881b39a018fecf1c2570186b6d2a7783a012d9a1b",
+      "bytes": 3025,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/navigation.ts",
+      "sha256": "8362c04b9219e5095c0185fe87d63380a9ed7cd85b913749b161f102be7b2001",
+      "bytes": 918,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/navigation.types.ts",
+      "sha256": "ce8439841d0af16177faf4624f30596c2e181a9f12e1fad8d817acda6a392b24",
+      "bytes": 328,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/pages/CalculatorPage.tsx",
+      "sha256": "fd64797f3d17be03ffdb4ab77431b11310f4f260252394e82751dbc7dbdd4d27",
+      "bytes": 1340,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/anim.ts",
+      "sha256": "79b614fb1f1dc04da5a8e0ab914100cc05cb2ea38bbfb27e164571fd581b7456",
+      "bytes": 449,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/colors.ts",
+      "sha256": "9fd16f198aeb91b620f9661ed23633d1d24a4f9ff7af2b85933ab0c302671d7a",
+      "bytes": 425,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/dimens.ts",
+      "sha256": "df58ed14c7becd31cdd2025ee6c3c517ec7a50c7de6a972f3304d49b98ba1584",
+      "bytes": 1128,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/icons.tsx",
+      "sha256": "c184ff920a3eb0e0b496563c424675ed3464487a4c3253c427b7a41f2ff0a7f1",
+      "bytes": 608,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/strings.en.ts",
+      "sha256": "b1c36b1d5ee533c234e5b4f9c59119989737a443b629096c644c2be2502ec31f",
+      "bytes": 278,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/res/strings.ts",
+      "sha256": "9a360790c2e66e80f96aa090fae60c6e5e12929474926e9d199a827f187c7a35",
+      "bytes": 932,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/state.ts",
+      "sha256": "04fbb2ede6bdbfbfae597cd2e597a70520742dc288a9d39c9ff46076ab14eb17",
+      "bytes": 6494,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/styles/calculator.css",
+      "sha256": "2287ce0fd39d4e6a4e218df4c7619c5ab7564aa66fd67d7fb7b61f3b3734d78a",
+      "bytes": 300,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/utils/evaluator.ts",
+      "sha256": "1d9c79274b2b9942ca9555d40afdad33ef261056bd5c35b4e5f357b20c69b563",
+      "bytes": 6922,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/utils/expressionBuilder.ts",
+      "sha256": "27f36c7266e488cf8d06c6dd15d5aa6065719f0a5ca82980b954e95e603c7545",
+      "bytes": 3724,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calculator2/utils/tokenizer.ts",
+      "sha256": "f575f08541f9d2af3b7a37e576161fc91cf2a522aeec7b514db4241522396f4a",
+      "bytes": 884,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/CalendarApp.tsx",
+      "sha256": "7853d487906a81f6394d76478c79d4423f121c26a0c9bb266bd2827d909e228e",
+      "bytes": 3797,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/.gitkeep",
       "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
       "bytes": 1,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/action_bar_new_event_desk_view.svg",
       "sha256": "053825f65e5b193387730b75a51a84f067560b4460532fdce61a35c51889fae3",
       "bytes": 540,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_back_light.svg",
       "sha256": "b9e0c8f1f3544732bfdb659fc4254032e06a6c031c06cc0d839ba38d7c30a5ac",
       "bytes": 503,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_delete_light.svg",
       "sha256": "758706b5c21d30312ec3cc1de6a4abe68ef8877680ff51cdb437d0268f6eb337",
       "bytes": 1571,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_edit_light.svg",
       "sha256": "6e4f06e3d0dcc177681cbd9aa92cdfb568392a2dc9f95dfabbdf26c4f4280aa8",
       "bytes": 1170,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_immersion_close_light.svg",
       "sha256": "32ddec4cd0209ca8aa25c022d1fe75577336c3eb63ed9f61b67566d6ca02ab09",
       "bytes": 562,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_immersion_confirm_light.svg",
       "sha256": "a0915b38dcacd32c3e4b19978cb700139b5a39df0b67a4e453d6f75d7ab42fde",
       "bytes": 485,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_immersion_done_light.svg",
       "sha256": "a0915b38dcacd32c3e4b19978cb700139b5a39df0b67a4e453d6f75d7ab42fde",
       "bytes": 485,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_immersion_more_dark.svg",
       "sha256": "fd3d5906242d67cfeadcbe6c424003a21f8dcde01457aa6ae3384705201f8a6b",
       "bytes": 636,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_search_light.svg",
       "sha256": "c17d6326db8ad22cbe9d0b5c10d488c9d3359dbc7a193475a7c08382d1f8d006",
       "bytes": 848,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_settings_light.svg",
       "sha256": "ead7041ef27bfb05d3906d5995ccf0102441e2da79681b405900e1bfb113d1cd",
       "bytes": 1499,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/assets/icons/miuix_action_icon_share_light.svg",
       "sha256": "968abe7db3fd191f43f99ca4472c5e3099e1e33311bbdaa0c0bc15f95b07d0dd",
       "bytes": 1506,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/AgendaEventItem.tsx",
+      "sha256": "ffd4d8077dda48c44446f68ba090f54ed97acf4b6010bb559f11c11ec7c9703d",
+      "bytes": 1227,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/AgendaPanel.tsx",
+      "sha256": "30965d97354ecbbb66eb2a2741f2c1fd88b8185db10eddf70a1ec9409f9d4749",
+      "bytes": 1450,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarActionSheet.tsx",
+      "sha256": "4c9976a72b44c336dc60de7c8baaa6edf5143ecd9ea6340e5bbb5608c332ed7b",
+      "bytes": 2445,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarBottomNav.tsx",
+      "sha256": "492139459173cc6b062aa8bf8a15026b92fb239e5f960bd2ba5aa11bf99baa66",
+      "bytes": 2538,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarDayView.tsx",
+      "sha256": "922435b63667dc06d1e8a061d98372486ba57274ba839044f8c41a23f7e5c820",
+      "bytes": 3673,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarGrid.tsx",
+      "sha256": "3cba95a34b9e541178b7b7a8318f718cb2a6acafdb5ba3bcf0543150dd336820",
+      "bytes": 5972,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarHeader.tsx",
+      "sha256": "b71fbe784674d1b31e82a756692b0fa8832b786d97874a843ab79883b0744cc2",
+      "bytes": 2235,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarWeekView.tsx",
+      "sha256": "ee0e92a8514874be93d4a050f4cc09b0ce9d7c1a66a83de36a7b9d5b0c120608",
+      "bytes": 5130,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/CalendarYearView.tsx",
+      "sha256": "0d748d43a9d610c79a72d40afba1cdf239c9b1b0622b63d2f6a34d3c3fea3dc9",
+      "bytes": 4280,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/components/MaskIcon.tsx",
+      "sha256": "77fd8dc4978d788240c90f67a22036a0b9869de764b828abbdd040df06e3a780",
+      "bytes": 1266,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/constants.ts",
+      "sha256": "67c885d100b2919a8383a25dadbf03415c2fe3e385cdafbc51106b8454d3ee95",
+      "bytes": 49,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/data/calendarData2026.ts",
       "sha256": "e4ff965336ac9e228efdbcc08f96d7250e66306956b91f57fc5900b3a701ca2f",
       "bytes": 14855,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/data/defaults.json",
       "sha256": "8eaca0ae53fa433c516e7a16b43ea31d2cf9f537da4d944d05157c19d9f9efe9",
       "bytes": 2640,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Calendar/data/index.ts",
       "sha256": "6d219161dcba840180e38703a33bde71aa248cd24b687e873f0866663fd991d7",
       "bytes": 270,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/hooks/useCalendarGestures.ts",
+      "sha256": "2e82fd383ef01cb1312adb29968881569a37694dc735d69c1e335aba59b8eb05",
+      "bytes": 1501,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/manifest.ts",
+      "sha256": "19d05a55b48226634e3c92ece3a858e4a9ec838e0a51a8416340644128401930",
+      "bytes": 893,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/navigation.declaration.ts",
+      "sha256": "c9c67f72fd3dee8251fa987060416eb80340e6b6504fb4010b129da60982bad1",
+      "bytes": 6619,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/navigation.ts",
+      "sha256": "98b8e5eef74acf3927f2c6796280d4c4596b5dcd31a93d0ef83821d8e5c799c7",
+      "bytes": 7177,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/navigation.types.ts",
+      "sha256": "783afd1025f6e87974444ae65e7bd084c55795aba405dc53def55c46851aeff2",
+      "bytes": 4319,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarDateCalculatePage.tsx",
+      "sha256": "b0229143e1e01e51b213a135823cd015a25fe82c862069ffa1b1b9605b6e2132",
+      "bytes": 8076,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarDateJumpPage.tsx",
+      "sha256": "d994407f1ff12aa9f849191ca1aa948a930558f7644e1502eb6634a30a45d539",
+      "bytes": 2496,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarDeskThemePage.tsx",
+      "sha256": "979853f4c5b7f9dd15fab276109948b181a488a3574cea158ed6de2d052508f2",
+      "bytes": 1407,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarEventDetailPage.tsx",
+      "sha256": "d028fbe3d9f75188de813dfc7e57015fdf0814a975a3532a3a87ccd6209b5c63",
+      "bytes": 7945,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarHomePage.tsx",
+      "sha256": "2d7cd93430fb782e9938a93f190463267308f9aa59630f522198d7c1a61221a5",
+      "bytes": 14395,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarNewEventPage.tsx",
+      "sha256": "8f99f424fc2bc148e40b9de15a33257b579fd6e01e18c6bf0c81b6cadbb944c0",
+      "bytes": 18255,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarSearchPage.tsx",
+      "sha256": "ab6f1dbdc238f48a63a83a1dbf08f5b3bee3de3ebb1f7d5116e4eda38cc4c1b8",
+      "bytes": 4012,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarSettingsPage.tsx",
+      "sha256": "e9a88098ee03d381c15799789c5a6f4548ec5c986540d8311af73c016b4d94a2",
+      "bytes": 13442,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/pages/CalendarSubscriptionPage.tsx",
+      "sha256": "4b53ec6764ed3539386b2800e8d420aa02eff26f51d24ce1097787e9a9ed5d05",
+      "bytes": 2054,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/anim.ts",
+      "sha256": "2011d8acb2d1b1a89c64354dd2b580e58ce5486e062cebe91cf00fab95386b1e",
+      "bytes": 448,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/colors.ts",
+      "sha256": "08b0c888c4947e740f28c2531d244c07ee5d967502ad9ea0f4a0c29d8ebf7abc",
+      "bytes": 180,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/dimens.ts",
+      "sha256": "742cc0f5a1e50f2c243ca277509f961f0f3addf1dd08fbd536cdb08de1e361b0",
+      "bytes": 345,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/icons.tsx",
+      "sha256": "7e31b30652b86926de2e47d1fca300ecee0b25c4390335d5cbc75038ccd8774f",
+      "bytes": 2433,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/strings.en.ts",
+      "sha256": "2cebcd8e79b69543380d41fc194fc87679a68a8a8631052638532d079689398c",
+      "bytes": 6187,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/res/strings.ts",
+      "sha256": "9d114409939a3789b22a2b02ead812ffc8d7a7a329b78e4d31077cc05901000b",
+      "bytes": 6099,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/state.ts",
+      "sha256": "af4b91fa94d002a7eb695bbdbe56b295b9afa26ace4fce689a9ce21da66658ea",
+      "bytes": 2353,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/types.ts",
+      "sha256": "46e2eb6c684d07d43921de6ac9d300b6212af85d360f868a04a28efda8c3e5c4",
+      "bytes": 1057,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Calendar/utils/calendarUtils.ts",
+      "sha256": "39d330a0eef935c9e51884ed328fec2a0abcf4d689db1f6d9c99ea865d858ecf",
+      "bytes": 6675,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Clock/data/cities.json",
@@ -35438,39 +35973,183 @@
       "reason": "system-app-data"
     },
     {
-      "path": "system/Clock/data/index.ts",
-      "sha256": "e2b9b5ab82a83b642f9901c05f2604221059b15c18853e44642af729aee24a0c",
-      "bytes": 160,
-      "reason": "system-app-data"
+      "path": "system/Compass/CompassApp.tsx",
+      "sha256": "79ce066191f2544b23734d427f349ad768a7d2a833811c4e098b74a7a6f8daff",
+      "bytes": 2384,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Compass/assets/compass_dial.svg",
       "sha256": "6526cb629502bc13f42a3d47d81e92d519cd8398d65a3dd22a8728311230b88e",
       "bytes": 54985,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/CompassDial.tsx",
+      "sha256": "36b2c452cb01bec26569e1ffc4dea51ff1738ca14cbc915d3135fca8c775f09d",
+      "bytes": 1546,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/CompassNavigationHandler.tsx",
+      "sha256": "db0b4a41e18690f0f55b07c511fb1d36189af4ad5bc04fd1df41a51c8292cf5d",
+      "bytes": 1113,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/CompassTopBar.tsx",
+      "sha256": "f77008382e0c0dba114caa1ab1ddf13855b5176fa17c59d88dfd0da90279ab80",
+      "bytes": 2018,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/LatLonBar.tsx",
+      "sha256": "7b4b13115c6b8c1d85ceb9f2fb2ebaa006a8c8ed978f411fa03d0d35aebb8460",
+      "bytes": 1082,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/LevelDial.tsx",
+      "sha256": "0561bd7955b3e27d510f9b207b17852d9eb95c786d15a8057e0be4fadf1f501a",
+      "bytes": 1381,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/components/MoreMenuPopover.tsx",
+      "sha256": "8b063ca9e0b74f4092f5c58835b3b9fcc70cc15ac655af3d33d215b6fb0486fc",
+      "bytes": 2034,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/constants.ts",
+      "sha256": "cb325392ea70df32578e5f116ec993ff2252b233f5e80e88d07b9dff00036de7",
+      "bytes": 2164,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Compass/data/defaults.json",
       "sha256": "c9739852759f664113d28ae7f31a713f5c9fd5d06e63960b7705af6a95a886f6",
       "bytes": 46,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Compass/data/index.ts",
       "sha256": "c1e95b8745d93fe85b745fcd6ad2467f7ffaf994928960b1921d8f6f7fff5c32",
       "bytes": 479,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/hooks/useCompassGestures.ts",
+      "sha256": "1d12da0e137691bae140e69215a1d21892710f0253467d0c612a03272cf2a492",
+      "bytes": 1042,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/manifest.ts",
+      "sha256": "9ed979e7801585481230469e023bfa808f9c3a5bcc857919c7af62215a337411",
+      "bytes": 800,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/navigation.declaration.ts",
+      "sha256": "a7376c6f6dda1560fc8214ea61d7a2248e8f881fc069073f1a4eb4a0e712732e",
+      "bytes": 4299,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/navigation.ts",
+      "sha256": "2380abbe34bd3da2c682641caeeba5b52af5f10cf72ab93ff3089e52c2ccf808",
+      "bytes": 7746,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/navigation.types.ts",
+      "sha256": "5c8a726b7a602fcf412e062d03345c9fbe883db3a729da74213dc3620d4bede0",
+      "bytes": 4484,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/pages/CompassPage.tsx",
+      "sha256": "f6f5e48710d18d35e6ae378d7dda183cf2d8b232cfa26ab13cf8f1c0596c7a63",
+      "bytes": 3686,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/pages/LevelPage.tsx",
+      "sha256": "ba368b0ecf5081383f5397d2cb05cf845556d3793e2451628b3cbeeb665da236",
+      "bytes": 3201,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/pages/PermissionsPage.tsx",
+      "sha256": "f058f62c5bf15bb8dcb95db77c6d79fd577bbc542f417f14ef53610429c34beb",
+      "bytes": 3998,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/pages/PrivacyPolicyPage.tsx",
+      "sha256": "76cbfe2662cec614bc9800f46b3c18cf4931715859da269d141347349aeaa62b",
+      "bytes": 1867,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/anim.ts",
+      "sha256": "2011d8acb2d1b1a89c64354dd2b580e58ce5486e062cebe91cf00fab95386b1e",
+      "bytes": 448,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/colors.ts",
+      "sha256": "30c553e16afb1e0ba64e280897aec085741709a8804183b24afa8b99bf63ee71",
+      "bytes": 1389,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/dimens.ts",
+      "sha256": "cf63005c9d2dfb44603c72c84ed8b8cddd7939cb4aa9fe8014b363da231d46a3",
+      "bytes": 864,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/icons.tsx",
+      "sha256": "9592169cc18028749dbd664b9e137423f2481e2c9417acd07cb6797e4ad492a8",
+      "bytes": 1258,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/strings.en.ts",
+      "sha256": "4e012e6405fe4f1bef4ca35ce79f69d54734e1834cd47a816ee98adef3d87c56",
+      "bytes": 1197,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/res/strings.ts",
+      "sha256": "3fcbc7c643fd9fc6d032ae55a1bfee811010cd7f60c9ee847b1b5c57ed33f737",
+      "bytes": 1351,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/state.ts",
+      "sha256": "9b101c254b964728807b388d5913d7a928a75604ae9fdc1694518ca18c5ad100",
+      "bytes": 1664,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Compass/types.ts",
+      "sha256": "bc3611c44c4d03dcae3bc93b0722fb1608992f6ee7854b85d95a7f4d6ebcc3e7",
+      "bytes": 268,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Contacts/data/defaults.json",
       "sha256": "3590387c6e0f33c4dedac3dde1a6a426e51765f57a8076c2a704d91425811291",
       "bytes": 3468,
-      "reason": "system-app-data"
-    },
-    {
-      "path": "system/Contacts/data/index.ts",
-      "sha256": "649b7ff8b8f634f5bff86ba43c788666bdc9f85f83e2e805baa70772d7eed411",
-      "bytes": 450,
       "reason": "system-app-data"
     },
     {
@@ -35486,64 +36165,736 @@
       "reason": "system-app-data"
     },
     {
+      "path": "system/FileManager/FileManagerApp.tsx",
+      "sha256": "b981d765d410b280ebb67fa0acfb969c15a1c408ab7ce351b63531556d272272",
+      "bytes": 2768,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/components/AsyncImage.tsx",
+      "sha256": "b8fa2ebdd721dc9d648a81b7873caec4e050afdc85fe73b28ce72021a5865706",
+      "bytes": 1331,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/components/Dialog.tsx",
+      "sha256": "1ba523225969bc217b8ee63354eff3e6209e2867697cd40343a41ef741a1ab6d",
+      "bytes": 10539,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/components/FileManagerNavigationHandler.tsx",
+      "sha256": "5137c8f102692ca096987bd7b3dcc8ceab6991612d6db7c4391eb6fd52730ee3",
+      "bytes": 2051,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/components/TabBar.tsx",
+      "sha256": "1d82005f62c6ce3582b69e041261de3de5123f194257f5d329ba2842bb9b564d",
+      "bytes": 2404,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/components/TransferSheet.tsx",
+      "sha256": "84080736b1e012350a46a9429120dfcbee9fbe3ac59f3d2574bb5d11ab571a08",
+      "bytes": 8705,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/hooks/useFileManagerGestures.ts",
+      "sha256": "a5350fab452b82d7e5408c689eea812ee0b6b0db6d92efe5a33a848875b03005",
+      "bytes": 1625,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/manifest.ts",
+      "sha256": "313309fd70f8b16ed41012c1e58baa4c22e28ee66d03430fc76a9a470c27d1d3",
+      "bytes": 1496,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/navigation.declaration.ts",
+      "sha256": "d4d81bb46cf95edab21c24aeb961b48a535d81e0f14a783f3df32a11d6211f8c",
+      "bytes": 21308,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/navigation.ts",
+      "sha256": "9c7703672e362a5c3126f5b818d9e1680aa46ba8b6e742462d6184391bd8b4fc",
+      "bytes": 4540,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/navigation.types.ts",
+      "sha256": "5266fb0f03821fd0e657f18e00fdc3613dc1186aa72885c7e1a25be28a099fdd",
+      "bytes": 1749,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/BrowseHomePage.tsx",
+      "sha256": "f51299e97f799fbb07f9221235479ce3187d46049372ad9719a68fc0d3a0a5ba",
+      "bytes": 20135,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/CategoryPage.tsx",
+      "sha256": "9a0d7285c8c019d39569b3939f78d28683693906c0524127c83a371342fec71d",
+      "bytes": 5521,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/CloudPage.tsx",
+      "sha256": "e1432cffb82d739ade71804723920896b66f9dc8aef2483387805cc9a601e57b",
+      "bytes": 842,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/FolderPage.tsx",
+      "sha256": "1fca74f6ae76eeaf0b4bc5bcc993d90ea378d504e7ea683a3074c7aff279f140",
+      "bytes": 22698,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/PdfPreviewPage.tsx",
+      "sha256": "46b851fb93005b187d48538cf9c66ab1e83c10c209376652d7c59311f52253de",
+      "bytes": 4602,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/RecentPage.tsx",
+      "sha256": "4c4d60b4dc77fadaac9ca532043724a9673f097d0b57a997045d18292f2bfc57",
+      "bytes": 20438,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/pages/TextPreviewPage.tsx",
+      "sha256": "3a6a606ed1eb09b80276ba0613f2a04f4284861f5ee69f22532b128090247320",
+      "bytes": 3624,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/anim.ts",
+      "sha256": "2011d8acb2d1b1a89c64354dd2b580e58ce5486e062cebe91cf00fab95386b1e",
+      "bytes": 448,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/colors.ts",
+      "sha256": "da9fa1479bf6a1101d64b15935fb0875989d8d893fbc76bb959165e65da2c127",
+      "bytes": 556,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/dimens.ts",
+      "sha256": "0ed841ad5d40d1bf974064a1fa113bed85d9f3a37d26675dfa6f524d58626f51",
+      "bytes": 963,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/icons.tsx",
+      "sha256": "f5fb2320cb9e6fa84d0aaca9071bfec3c950583bb6488862d45445140a65be31",
+      "bytes": 5792,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/strings.en.ts",
+      "sha256": "255cbd80dce808efd6eb7b285b2bc47a05d3db5f4279b46c312f13da31937635",
+      "bytes": 9521,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/res/strings.ts",
+      "sha256": "cc3da41998385482662159361991be7b83c910cde5776d09d09f429c2be48808",
+      "bytes": 9651,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/state.ts",
+      "sha256": "ca555f456416600519f4efdefb7b720aec11abd175bb2c9977f26ff936b38634",
+      "bytes": 2454,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/utils/fileOperations.ts",
+      "sha256": "eab46d37a9d108b58eb96d1c14647165286d91f828f2b648471014921aec31fd",
+      "bytes": 2140,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/FileManager/utils/fileUtils.ts",
+      "sha256": "25b1fd59caf935a12d20950e874d6daea7219425a06fa8f19d565ac606821d31",
+      "bytes": 1780,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/GalleryApp.tsx",
+      "sha256": "455acfa7311418e3aca7d5b2087c6751b906de014aa6e963992425e16f0197e4",
+      "bytes": 72380,
+      "reason": "unused-upstream-system-app"
+    },
+    {
       "path": "system/Gallery/data/defaults.json",
       "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
       "bytes": 3,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Gallery/data/index.ts",
       "sha256": "d8cd8b4a1bb13a6542885fd71079ec6f0e14687d41b879b05646f8778fd85695",
       "bytes": 91,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/hooks/useGalleryGestures.ts",
+      "sha256": "49a5518479efd729ed7a09beac35fddfcd9ecdb0c4cbaef7ba1dc5428a62217b",
+      "bytes": 985,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/manifest.ts",
+      "sha256": "ae52a7cef819373b51a5302e6126c21cd658591b1b0db398f9a7a7436654708f",
+      "bytes": 1333,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/navigation.declaration.ts",
+      "sha256": "0439d10514537dbdb7bf335c96426998ab8ab81337458186b1381c57e0fe8e54",
+      "bytes": 6287,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/navigation.ts",
+      "sha256": "98b8e5eef74acf3927f2c6796280d4c4596b5dcd31a93d0ef83821d8e5c799c7",
+      "bytes": 7177,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/navigation.types.ts",
+      "sha256": "783afd1025f6e87974444ae65e7bd084c55795aba405dc53def55c46851aeff2",
+      "bytes": 4319,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/anim.ts",
+      "sha256": "2011d8acb2d1b1a89c64354dd2b580e58ce5486e062cebe91cf00fab95386b1e",
+      "bytes": 448,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/colors.ts",
+      "sha256": "fc2af62f8655f433b4a5c10be9acb4a676dd7a08d3e113c1f2b791b42c2d423a",
+      "bytes": 751,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/dimens.ts",
+      "sha256": "f2c71864cadea22358dd787032824cac08d48c64b43c975b0d1fd0874253afbe",
+      "bytes": 1091,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/icons.tsx",
+      "sha256": "fa007463bf60700b8184f642d2d3715668df8fce8c31cd28ebb1681f39058e4d",
+      "bytes": 3225,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/strings.en.ts",
+      "sha256": "bc7099ddaa9aec43bbbd8cfb9edcf0b7372c8d068b82192ea365397241fbbc16",
+      "bytes": 3639,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/res/strings.ts",
+      "sha256": "0175885b511c1c154c3034e81553f2296fcc513b75b1fbbd18fb25627cfca45b",
+      "bytes": 3716,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Gallery/state.ts",
+      "sha256": "22fd926faf78bb2c6522014c546d2d2937545dfc857ccf8a1ada757bbd148606",
+      "bytes": 121,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/NotesApp.tsx",
+      "sha256": "d8c87c12335c2a8fbe2dcf4f7708fd0b7f49380e9b77bc0e0372fda2b41c4513",
+      "bytes": 3987,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/components/ActionSheet.tsx",
+      "sha256": "43819478bba632135b6c5450bc4e8c6765ec761cbfbdd1f7aea3eacea0e8d1d9",
+      "bytes": 2157,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/components/BottomTabBar.tsx",
+      "sha256": "a578024be9bb85bb01ba42552bcbf1e2c53352f55246953483244239e8fe0b57",
+      "bytes": 1876,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/components/DateTimeDialog.tsx",
+      "sha256": "d3297b5eab9702b9e4c2fe628299586fd8cf649c51f16f37f44c5cc565255228",
+      "bytes": 9757,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/components/InputDialog.tsx",
+      "sha256": "b9f48e9e110d681adea1332fc0cad23285a6598f1926f797f0ae9b6cb9fd4e7b",
+      "bytes": 2663,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/components/dateTimePickerModel.ts",
+      "sha256": "6db98a2cfed08f213dbaaa82720c115619386cf6030afb64a915632fbcfecf3b",
+      "bytes": 3611,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/constants.ts",
+      "sha256": "2c7c3c9aa594ef3bd95a449faf35586a180697539422b823760c7f36d062d65d",
+      "bytes": 362,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Notes/data/defaults.json",
       "sha256": "1a5fad13430d5f5162224397ddb7c6c00b81d3cf7233c87234e48ee0cf34106e",
       "bytes": 1704,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Notes/data/index.ts",
       "sha256": "ab21bc09321e552c6df12e965cce416077bf622bed8bde611178729b6fbffa3d",
       "bytes": 813,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/hooks/useNotesGestures.ts",
+      "sha256": "6da48369d34cd7a780b0236985890c2b06084762f57a9b8d9f62a0c45b845c8b",
+      "bytes": 1498,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/manifest.ts",
+      "sha256": "dd8c26ad186370dafb84c43ff76d9b98fb615b16b0d968a224ba74868900ff1b",
+      "bytes": 931,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/navigation.declaration.ts",
+      "sha256": "be71e7039832d13604bf18ace5fec3737db5d4f3d1f8dc70e398678e3e79cd06",
+      "bytes": 5030,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/navigation.ts",
+      "sha256": "98b8e5eef74acf3927f2c6796280d4c4596b5dcd31a93d0ef83821d8e5c799c7",
+      "bytes": 7177,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/navigation.types.ts",
+      "sha256": "783afd1025f6e87974444ae65e7bd084c55795aba405dc53def55c46851aeff2",
+      "bytes": 4319,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/FoldersPage.tsx",
+      "sha256": "336294af0c2ff3be242b138e87d9fe51692275cc6fee36ae57c75cc0dc53f167",
+      "bytes": 8371,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/NoteEditorPage.tsx",
+      "sha256": "4a36ac4daafcae2e766e934e9b97d605e106228c9808331fda338b5f4a2e892d",
+      "bytes": 24436,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/NotesListPage.tsx",
+      "sha256": "5ca06f1f501276171cc39b78c4ec876d7bfb524d11bfb594c39a17c60cbe76bf",
+      "bytes": 23669,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/PrivateNotesPage.tsx",
+      "sha256": "7f5eec65ff955817e1229332db3b5a8977ee3b11fdeb702eeeaac26022342b1a",
+      "bytes": 5692,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/SettingsPage.tsx",
+      "sha256": "2a45c44f932eb0a3c35f86bbf6a0715bc1f746906ce13cd1498250de1746d43d",
+      "bytes": 4470,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/TodoListPage.tsx",
+      "sha256": "3461f554f2f6912d92437532633c7db60de44e7b4bdcf3b073b2fa7d788c67d2",
+      "bytes": 13255,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/TrashPage.tsx",
+      "sha256": "c1e615b8849027ef9bcebeb8c89e715aceba6761db24662efff28a28cc8eef44",
+      "bytes": 6304,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/pages/todoListModel.ts",
+      "sha256": "e0b8bf0dd2111fb2638261629cdbd90ed928fff97b1bdf47063c92808a64116b",
+      "bytes": 747,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/anim.ts",
+      "sha256": "2011d8acb2d1b1a89c64354dd2b580e58ce5486e062cebe91cf00fab95386b1e",
+      "bytes": 448,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/colors.ts",
+      "sha256": "6b7722efaf4ed87dd32c1a12492c9c3882d6a7e0ae31a38629908c63da19e2d6",
+      "bytes": 719,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/dimens.ts",
+      "sha256": "8dda4e7f533222d86f32700ee3d5788f4b96919e738f1e37efa6a70d5091a347",
+      "bytes": 617,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/icons.tsx",
+      "sha256": "bb658c8a70171981ffcd63fef3ea21b9b8d4c14b1a47eb944fdcdb3e7a7a7b11",
+      "bytes": 28386,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/strings.en.ts",
+      "sha256": "c1b4ae7b328d2cdfdb65237eb51b7fe43724a8bbbce355b1daa5af351c72e197",
+      "bytes": 5073,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/res/strings.ts",
+      "sha256": "8b3fd89c3c07b2192ffc4a96903ecf4b2bffd81c642f22f0ad11c5900a092120",
+      "bytes": 5326,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/state.ts",
+      "sha256": "efb6c168c780dfa0f0e7ca4347152ae9fa9e78ffa8712eb68550a6a593cd3b5b",
+      "bytes": 7143,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/types.ts",
+      "sha256": "593b98ba170a14976f1c68531ce604bbc7b1a0f265b77623f908f2a63283ed97",
+      "bytes": 834,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Notes/utils.ts",
+      "sha256": "ec6b0b14f5618e5938eef1ddf9bd93d49c894c1269d25a90703f3a061d6ff3c4",
+      "bytes": 462,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/SettingsApp.tsx",
+      "sha256": "b86b8295a0cfe460928f6bad95d0653e3fcf9503e53b7f238fe1d59fc1b4b880",
+      "bytes": 3717,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/AppPermissionDetailPage.tsx",
+      "sha256": "8ac5ff732f285007ca1024fcd52914700b1a4044ebdc28422c7fa03b455ad76c",
+      "bytes": 6791,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/AppPermissionsPage.tsx",
+      "sha256": "1a13cf18915079885ff331dd2801d462ae8caffe419d3ebf26cbd436b012869b",
+      "bytes": 3883,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/BluetoothDevicesPage.tsx",
+      "sha256": "1df1666182e41d5a96552bef5a8e768ee6fba4c80867a98b1dac9b5e0374bf23",
+      "bytes": 7465,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/InputDialog.tsx",
+      "sha256": "12aeaa2c7c5d829688a4e808d723d7ec797bf983771888a8f72b623787ad736f",
+      "bytes": 2655,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/LanguagePickerPage.tsx",
+      "sha256": "f93216f5c5256a80a31cf2512ca01ec86b68dc72f409e8417bf443576eb28790",
+      "bytes": 1845,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/LauncherSettingsPage.tsx",
+      "sha256": "cf48fe29d10c41423fd70820be17230b0d9bcdaae447eb4da3ee2f15b164df65",
+      "bytes": 3251,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/ListPreference.tsx",
+      "sha256": "b030e3ab16ea342df4171a35fad65f1121faaf0219619f4503a1f2c29d0886a4",
+      "bytes": 3659,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/NotificationAppDetailPage.tsx",
+      "sha256": "f9ea8b9547b8f148bc2eea005d1148613c09b412169b122a6bed9d38a75f9245",
+      "bytes": 7605,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/NotificationManagingPage.tsx",
+      "sha256": "af8995a387b616a8cde4e04e0ccf70dadb7555e9a975c94dfc83b4567cf472fd",
+      "bytes": 4304,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/PreferenceCategory.tsx",
+      "sha256": "8e772c110441b47a822be494992982b8ca5b18113351ec87fa434ece6bd21ae2",
+      "bytes": 578,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/PreferenceItem.tsx",
+      "sha256": "6d55420ddbb981bbb797f3ed4eb57e5cdcb86bd20fa57b32b48d3713217fb9b1",
+      "bytes": 1848,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/PreferenceScreen.tsx",
+      "sha256": "126b2316d1e950d422a1e7eccfe7cc3391f4c7a485c821ef931b0fb40198767e",
+      "bytes": 20255,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SeekBarPreference.tsx",
+      "sha256": "cbecdb8203f95fe2c63d0beed8832ce6ab71191e4892602fe3a6e8a2679f3c06",
+      "bytes": 1534,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SettingsHeader.tsx",
+      "sha256": "74490dda9f815e9ebebf7c8b4c37517f2ef17f9e9a1e80a2d51c61d6c192c5d0",
+      "bytes": 1120,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SettingsIcon.tsx",
+      "sha256": "ea793601b69d264af4c29cec3bc3d35df0131dcd14cb32e92c9f8998162edbf8",
+      "bytes": 3626,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SettingsMainPage.tsx",
+      "sha256": "2e3df3f42f941e9799700e77b414201907eaaecc29d21beded2eae7218ada237",
+      "bytes": 12776,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SettingsSearchPage.tsx",
+      "sha256": "e6416450b889dc23a358886ead24a426949a480e4909f6c21e9e7463e104b702",
+      "bytes": 5813,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SilentModeSettingsPage.tsx",
+      "sha256": "a26c98cb3ede5c3102a09015b7d69af24487f5bdf87e430d695816b492474df0",
+      "bytes": 5377,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/StorageDashboardPage.tsx",
+      "sha256": "40868d5dbfaef742bc78a0e6827668cb6ad7f384a4dbbe8ebe90beea3dc50da1",
+      "bytes": 6284,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/SwitchPreference.tsx",
+      "sha256": "f2b4fab589cd1fe8b899aab98a7a1a71a65b0819e04f6e8fbb50d259b1d0d3f8",
+      "bytes": 1728,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/ValuePreference.tsx",
+      "sha256": "c7387f80af80caf26179d0a3a58516f31ffbc293279f26bf8d1d3beca40c293d",
+      "bytes": 2588,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/WifiNetworksPage.tsx",
+      "sha256": "49e52eb811d62fb8ece888df51a639834696bfc46aa5e26746aade973464d442",
+      "bytes": 8363,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/WifiSavedNetworkDetailPage.tsx",
+      "sha256": "876dad8385631c46297c20b888c85ad474e46f0912d7b8056a95ec0871f47386",
+      "bytes": 3930,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/components/WifiSavedNetworksPage.tsx",
+      "sha256": "d447acd811b06520c6043360cb897c1d94df2cb612d21803ae3ea41d77a0370b",
+      "bytes": 4687,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/loader.ts",
       "sha256": "b3121059a9e7d906c893f7659cbc90e2e00419e6f76c841d8e9ca2bfd31fdd89",
       "bytes": 1117,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/overrides.json",
       "sha256": "3dae4c86aa2dd67f8c81346f8cff290f985c990602a2259d4ff7ef25cefb732c",
       "bytes": 22404,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/pages.json",
       "sha256": "ad2a7a5dfdf6860ae0247d31b90b03e466499c6fcf95afd753e67f15913300c9",
       "bytes": 850340,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/settingsConfig.ts",
       "sha256": "3915d7a79e7c7216d14b7f88d54dfe5e77b5d5fe4a9cc067d49d7aff34ea190f",
       "bytes": 844,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/settingsOverrides.ts",
       "sha256": "32d7309819f5821c1800b59d9155c12ba875e4b9d7ad73b3c3c3d1b14382ad16",
       "bytes": 375,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Settings/data/settingsPages.generated.ts",
       "sha256": "47d57bdf8df2a80d86e93b647ffda38784108c9cdee05740d01a4b7f88907e13",
       "bytes": 493,
-      "reason": "system-app-data"
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/hooks/useSettingsGestures.ts",
+      "sha256": "1560317294b456a0c9bbef52510ba6e3e190c55cab829152038b25d28c2d1869",
+      "bytes": 1473,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/manifest.ts",
+      "sha256": "9b35631f68bef06f68c5160e848c72419e2da20eaad757f25feefb46e1656630",
+      "bytes": 926,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/navigation.declaration.ts",
+      "sha256": "722445e7061ee74e7db69286377ddbde577cd253a4a258d4f1151747df6cab08",
+      "bytes": 2180,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/navigation.ts",
+      "sha256": "0cefcf92a146bf8302c37de903f918fa169ced024da6059b2aabf7bddef9122e",
+      "bytes": 7043,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/navigation.types.ts",
+      "sha256": "5c8a726b7a602fcf412e062d03345c9fbe883db3a729da74213dc3620d4bede0",
+      "bytes": 4484,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/anim.ts",
+      "sha256": "79b614fb1f1dc04da5a8e0ab914100cc05cb2ea38bbfb27e164571fd581b7456",
+      "bytes": 449,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/colors.ts",
+      "sha256": "1abfcd92d4083c71c1c081687922eccf7be99421dce1804250fa090f7f2125c7",
+      "bytes": 572,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/dimens.ts",
+      "sha256": "d7be7d934a2ef1bcf63d0146e838cd7aee14dc13da118df1126aca451634e408",
+      "bytes": 1033,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/icons.tsx",
+      "sha256": "6c5767a58cf9904586f8fdaffdd59d95f4cc9970abd8ed64666564eb80d510bf",
+      "bytes": 2060,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/strings.en.ts",
+      "sha256": "f0659940171e8e390f918b52c1d837bfe896c443e5c33060fca70803acb7ba9b",
+      "bytes": 176022,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/strings.ts",
+      "sha256": "6129bfa763444c87e1760463ea21e0a9469f426a767087497951d8108eec3dbd",
+      "bytes": 170887,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/res/useSettingsStrings.ts",
+      "sha256": "8d1ae348c3c13cceb5f72f8e7207898f91b8968b5967bd0f5b6c654be9f98d02",
+      "bytes": 716,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/state.ts",
+      "sha256": "0ae5368739bd3d2fe553c260d9a05e9b06a1a3b4f29474c42c1055063f5373fa",
+      "bytes": 7689,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/Settings/types.ts",
+      "sha256": "6e0453c9462272036a515a290bc85d675c78780813f869b63f5f3c8ecd007296",
+      "bytes": 1881,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "system/Sms/assets/icons/action_bar_setting.svg",
@@ -35642,10 +36993,82 @@
       "reason": "system-app-data"
     },
     {
-      "path": "system/Sms/data/index.ts",
-      "sha256": "152292e7cdb3f15fd20e73c0967293c599e50084fa2adca287641b363ed7a3dc",
-      "bytes": 155,
-      "reason": "system-app-data"
+      "path": "system/ThemeStore/ThemeStoreApp.tsx",
+      "sha256": "f7a17c76e6db0a04bbad5a8bb77470b991efb88b4ca6920c63cd0372d7f1e5dc",
+      "bytes": 17265,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/hooks/useThemeStoreGestures.ts",
+      "sha256": "4a410e9bfd808667e238a9b4fd71d06e08074c2c24e61cd0061ff836a529999e",
+      "bytes": 988,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/manifest.ts",
+      "sha256": "e16fffbbc1a6aeb63bbbd867cfe89344d89c9db7b705153f02d0bf1a2abfff7d",
+      "bytes": 786,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/navigation.declaration.ts",
+      "sha256": "8b67b4e6628671e3e3491fcc030764d1a4cf2fdca6a4dc2cad2897ffad24615f",
+      "bytes": 1416,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/navigation.ts",
+      "sha256": "98b8e5eef74acf3927f2c6796280d4c4596b5dcd31a93d0ef83821d8e5c799c7",
+      "bytes": 7177,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/navigation.types.ts",
+      "sha256": "e6a8d5fafe1e846839bc2312a9d44e3edc24928d433f12fa46d9fb572e0ad839",
+      "bytes": 46,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/anim.ts",
+      "sha256": "79b614fb1f1dc04da5a8e0ab914100cc05cb2ea38bbfb27e164571fd581b7456",
+      "bytes": 449,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/colors.states.ts",
+      "sha256": "e6fec755326e99fdd21a8e480f68475c168be5822d414034d31d830a61b4ff1f",
+      "bytes": 149,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/colors.ts",
+      "sha256": "a0c012bd349dc3b4c5595d7287fe874ff1885d1a979e8727053860a95a0c5edb",
+      "bytes": 822,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/dimens.ts",
+      "sha256": "bb5fc3d123403f292b9596b70222fa6efe28da1bff38ad1df50a39bff400d259",
+      "bytes": 658,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/icons.tsx",
+      "sha256": "5432601e7d0e1df91c69cc53f4cbc5fa0cf396c3fec452babb731822b7f06adc",
+      "bytes": 1165,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/strings.en.ts",
+      "sha256": "4d498e950f03ae7693e7fa2d43d6c5a7ebeaa43354d4821d28d75dc17c8b2019",
+      "bytes": 1093,
+      "reason": "unused-upstream-system-app"
+    },
+    {
+      "path": "system/ThemeStore/res/strings.ts",
+      "sha256": "851745b9419b5162ff3d8d5b766d314c512a01346de286008938abc0826d7064",
+      "bytes": 1203,
+      "reason": "unused-upstream-system-app"
     },
     {
       "path": "tests/alipayBillRedPacket.test.ts",
@@ -35666,6 +37089,42 @@
       "reason": "dead-test"
     },
     {
+      "path": "tests/calendarEventMarkers.test.ts",
+      "sha256": "edda99eed3d66a7bd220e2b911df9591f3146c3f57264758170989ed37d1a72b",
+      "bytes": 1219,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/fileManagerFileUtils.test.ts",
+      "sha256": "681348ea97de38ad5a5843f06c3a0a1906a760f6269af267b5d339b44c349bf3",
+      "bytes": 1953,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/fileManagerRenameNavigation.test.ts",
+      "sha256": "44d27f3fe5644bd7bc3336142f6ddac6d9491de0270796014006b8aa67e48f08",
+      "bytes": 1168,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/fileManagerSelectionToolbarLayout.test.ts",
+      "sha256": "94051a1919753ce743b19804965c00e9fd285c051bcbc56849bf8d1406333a47",
+      "bytes": 959,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/fileManagerTransferNavigation.test.ts",
+      "sha256": "0adef42399f7453c02b00942a0da5d12a4b96d9f2796d8e40324091d127b7c41",
+      "bytes": 3341,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/fileManagerTransferOperations.test.ts",
+      "sha256": "91ccfde3dbead916324fb133ead43e56f04718f6c8688a28b7d33094a831b8a3",
+      "bytes": 2817,
+      "reason": "dead-test"
+    },
+    {
       "path": "tests/mapLocale.test.ts",
       "sha256": "bdc4f8c2940983b86b30cdd5933be57ca6058fd4e63ad290675b14abb27c257d",
       "bytes": 1477,
@@ -35675,6 +37134,18 @@
       "path": "tests/noBenchmarkPatchedAppsMarker.test.ts",
       "sha256": "46c545580cae6da2a2a94cb6106c51ad61a16215b4871ad3bcf59e07efc41b68",
       "bytes": 577,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/notesReminderPickerModel.test.ts",
+      "sha256": "42cab934bd2fac508b22ae7a17e9d4c0bdccd0b16300cf84d3a963bb48024d73",
+      "bytes": 1511,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/notesTodoDraftBehavior.test.ts",
+      "sha256": "d6e07799d091cd7e78ebf4055f0c9391affb4e2982c16932c46d9efb0e77b428",
+      "bytes": 2078,
       "reason": "dead-test"
     },
     {
@@ -35729,6 +37200,12 @@
       "path": "tests/useAppStrings.test.ts",
       "sha256": "6da020c94583254911207630a7cf2a0248cab67899da3bfd24a25c470c77e3f0",
       "bytes": 3187,
+      "reason": "dead-test"
+    },
+    {
+      "path": "tests/webDemoScrollGuard.test.ts",
+      "sha256": "902b1e5f046b94125dbc78eeb36de7b4f8759a34ac75e561ec7e30d47017582e",
+      "bytes": 1689,
       "reason": "dead-test"
     },
     {

@@ -45,7 +45,7 @@ curl -sI http://localhost:3000 | head -1
 # HTTP/1.1 200 OK
 ```
 
-Starting the simulator (which involves cloning `mobilegym-data` for default app data) is covered in the [project root README](../README.md#-quick-start), not here.
+Starting the simulator is covered in [sim/README.md](../README.md), not here. This fork ships no upstream dataset.
 
 > 🚀 **Strongly recommended for `--parallel ≥ 8` / RL — use the nginx gateway, not `npm run dev`.**
 > The dev server is single-process and bottlenecks fast; nginx serves `dist/` over HTTP/2 with 8 workers + a backend gateway. A one-shot script does the whole setup:

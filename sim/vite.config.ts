@@ -594,8 +594,9 @@ function serveAppAssetsPlugin() {
 }
 
 /**
- * Dev 环境下把 /cdn/ 映射到仓库根的 mobilegym-data/（gitignored），
- * 与生产 nginx 的 alias 行为一致；生产 nginx.source.conf 里的 location /cdn/ 等价。
+ * Dev/preview: map /cdn/ to the repository's provenance-tracked content/ directory
+ * (one level above sim/). Production nginx (.nginx/nginx.source.conf) aliases the same path.
+ * Every file served from here must have an entry in content/MANIFEST.json.
  */
 function serveCdnPlugin() {
   const MIME: Record<string, string> = {
@@ -604,7 +605,7 @@ function serveCdnPlugin() {
     '.mp4': 'video/mp4', '.webm': 'video/webm',
     '.json': 'application/json',
   };
-  const CDN_ROOT = path.resolve(__dirname, 'mobilegym-data');
+  const CDN_ROOT = path.resolve(__dirname, '..', 'content');
   const serveCdnMiddleware = (req, res, next) => {
     const url = req.url || '/';
     const rel = decodeURIComponent(url.split('?')[0]).replace(/^\/+/, '');
@@ -628,92 +629,6 @@ function serveCdnPlugin() {
     },
     configurePreviewServer(server) {
       server.middlewares.use('/cdn/', serveCdnMiddleware);
-    },
-  };
-}
-
-/**
- * 把 apps/Map/sw/ 暴露到根路径：
- *   /map-sw.js                → apps/Map/sw/map-sw.js
- *   /map-cache/<file>         → apps/Map/sw/<file>（legacy dev fallback）
- *   /map-vector-cache/<file>  → apps/Map/sw/vector/<file>（legacy dev fallback）
- * Service Worker 注册要求 SW 文件能拿到根 scope，所以这两个路径必须在站点根。
- * 大型地图缓存走 /cdn/map/...（mobilegym-data 或生产 CDN），不要打进 App 源码/构建产物。
- *
- * 生产 build 只把 SW 文件和小 bootstrap manifest 复制到 dist；地图缓存由 CDN 提供。
- */
-function mapServiceWorkerPlugin() {
-  const SW_ROOT = path.resolve(__dirname, 'apps/Map/sw');
-  const MIME: Record<string, string> = {
-    '.js': 'application/javascript',
-    '.json': 'application/json',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.webp': 'image/webp',
-    '.css': 'text/css',
-    '.woff': 'font/woff',
-    '.woff2': 'font/woff2',
-    '.bin': 'application/octet-stream',
-  };
-
-  const sendFile = (res: any, filePath: string) => {
-    const ext = path.extname(filePath).toLowerCase();
-    res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Service-Worker-Allowed', '/');
-    fs.createReadStream(filePath).pipe(res);
-  };
-
-  const swMiddleware = (req: any, res: any, next: any) => {
-    if (req.url && req.url.split('?')[0] === '/map-sw.js') {
-      const filePath = path.join(SW_ROOT, 'map-sw.js');
-      if (fs.existsSync(filePath)) return sendFile(res, filePath);
-    }
-    next();
-  };
-
-  const makeCacheMiddleware = (prefix: string, root: string) => (req: any, res: any, next: any) => {
-    const url = req.url || '/';
-    const rel = decodeURIComponent(url.split('?')[0]).replace(new RegExp(`^${prefix}`), '');
-    if (!rel || rel.includes('..')) return next();
-    const filePath = path.join(root, rel);
-    if (!filePath.startsWith(root) || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
-      // 显式 404，避免落到 Vite 的 SPA fallback 把 index.html 当成缓存文件返回
-      res.statusCode = 404;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end('not found');
-      return;
-    }
-    sendFile(res, filePath);
-  };
-  const rasterCacheMiddleware = makeCacheMiddleware('/map-cache/', SW_ROOT);
-  const vectorCacheMiddleware = makeCacheMiddleware('/map-vector-cache/', path.join(SW_ROOT, 'vector'));
-
-  return {
-    name: 'map-service-worker',
-    configureServer(server: any) {
-      server.middlewares.use(swMiddleware);
-      server.middlewares.use('/map-cache/', rasterCacheMiddleware);
-      server.middlewares.use('/map-vector-cache/', vectorCacheMiddleware);
-    },
-    configurePreviewServer(server: any) {
-      server.middlewares.use(swMiddleware);
-      server.middlewares.use('/map-cache/', rasterCacheMiddleware);
-      server.middlewares.use('/map-vector-cache/', vectorCacheMiddleware);
-    },
-    closeBundle() {
-      // 生产 build：只复制 SW 和小 bootstrap manifest，缓存资产走 /cdn/map/...
-      const outDir = path.resolve(__dirname, 'dist');
-      if (!fs.existsSync(outDir)) return;
-      const swSrc = path.join(SW_ROOT, 'map-sw.js');
-      if (fs.existsSync(swSrc)) fs.copyFileSync(swSrc, path.join(outDir, 'map-sw.js'));
-      const bootstrapSrc = path.join(SW_ROOT, 'vector', 'bootstrap-manifest.json');
-      if (fs.existsSync(bootstrapSrc)) {
-        const bootstrapOutDir = path.join(outDir, 'map-vector-cache');
-        fs.mkdirSync(bootstrapOutDir, { recursive: true });
-        fs.copyFileSync(bootstrapSrc, path.join(bootstrapOutDir, 'bootstrap-manifest.json'));
-      }
     },
   };
 }
@@ -1435,7 +1350,6 @@ export default defineConfig(({ mode }) => {
           '**/runs/**',
           '**/runs-old/**',
           '**/runs-*/**',
-          '**/mobilegym-data/**',
         ],
       },
     },
@@ -1445,7 +1359,6 @@ export default defineConfig(({ mode }) => {
       accessLogPlugin(),
       serveAppAssetsPlugin(),
       serveCdnPlugin(),
-      mapServiceWorkerPlugin(),
       listPublicFilesPlugin(),
       fileSystemPlugin(),
       runsExplorerPlugin(),

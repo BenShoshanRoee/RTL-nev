@@ -51,7 +51,7 @@ import { runAppDataLoaderModule } from './appDataLoaderReady';
 
 /** 预加载所有 App 的 state.ts（eager: 打进主 bundle，页面加载即执行 createAppStore 副作用） */
 const _eagerAppStateModules = import.meta.glob<unknown>(
-  ['../apps/*/state.ts', '../system/*/state.ts'],
+  ['../apps/*/state.ts', '../system/*/state.ts', '!../apps/Ebay/**', '!../apps/TencentMeeting/**'],
   { eager: true },
 );
 void _eagerAppStateModules; // 确保 tree-shaking 不会移除

@@ -5,8 +5,10 @@ Reads tracked files from the upstream clone (git ls-files), applies the ordered 
 below, copies everything else into sim/, and writes tools/licence/nc_purge_manifest.json with
 a SHA-256 for every file NOT copied. Deterministic: same clone commit, same output.
 
-This script is the audit trail for sub-chunk 1.1.2. Re-running it is safe: it only writes
-files that come from upstream and never touches files sim/ has that upstream does not.
+This script is the audit trail for sub-chunk 1.1.2. Re-running it is safe:
+  - kept files already present in sim/ are never overwritten (our edits live in git)
+  - files at purged paths are removed only if their bytes are upstream's (our stubs survive)
+  - files sim/ has that upstream does not are never touched
 """
 
 from __future__ import annotations
@@ -42,12 +44,30 @@ ALL_APPS = (
     "X",
 )
 DELETED_APPS = tuple(a for a in ALL_APPS if a not in RETAINED_APPS)
+# System apps the OS shell needs (Clock widget, Contacts/Sms providers) or the bench
+# protocol needs (AnswerSheet) stay. The rest are phone-vendor UI replicas we never use.
+KEPT_SYSTEM_APPS = ("AnswerSheet", "Clock", "Contacts", "Sms")
+DELETED_SYSTEM_APPS = (
+    "Browser",
+    "Calculator",
+    "Calculator2",
+    "Calendar",
+    "Compass",
+    "FileManager",
+    "Gallery",
+    "Notes",
+    "Settings",
+    "ThemeStore",
+)
 
 # Ordered (regex on upstream-relative path, reason). First match wins. No match = keep.
 RULES: list[tuple[str, str]] = [
     (r"^apps/[^/]+/(data|assets)/", "nc-data"),
     (r"^apps/(" + "|".join(DELETED_APPS) + r")/", "unused-upstream-app"),
-    (r"^system/[^/]+/(data|assets)/", "system-app-data"),
+    (r"^system/(" + "|".join(DELETED_SYSTEM_APPS) + r")/", "unused-upstream-system-app"),
+    # kept system apps: data/index.ts is the Apache-2.0 loader code and stays; the content
+    # files (defaults.json, cities.json, *.generated.ts, ...) go and are replaced by stubs
+    (r"^system/[^/]+/(data/(?!index\.ts$)|assets/)", "system-app-data"),
     (r"^public/(sdcard|ime|icons)/", "nc-public-asset"),
     (r"^public/logos/", "brand-asset"),
     (r"^public/tailwind\.css$", "generated-artifact"),
@@ -69,7 +89,8 @@ REASONS = {
     "unused-upstream-app": (
         "Apache-2.0 code for a brand-named app we do not ship; dead without its data"
     ),
-    "system-app-data": "Synthetic content and UI replicas bundled with system apps",
+    "system-app-data": "Synthetic content bundled with kept system apps; replaced by empty stubs",
+    "unused-upstream-system-app": "System app the OS shell does not need; phone-vendor UI replica",
     "nc-public-asset": ("Fake storage, IME dictionary and icons; LICENSE-DATA names icons as data"),
     "brand-asset": "Logos of real companies",
     "generated-artifact": "Build output; regenerated from source",
@@ -85,7 +106,10 @@ REASONS = {
 }
 
 DEAD_TEST_PATTERN = re.compile(
-    r"apps/(" + "|".join(DELETED_APPS) + r")\b|['\"](" + "|".join(DELETED_APPS) + r")['\"]"
+    r"apps/(" + "|".join(DELETED_APPS) + r")\b"
+    r"|['\"](" + "|".join(DELETED_APPS) + r")['\"]"
+    r"|system/(" + "|".join(DELETED_SYSTEM_APPS) + r")\b"
+    r"|\bweb/"
 )
 
 
@@ -147,8 +171,11 @@ def main() -> None:
             {"path": rel, "sha256": sha256(src), "bytes": src.stat().st_size, "reason": reason}
         )
         by_reason[reason] = by_reason.get(reason, 0) + 1
-        if not args.dry_run and (SIM / rel).exists():
-            (SIM / rel).unlink()  # a re-run with widened rules removes what it now classifies
+        stale = SIM / rel
+        if not args.dry_run and stale.is_file() and sha256(stale) == entries[-1]["sha256"]:
+            # a re-run with widened rules removes upstream content it now classifies;
+            # a file of ours at the same path (different bytes, e.g. a stub) is left alone
+            stale.unlink()
             print(f"removed stale: sim/{rel}")
 
     print(
@@ -160,10 +187,18 @@ def main() -> None:
     if args.dry_run:
         return
 
+    copied = 0
     for rel in kept:
         dst = SIM / rel
+        if dst.exists():
+            continue  # never overwrite: our modifications to kept files are tracked in git
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(upstream / rel, dst)
+        copied += 1
+    # unlinking stale files leaves empty directories behind; drop them (deepest first)
+    for d in sorted((d for d in SIM.rglob("*") if d.is_dir()), key=lambda d: -len(d.parts)):
+        if not any(d.iterdir()):
+            d.rmdir()
     manifest = {
         "schema_version": 1,
         "upstream": {"repo": UPSTREAM_REPO, "commit": commit},
@@ -174,7 +209,7 @@ def main() -> None:
     }
     MANIFEST.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
-        f"copied {len(kept)} files into sim/;"
+        f"copied {copied} missing files into sim/ ({len(kept)} kept);"
         f" wrote {MANIFEST.relative_to(ROOT)} ({len(entries)} entries)"
     )
 

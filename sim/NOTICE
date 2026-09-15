@@ -31,3 +31,20 @@ Portions of this codebase may be covered by patents held by the
 contributors. Use of this software is licensed under the patent grant
 in Section 3 of the Apache License, Version 2.0, and is limited to that
 grant. No additional patent rights are conveyed.
+
+================================================================================
+RTL Environments fork
+================================================================================
+
+This directory is a fork of mobile-gym (https://github.com/Purewhiter/mobilegym),
+fork point commit 57bc275accdb06eea3aee13880afdebbe80583d3, licensed under the
+Apache License, Version 2.0 (see LICENSE).
+
+All data, assets, icons and synthetic content that upstream distributed under
+CC BY-NC 4.0 were removed at fork time and are not part of this distribution.
+The removal record is tools/licence/nc_purge_manifest.json at the repository
+root; the fork history and sync procedure are in UPSTREAM.md.
+
+Modifications to the upstream code in this directory are Copyright (c) 2026
+the RTL Environments project and are licensed to buyers under their agreement,
+not under the Apache License. Upstream's notices above are preserved unchanged.

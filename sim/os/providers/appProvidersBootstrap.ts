@@ -21,4 +21,7 @@
  * Discovery mirrors the existing `apps/* /*App.tsx` glob pattern used by
  * `os/data/appRegistry.tsx` — one-way OS scans a known file-name convention.
  */
-import.meta.glob(['../../apps/*/providers/*.ts', '../../system/*/providers/*.ts'], { eager: true });
+import.meta.glob(
+  ['../../apps/*/providers/*.ts', '../../system/*/providers/*.ts', '!../../apps/Ebay/**', '!../../apps/TencentMeeting/**'],
+  { eager: true },
+);

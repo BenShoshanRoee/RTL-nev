@@ -8,6 +8,9 @@
   "engines": {
     "node": "^22 || ^24"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "@parcel/watcher"]
+  },
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",

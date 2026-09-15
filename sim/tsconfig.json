@@ -47,6 +47,8 @@
   "exclude": [
     "node_modules",
     "dist",
+    "apps/Ebay",
+    "apps/TencentMeeting",
     "decompiled",
     "apks",
     "runs",

@@ -1,18 +1,15 @@
 /**
- * 统一的 CDN 资源地址解析。
+ * Resolves asset URLs for the content root.
  *
- * 三端约定：
- *   dev (npm run dev) / 本地 nginx / fl1 nginx → fallback `/cdn` → 由 vite 中间件或
- *      nginx alias 映射到本地仓库根的 `mobilegym-data/`
- *   生产 (GitHub Action build) → 通过 VITE_CDN_BASE 注入完整 URL，例如
- *      `https://cdn.mobilegym.dev`，运行时直接打 R2/CF CDN
+ * - dev / preview / local nginx: `/cdn` is served from the repository's `content/`
+ *   directory (see serveCdnPlugin in vite.config.ts and .nginx/nginx.source.conf).
+ * - packaged builds: VITE_CDN_BASE may point at a mirror of the same tree.
  *
- * 物理目录与 R2 完全镜像：
- *   mobilegym-data/<app>/images/...   ↔   r2:mobilegym-data/<app>/images/...
+ * Every file under content/ is provenance-tracked in content/MANIFEST.json.
  *
- * 用法：
- *   const REDBOOK_CDN = cdn('redbook/images');
- *   const url = `${REDBOOK_CDN}/avatars/foo.jpg`;
+ * Usage:
+ *   const CATALOG_CDN = cdn('catalogs/he');
+ *   const url = `${CATALOG_CDN}/images/foo.webp`;
  */
 
 export function resolveCdnBase(raw: string | undefined): string {

@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup verify verify-tree gates test test-js test-py lint provenance licence release
+.PHONY: setup verify verify-tree gates test test-js test-py lint provenance licence purge-audit release
 
 ## setup: install JS and Python workspaces from committed lockfiles
 setup:
@@ -7,7 +7,7 @@ setup:
 	uv sync --frozen
 
 ## verify: full local gate (provenance and licence join this target when implemented)
-verify: verify-tree gates lint test
+verify: verify-tree gates lint licence test
 
 ## verify-tree: directory tree must match tools/expected-tree.txt
 verify-tree:
@@ -35,8 +35,13 @@ lint:
 provenance:
 	@echo "make provenance: not implemented until sub-chunk 4.1.1 (minimal manifest check arrives in 1.1.3)"; exit 2
 
+## licence: NC guard (minimal from 1.1.2; 1.1.3 adds dependency-licence and brand checks)
 licence:
-	@echo "make licence: not implemented until sub-chunk 1.1.3"; exit 2
+	uv run python tools/licence/scan.py --mode nc
+
+## purge-audit: local only (needs refs/upstream/mobilegym); manifest == upstream minus sim/
+purge-audit:
+	uv run python tools/licence/scan.py --mode purge-audit
 
 release:
 	@echo "make release: not implemented until sub-chunk 1.1.5"; exit 2

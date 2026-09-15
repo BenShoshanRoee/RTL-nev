@@ -239,9 +239,12 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `UPSTREAM.md` (fork point commit, our delta, sync procedure)
 - `tools/licence/nc_purge_manifest.json` (every path deleted, with SHA-256 of the original)
 - `content/MANIFEST.json` (empty-but-valid: `{"schema_version": 1, "assets": []}`, created in the purge commit)
+- `tools/licence/purge_fork.py` (deterministic purge from the local upstream clone; writes the manifest; idempotent re-run)
+- `tools/licence/scan.py` (minimal: `--mode nc` and `--mode purge-audit`; 1.1.3 extends it add-only)
 - `.github/workflows/licence-gate.yml`
 
 **Key Logic:**
+- Only the purged tree is committed. The raw upstream tree never enters our history; the upstream commit SHA in `UPSTREAM.md` plus per-file hashes in the manifest are the audit reference.
 - Ship an empty-but-valid `content/MANIFEST.json` at fork time. From this commit on, the rule is: **an unlisted file under `content/` fails the build.** 1.1.3 enforces it; 4.1.1 extends the schema.
 - Delete in full: `mobilegym-data/`, every `apps/*/data/`, every `apps/*/assets/`, `public/` theme assets, and the downloadable companion dataset. **Never fetch the 1.9 GB data tarball.**
 - Keep `os/`, `bench_env/`, `scripts/`, `docs/`, and the *code* of `apps/` and `system/` — then delete the apps themselves once our own exist. **1.1.2 retains exactly two upstream apps as code-only structural reference** (navigation declaration, manifest shape, page wiring); **3.3.1 deletes them** once the Storefront exists.
@@ -251,6 +254,7 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 
 **Test Criteria:**
 - [ ] `tools/licence/scan.py --mode nc` reports zero findings
+- [ ] `tools/licence/scan.py --mode purge-audit` reports zero findings: manifest equals upstream minus `sim/`, every hash matches
 - [ ] `grep -ri "mobilegym-data" sim/` returns nothing outside `UPSTREAM.md`
 - [ ] Purge manifest lists every deleted path with a hash
 - [ ] `sim/NOTICE` exists and names the upstream project
@@ -283,10 +287,11 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `.github/workflows/licence-gate.yml`
 
 **Key Logic:**
+- Extends the 1.1.2 `scan.py` add-only: `--mode nc` and `--mode purge-audit` keep their behaviour; this sub-chunk adds `--mode deps` and `--mode brand`.
 - Three checks, each failing the build:
   1. **NC guard** — (a) any path listed in `nc_purge_manifest.json` that reappears fails; (b) any file under `content/` with no entry in `content/MANIFEST.json` fails; (c) any entry whose `licence` is not on the allowlist (including any `CC-BY-NC*`) fails. Uses the minimal v1 schema defined here. **Forward-compatibility rule: 4.1.1 ADDS fields to this schema; it never redefines, renames or removes a v1 field, and a v1 manifest must always validate against every later schema.**
   2. **Dependency licences** — allowlist (MIT, Apache-2.0, BSD-*, ISC, SIL OFL, CC0, Unlicense). Anything else fails and must be explicitly waived in `policy.yaml` with a reason.
-  3. **Brand guard** — scan all text and filenames against `brandlist.txt` (real Israeli and international retailers, banks, payment brands). A hit fails the build.
+  3. **Brand guard** — scan all text and filenames against `brandlist.txt` (real Israeli and international retailers, banks, payment brands). A hit fails the build. `policy.yaml` carries one dated waiver for `sim/apps/Ebay` and `sim/apps/TencentMeeting` (code-only reference apps retained by 1.1.2), expiring when 3.3.1 deletes them; the waiver must name 3.3.1.
 - Runs on every PR and on `main`.
 - `make licence` runs the identical checks locally.
 

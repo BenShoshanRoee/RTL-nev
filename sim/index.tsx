@@ -16,9 +16,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // 桌面/小组件会在 App 未打开时直接读取这些 store，保留按需的最小预加载集合。
-import './apps/Weather/state';
 import './system/Clock/state';
-import './apps/Spotify/state';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

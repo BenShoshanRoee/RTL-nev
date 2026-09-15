@@ -92,7 +92,7 @@ The project uses `vite.config.ts` with React and several project-specific plugin
 | `react()` | yes | yes | React transform and Fast Refresh. |
 | `accessLogPlugin` | yes | preview | Logs method, URL, status, and timing. |
 | `serveAppAssetsPlugin` | yes | build | Serves or emits app-owned assets under `/@app-assets/<AppName>/...`. |
-| `serveCdnPlugin` | yes | preview | Maps `/cdn/` to repo-local `mobilegym-data/`. |
+| `serveCdnPlugin` | yes | preview | Maps `/cdn/` to the repository's provenance-tracked `content/` directory. |
 | `listPublicFilesPlugin` | yes | no | Provides `/api/list-public-files` for local viewers. |
 | `fileSystemPlugin` | yes | build | Provides `/api/sdcard` in dev and emits `sdcard/manifest.json` in builds. |
 | `runsExplorerPlugin` | yes | no | Provides `/api/runs` for local run exploration. |
@@ -139,7 +139,7 @@ Prefer Vite imports for ordinary component assets when possible. Use the stable 
 to:
 
 ```text
-mobilegym-data/<path>
+<repo root>/content/<path>
 ```
 
 The helper in `os/utils/cdn.ts` should be used when runtime code needs URLs for this local/production-compatible data root.

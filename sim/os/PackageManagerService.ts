@@ -6,7 +6,8 @@ import BroadcastBus, { ACTION_PACKAGE_ADDED, ACTION_PACKAGE_REMOVED } from './Br
 type IntentQuery = { action: string; scheme?: string; type?: string };
 
 const manifestModules = import.meta.glob<{ manifest: AppManifest }>(
-  ['../apps/*/manifest.ts', '../system/*/manifest.ts'],
+  // Ebay/TencentMeeting: code-only reference apps, not installed (UPSTREAM.md)
+  ['../apps/*/manifest.ts', '../system/*/manifest.ts', '!../apps/Ebay/**', '!../apps/TencentMeeting/**'],
   { eager: true },
 );
 

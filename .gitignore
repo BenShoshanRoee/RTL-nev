@@ -27,6 +27,7 @@ __pycache__/
 build/
 
 # Tooling
+.vite/
 .DS_Store
 *.log
 .cache/

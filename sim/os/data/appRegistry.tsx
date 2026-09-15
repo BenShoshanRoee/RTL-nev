@@ -45,7 +45,9 @@ export const dirToAppId = PackageManagerService.dirToAppId;
 // Lazy-loaded App Components — auto-discovered via import.meta.glob
 // ============================================================================
 const appModules = import.meta.glob<{ default: ComponentType<any> }>(
-  ['../../apps/*/*App.tsx', '../../system/*/*App.tsx'],
+  // apps/Ebay and apps/TencentMeeting are code-only structural reference (UPSTREAM.md);
+  // they have no data and must not be bundled. Deleted in sub-chunk 3.3.1.
+  ['../../apps/*/*App.tsx', '../../system/*/*App.tsx', '!../../apps/Ebay/**', '!../../apps/TencentMeeting/**'],
 );
 
 // Data loaders: 让 App 的 lazy 包装 await preload + hydrateStore + waitReady
@@ -59,7 +61,7 @@ const appModules = import.meta.glob<{ default: ComponentType<any> }>(
 // 由 `AppErrorBoundary` 接管显示错误态。早期版本用 try/catch + warn 会让错误
 // 被静默吞掉，App 落到空 UI——比明确报错更难排查。
 const _dataLoaderModules = import.meta.glob<AppDataLoaderModule>(
-  ['../../apps/*/data/loader.ts', '../../system/*/data/loader.ts'],
+  ['../../apps/*/data/loader.ts', '../../system/*/data/loader.ts', '!../../apps/Ebay/**', '!../../apps/TencentMeeting/**'],
 );
 /** appId → 该 app 的 data loader module 动态 import 工厂。
  *  appRegistry 内 lazy() 用，OSContext.waitForData 也复用此 map（避免重复 glob 维护）。 */
