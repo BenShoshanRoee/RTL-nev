@@ -1,11 +1,12 @@
-# CI on every push and pull request. lint first; test-js, test-py, licence and sbom in
+# CI on every pull request and on main. lint first; test-js, test-py, licence and sbom in
 # parallel; build-sim; then an end-to-end smoke of the built simulator. Every job runs the
 # same make targets the operator runs locally. Actions pinned to commit SHAs.
+# Branches run through their pull request only, so each change is checked once, not twice.
 name: ci
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
     tags-ignore: ["v*"]   # tags run release.yml
   pull_request:
 
