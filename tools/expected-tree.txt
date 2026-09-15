@@ -59,6 +59,7 @@ packages/core-semantic
 packages/core-semantic/src
 packages/core-semantic/src/conformance
 packages/core-semantic/tests
+packages/core-semantic/tests/fixtures
 packages/domains
 packages/domains/commerce
 packages/domains/commerce/src

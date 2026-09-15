@@ -46,6 +46,13 @@ dependency_waivers:
     added: 2026-09-15
     expires: 2027-03-15
 
+  - package: minimatch
+    ecosystem: npm
+    licence: BlueOak-1.0.0
+    reason: Blue Oak Model License 1.0.0 (permissive, OSI-approved). Transitive dev dependency of eslint / typescript-eslint; lint tooling only, never distributed. Allowlisting BlueOak-1.0.0 is proposed to the operator alongside PSF-2.0.
+    added: 2026-09-15
+    expires: 2027-03-15
+
 # Brand-term waivers, path-scoped. A waived term is still reported everywhere outside its paths.
 brand_waivers:
   - term: Ebay

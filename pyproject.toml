@@ -28,7 +28,7 @@ line-length = 100
 extend-exclude = ["sim", "refs", "docs/business"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP"]
+select = ["E", "F", "I", "B", "UP", "S311"]  # S311: no unseeded pseudo-random generators
 
 [dependency-groups]
 dev = [

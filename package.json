@@ -9,17 +9,24 @@
     "node": "^22 || ^24"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "@parcel/watcher"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@parcel/watcher"
+    ]
   },
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "depcruise": "depcruise --config .dependency-cruiser.cjs packages"
+    "depcruise": "depcruise --config .dependency-cruiser.cjs packages",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "dependency-cruiser": "^18.3.1",
+    "eslint": "^10.10.0",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0",
     "vitest": "^5.0.1"
   }
 }

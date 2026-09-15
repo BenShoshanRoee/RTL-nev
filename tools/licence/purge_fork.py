@@ -82,6 +82,7 @@ RULES: list[tuple[str, str]] = [
     ),
     (r"^(\.github|\.claude)/", "project-surface"),
     (r"^package-lock\.json$", "replaced-by-workspace"),
+    (r"^eslint\.config\.js$", "replaced-by-workspace"),
     (r"^(LICENSE-DATA|DISCLAIMER\.md)$", "nc-licence-text"),
 ]
 REASONS = {

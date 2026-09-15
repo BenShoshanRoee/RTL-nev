@@ -18,6 +18,7 @@ gates:
 	@tools/test_depcruise_gate.sh
 	@tools/test_verify_tree_gate.sh
 	@tools/test_licence_gate.sh
+	@tools/test_rng_gate.sh
 
 test: test-js test-py
 
@@ -30,6 +31,7 @@ test-py:
 ## lint: architecture boundaries, typecheck, python lint
 lint:
 	pnpm exec depcruise --config .dependency-cruiser.cjs packages
+	pnpm exec eslint .
 	pnpm -r typecheck
 	uv run ruff check .
 

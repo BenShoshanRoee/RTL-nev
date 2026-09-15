@@ -29,7 +29,7 @@ reading output, never by reading diffs. Every sub-chunk ends with something runn
 Never say "this should work." Run it. If it cannot be verified here, mark it MANUAL.
 
 ## Non-negotiables (check before every commit)
-- [ ] One seeded PRNG. `Math.random()` / unseeded `random` only in `rng.ts` / `rng.py`. CI-enforced.
+- [ ] One seeded PRNG: `Rng` from `rng.ts` / `rng.py` (sfc32, byte-identical across languages), named child seeds per subsystem. `Math.random()` / unseeded `random` forbidden elsewhere; ESLint + ruff S311 + pytest lint enforce it.
 - [ ] Money is `{ minor: integer, currency }` with a per-currency exponent table. Cross-currency arithmetic throws. No floats in any money path.
 - [ ] CSS logical properties only (`margin-inline-start`, never `margin-left`).
 - [ ] No hardcoded Hebrew or Arabic in components. All strings from `res/strings.*.json`.
@@ -85,7 +85,7 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 | `make verify-tree` | Directories from git's file view diffed against `tools/expected-tree.txt` |
 | `make gates` | Negative tests: each gate must pass clean, then reject a planted violation |
 | `make test` | vitest + pytest |
-| `make lint` | ESLint (incl. no-Math.random, no-physical-CSS), dependency-cruiser, ruff |
+| `make lint` | dependency-cruiser, ESLint (`eslint.config.mjs`: recommended on packages/, entropy ban), tsc, ruff (S311) |
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
 | `make licence` | `scan.py --mode all`: NC guard + content manifest, dependency licences, brand guard. Same command as CI |
 | `make purge-audit` | Local only: purge manifest equals upstream minus `sim/` (needs `refs/upstream/mobilegym`) |
@@ -97,5 +97,5 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 survey captures · `tools/` CLIs · `docs/` · `.github/workflows/`
 
 ## Current phase
-**Phase 1 of 12 — Foundation & Infrastructure.** Next sub-chunk: **1.1.3 Licence Firewall CI.**
+**Phase 1 of 12 — Foundation & Infrastructure.** Next sub-chunk: **1.1.5 CI/CD Pipeline.**
 Authoritative state lives in `progress.md`; update that, not this line, unless the phase changes.
