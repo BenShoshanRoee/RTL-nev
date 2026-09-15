@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rtl-environments/content-manifest/v1",
+  "title": "content/MANIFEST.json (schema version 1)",
+  "description": "Minimal provenance manifest defined in sub-chunk 1.1.3. Sub-chunk 4.1.1 ADDS fields to asset entries; it never renames, removes or redefines a v1 field, and a v1 manifest must always validate against every later schema.",
+  "type": "object",
+  "required": ["schema_version", "assets"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256", "licence"],
+        "additionalProperties": true,
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Relative to content/. Forward slashes, no leading slash, no '..' segment.",
+            "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$)).+$"
+          },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "licence": {
+            "type": "string",
+            "description": "SPDX identifier of the asset's licence, or 'proprietary' for assets we authored or generated. Must be on the allowlist in tools/licence/policy.yaml; any non-commercial licence fails the build."
+          }
+        }
+      }
+    }
+  }
+}

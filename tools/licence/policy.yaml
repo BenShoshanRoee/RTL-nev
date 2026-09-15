@@ -1,0 +1,87 @@
+# Licence firewall policy. Read by tools/licence/scan.py. Every waiver needs a reason and an
+# expiry date; an expired waiver fails the build. Nothing here loosens what counts as a hit,
+# only where a known, documented exception applies.
+schema_version: 1
+
+# SPDX identifiers accepted for dependencies and for content/ assets. Anything else fails
+# unless waived below. BSD-4-Clause is deliberately absent (advertising clause).
+licence_allowlist:
+  - MIT
+  - MIT-0
+  - Apache-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - 0BSD
+  - ISC
+  - OFL-1.1
+  - CC0-1.0
+  - Unlicense
+  - proprietary        # assets we authored or generated ourselves (content/ only)
+
+# Dependency waivers: package + ecosystem + the exact licence being waived.
+dependency_waivers:
+  - package: lightningcss
+    ecosystem: npm
+    licence: MPL-2.0
+    reason: CSS transformer pulled in by tailwindcss/vite at build time only; not distributed in any artifact. MPL-2.0 is file-level copyleft on its own files, which we do not modify.
+    added: 2026-09-15
+    expires: 2027-03-15
+  - package: "lightningcss-*"
+    ecosystem: npm
+    licence: MPL-2.0
+    reason: platform binaries of lightningcss (one per OS/arch; CI installs the Linux one, a Mac the Darwin one); same reasoning. Package field is a glob.
+    added: 2026-09-15
+    expires: 2027-03-15
+  - package: caniuse-lite
+    ecosystem: npm
+    licence: CC-BY-4.0
+    reason: browser-support data used by browserslist at build time only; not distributed. CC-BY-4.0 is attribution-only, not non-commercial.
+    added: 2026-09-15
+    expires: 2027-03-15
+
+# Brand-term waivers, path-scoped. A waived term is still reported everywhere outside its paths.
+brand_waivers:
+  - term: Ebay
+    paths:
+      - "sim/**"
+      - "UPSTREAM.md"
+      - "progress.md"
+      - "CLAUDE.md"
+      - "tools/expected-tree.txt"
+      - "tools/licence/**"
+    reason: sim/apps/Ebay is an upstream app kept code-only as structural reference (UPSTREAM.md). Our own records name the directory.
+    until_subchunk: "3.3.1"
+    added: 2026-09-15
+    expires: 2026-12-31
+
+  - term: "*"
+    paths:
+      - "sim/apps/Ebay/**"
+      - "sim/apps/TencentMeeting/**"
+    reason: The two upstream apps kept code-only as structural reference (UPSTREAM.md). Their UI strings contain ordinary words on the ambiguous tier. Sub-chunk 3.3.1 deletes both directories, which ends this waiver.
+    until_subchunk: "3.3.1"
+    added: 2026-09-15
+    expires: 2026-12-31
+
+# Paths the brand guard never reads. Each is a record of what we exclude, not shipped content.
+brand_exempt_paths:
+  - "tools/licence/brandlist.txt"       # the list itself
+  - "tools/licence/policy.yaml"         # this file names waived terms
+  - "tools/licence/nc_purge_manifest.json"  # upstream paths of removed files
+  - "tools/test_licence_gate.sh"        # plants a brand-named file on purpose
+  - "docs/plan/**"                      # internal planning document; quotes brand examples
+
+# Where ambiguous brand terms (the "~" tier in brandlist.txt) are matched. Unambiguous terms
+# are matched in every tracked text file and every file name regardless of this list.
+brand_content_scope:
+  - "content/**"
+  - "bench/tasks/**"
+  - "packages/rtl-primitives/golden/**"
+  - "**/res/strings*.json"
+  - "**/res/strings*.ts"
+  - "docs/**"
+
+# Files under content/ that are not assets and need no manifest entry.
+content_exempt:
+  - "MANIFEST.json"
+  - "**/.gitkeep"

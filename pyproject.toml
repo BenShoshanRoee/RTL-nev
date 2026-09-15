@@ -32,6 +32,8 @@ select = ["E", "F", "I", "B", "UP"]
 
 [dependency-groups]
 dev = [
+    "jsonschema>=4.26.0",
     "pytest>=9.1.1",
+    "pyyaml>=6.0.3",
     "ruff>=0.16.7",
 ]

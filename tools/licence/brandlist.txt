@@ -13,27 +13,29 @@
 # code and docs (Apple Pay, Google Pay, Google Maps) and the guard would drown in false hits.
 # The payment products are listed instead.
 #
-# Known collisions with ordinary vocabulary, to be handled by whole-word matching plus a waiver
-# where a common noun is unavoidable: Fox, Max, Golf, Next, Wish, Bit, Cal, Bug, Ace, Delta,
-# Mango, Be, Yes, Hot, Victory, Pepper, Hever, One Zero.
+# Tiers. A line starting with "~" is an AMBIGUOUS term: an ordinary word, phrase, or code
+# identifier (Max, Next, Bit, Zap, Delta; Hebrew "friend", "discount", "national", "paid").
+# Ambiguous terms are matched only where content lives (brand_content_scope in policy.yaml)
+# and in file names. Every other line is matched in every tracked text file and file name.
+# The tier changes WHERE a term is searched, never whether a hit fails.
 
 # ---- Supermarkets and grocery ----
 Shufersal
 שופרסל
 Rami Levy
 רמי לוי
-Victory
+~Victory
 ויקטורי
 Yochananof
 יוחננוף
 Osher Ad
 אושר עד
-Mega
-מגה
+~Mega
+~מגה
 Tiv Taam
 טיב טעם
 Hatzi Hinam
-חצי חינם
+~חצי חינם
 Yenot Bitan
 יינות ביתן
 Carrefour
@@ -44,17 +46,17 @@ Super Pharm
 Good Pharm
 גוד פארם
 AM:PM
-AMPM
+~AMPM
 Super Yuda
 סופר יודה
 Freshmarket
 פרשמרקט
 Keshet Teamim
-קשת טעמים
+~קשת טעמים
 Zol Ubegadol
-זול ובגדול
+~זול ובגדול
 Machsanei Hashuk
-מחסני השוק
+~מחסני השוק
 Stop Market
 סטופ מרקט
 Shuk Mahane Yehuda
@@ -64,18 +66,18 @@ Cofix
 # ---- Fashion and department stores ----
 Castro
 קסטרו
-Fox
-פוקס
+~Fox
+~פוקס
 Fox Home
 פוקס הום
 Renuar
 רנואר
-Golf
-גולף
+~Golf
+~גולף
 Golf & Co
 H&O
-Hoodies
-הודיס
+~Hoodies
+~הודיס
 Zara
 זארה
 H&M
@@ -85,13 +87,13 @@ Adika
 עדיקה
 Laline
 ללין
-Delta
-דלתא
+~Delta
+~דלתא
 Honigman
 הוניגמן
 Twentyfourseven
-Next
-נקסט
+~Next
+~נקסט
 American Eagle
 אמריקן איגל
 Nike
@@ -100,13 +102,13 @@ Adidas
 אדידס
 Puma
 פומה
-Mango
-מנגו
+~Mango
+~מנגו
 Shein
 שיאין
 Asos
 Hamashbir
-המשביר
+~המשביר
 המשביר לצרכן
 Golbary
 גולברי
@@ -115,52 +117,52 @@ Crazy Line
 Timberland
 Nautica
 Steve Madden
-Aldo
-Scoop
+~Aldo
+~Scoop
 Naaman
-נעמן
+~נעמן
 Vardinon
 ורדינון
 Kitan
 כיתן
 Ikea
 איקאה
-Home Center
-הום סנטר
-Ace
-אייס
+~Home Center
+~הום סנטר
+~Ace
+~אייס
 Max Stock
-מקס סטוק
+~מקס סטוק
 Toys R Us
 טויס אר אס
 Kfar Hashaashuim
-כפר השעשועים
+~כפר השעשועים
 Steimatzky
 סטימצקי
 Tzomet Sfarim
-צומת ספרים
+~צומת ספרים
 
 # ---- Electronics ----
 KSP
 קיי אס פי
-Ivory
-אייבורי
-Bug
-באג
+~Ivory
+~אייבורי
+~Bug
+~באג
 Machsanei Hashmal
-מחסני חשמל
+~מחסני חשמל
 Shekem Electric
 שקם אלקטריק
-Electra
-אלקטרה
+~Electra
+~אלקטרה
 Big Electric
 ביג אלקטריק
 Payngo
 פיינגו
-Lastprice
-לאסטפרייס
-Zap
-זאפ
+~Lastprice
+~לאסטפרייס
+~Zap
+~זאפ
 Wisebuy
 ווייסבאי
 
@@ -171,14 +173,14 @@ AliExpress
 אליאקספרס
 eBay
 איביי
-Temu
-טמו
-Wish
+~Temu
+~טמו
+~Wish
 Walmart
 iHerb
 אייהרב
-Groo
-גרו
+~Groo
+~גרו
 Baligam
 בליגם
 Etsy
@@ -187,16 +189,16 @@ Airbnb
 
 # ---- Delivery and mobility ----
 Wolt
-וולט
+~וולט
 10bis
-תן ביס
+~תן ביס
 Cibus
 סיבוס
 Yango
 יאנגו
 Gett
-גט
-Uber
+~גט
+~Uber
 Israel Post
 דואר ישראל
 Boxit
@@ -212,26 +214,26 @@ Rav-Kav
 Bank Hapoalim
 Hapoalim
 בנק הפועלים
-הפועלים
+~הפועלים
 Bank Leumi
 Leumi
 בנק לאומי
-לאומי
+~לאומי
 Discount Bank
 Bank Discount
 בנק דיסקונט
-דיסקונט
+~דיסקונט
 Mizrahi Tefahot
 Mizrahi-Tefahot
 מזרחי טפחות
 First International Bank
 Habeinleumi
-הבינלאומי
+~הבינלאומי
 Bank Yahav
 בנק יהב
 Otsar Hahayal
 אוצר החייל
-Mercantile
+~Mercantile
 מרכנתיל
 Bank of Jerusalem
 בנק ירושלים
@@ -241,8 +243,8 @@ Bank Massad
 בנק מסד
 One Zero
 וואן זירו
-Pepper
-פפר
+~Pepper
+~פפר
 Bank of Israel
 בנק ישראל
 Postal Bank
@@ -258,18 +260,18 @@ Amex
 אמריקן אקספרס
 Isracard
 ישראכרט
-Cal
+~Cal
 כאל
-Max
-מקס
+~Max
+~מקס
 Leumi Card
 לאומי קארד
-Diners
+~Diners
 דיינרס
 PayPal
 פייפאל
-Bit
-ביט
+~Bit
+~ביט
 PayBox
 פייבוקס
 Apple Pay
@@ -283,30 +285,30 @@ Pelecard
 Cardcom
 קארדקום
 Meshulam
-משולם
+~משולם
 Z-Credit
-Hyp
+~Hyp
 Klarna
 Buyme
 באיימי
-Hever
-חבר
+~Hever
+~חבר
 Tav Hazahav
-תו הזהב
+~תו הזהב
 Multipass
 מולטיפס
 Cibus Card
-Payme
+~Payme
 
 # ---- Telecom carriers (appear in OTP and account flows) ----
 Cellcom
 סלקום
-Partner
-פרטנר
+~Partner
+~פרטנר
 Pelephone
-פלאפון
-HOT
-הוט
+~פלאפון
+~HOT
+~הוט
 HOT Mobile
 Bezeq
 בזק
@@ -314,6 +316,6 @@ Bezeq
 Golan Telecom
 גולן טלקום
 We4G
-Yes
-יס
+~Yes
+~יס
 019 Mobile

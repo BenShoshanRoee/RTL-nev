@@ -17,6 +17,7 @@ verify-tree:
 gates:
 	@tools/test_depcruise_gate.sh
 	@tools/test_verify_tree_gate.sh
+	@tools/test_licence_gate.sh
 
 test: test-js test-py
 
@@ -35,9 +36,9 @@ lint:
 provenance:
 	@echo "make provenance: not implemented until sub-chunk 4.1.1 (minimal manifest check arrives in 1.1.3)"; exit 2
 
-## licence: NC guard (minimal from 1.1.2; 1.1.3 adds dependency-licence and brand checks)
+## licence: NC guard + dependency licences + brand guard. CI runs this exact command.
 licence:
-	uv run python tools/licence/scan.py --mode nc
+	uv run python tools/licence/scan.py --mode all
 
 ## purge-audit: local only (needs refs/upstream/mobilegym); manifest == upstream minus sim/
 purge-audit:

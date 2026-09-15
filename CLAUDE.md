@@ -39,7 +39,7 @@ Never say "this should work." Run it. If it cannot be verified here, mark it MAN
       (1 correct, 1 clearly wrong, ≥3 plausibly wrong). Matchers are mutation-tested.
 - [ ] Deterministic under a fixed seed. Same seed, same output, tested.
 - [ ] Licence allowlist: MIT, Apache-2.0, BSD-*, ISC, SIL OFL, CC0, Unlicense. Ask before adding any dependency.
-- [ ] Nothing NC-licensed, nothing brand-derived, nothing from `refs/` ships.
+- [ ] Nothing NC-licensed, nothing brand-derived, nothing from `refs/` ships. Brand terms live in `tools/licence/brandlist.txt`; waivers in `policy.yaml` always carry a reason and an expiry.
 - [ ] No emoji in code or commits. `🔧` in docs marks manual steps only.
 
 ## Token discipline
@@ -87,7 +87,7 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 | `make test` | vitest + pytest |
 | `make lint` | ESLint (incl. no-Math.random, no-physical-CSS), dependency-cruiser, ruff |
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
-| `make licence` | NC guard (`tools/licence/scan.py --mode nc`); 1.1.3 adds dependency and brand checks |
+| `make licence` | `scan.py --mode all`: NC guard + content manifest, dependency licences, brand guard. Same command as CI |
 | `make purge-audit` | Local only: purge manifest equals upstream minus `sim/` (needs `refs/upstream/mobilegym`) |
 | `make release` | Tag-driven: wheel, container, GHCR push, GitHub Release |
 

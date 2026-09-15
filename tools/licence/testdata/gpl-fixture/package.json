@@ -1,0 +1,7 @@
+{
+  "name": "gpl-fixture",
+  "version": "0.0.0",
+  "description": "Test fixture for tools/test_licence_gate.sh. Installed only during the negative test, never a real dependency.",
+  "license": "GPL-3.0-only",
+  "private": true
+}

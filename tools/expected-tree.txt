@@ -191,6 +191,8 @@ tools/content/copy
 tools/content/fonts
 tools/content/images
 tools/licence
+tools/licence/testdata
+tools/licence/testdata/gpl-fixture
 tools/licensing
 tools/pipeline
 tools/provenance

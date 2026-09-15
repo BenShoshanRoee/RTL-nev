@@ -1,7 +1,7 @@
 # Progress
 
-**Current sub-chunk:** 1.1.3 — Licence Firewall CI (not started)
-**Last updated:** 2026-09-15 (1.1.2 complete)
+**Current sub-chunk:** 1.1.4 — Determinism & Logging Foundations (not started)
+**Last updated:** 2026-09-15 (1.1.3 complete)
 **Phase:** 1 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
@@ -15,17 +15,17 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 1.1.3 | Licence Firewall CI | 2026-09-15 | `make verify` (exit 0, incl. `make gates` with the three licence negatives and `make licence`); CI comparison pending first push | scan.py modes nc/deps/brand/all; policy.yaml with dated waivers; two-tier brandlist; SHA-pinned workflow. Local only until pushed. |
 | 1.1.2 | MobileGym Fork & NC Purge | 2026-09-15 | `make verify` (incl. `make licence`); `make purge-audit`; `grep -ri mobilegym-data sim/ \| wc -l` = 0; `pnpm --filter @rtl/sim --fail-if-no-match build`; `curl -s -o /dev/null -w '%{http_code}' localhost:3000/` = 200 | Two commits: A = purged fork + audit records (f2ac336), B = workspace adaptation. Upstream 6,676 files: 463 kept, 6,213 removed, 5 replaced. sim/ is 7.7 MB. |
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 1.1.3 has not begun.
+None. 1.1.4 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
-| 1.1.2 | Push | Commit B is local only. Say "push" to publish both 1.1.2 commits. |
-| 1.1.3 | 🔧 Brandlist review | Draft at `tools/licence/brandlist.txt`. Fix Hebrew spellings, delete wrong entries, add missing ones. |
+| 1.1.3 | Push + 🔧 CI comparison | 1.1.3 is committed locally. Say "push"; then open the `licence-gate` run under Actions and compare its final four lines with the local `make licence` output (both must read `scan[nc]: 0`, `scan[deps]: 0`, `scan[brand]: 0`). Actions must be enabled on the repo. |
 
 ## Operator queue (not blocking code, time-sensitive)
 | Item | Sub-chunk | Why it can't wait | Status |
@@ -68,6 +68,11 @@ None. 1.1.3 has not begun.
 | 2026-09-15 | `scan.py` treats a file of ours at a purged path as "replaced" (fine) and only flags upstream bytes | Our `sim/README.md` and four data stubs live at paths upstream also had. | 1.1.2 |
 | 2026-09-15 | Sim dependencies dropped: leaflet, both Google Maps packages, puppeteer, eslint, typescript-eslint, eslint-plugin-react-hooks | Map app deleted; puppeteer unused; eslint arrives with its rules in 1.1.4. Nine runtime + eight dev deps kept, all MIT/ISC/Apache-2.0. | 1.1.2 |
 | 2026-09-15 | `verify-tree` enumerates directories from `git ls-files -co --exclude-standard`, not `find` | The operator's first run failed on an empty `sim/public/sdcard` the dev server creates at boot. Anything gitignored or empty is not part of the tree we ship, so git's view is the right source. Negative gate now plants a file, not just a directory. | 1.1.2 |
+| 2026-09-15 | Two-tier brand list (`~` = ambiguous, matched only in content paths and file names) | Whole-word matching alone gave 635 hits on `max` and 391 on `next` in code. The tier narrows where a term is searched, never whether a hit fails. | 1.1.3 |
+| 2026-09-15 | Every waiver in `policy.yaml` needs a reason and an expiry; expired or reason-less waivers are findings | Legal protection must not decay silently. Reference-app waiver expires 2026-12-31 and names 3.3.1; MPL/CC-BY build-time waivers expire 2027-03-15. | 1.1.3 |
+| 2026-09-15 | JS dependencies enumerated via `pnpm ls -r --depth Infinity --json`, licence read from each package's own manifest | `pnpm licenses list` silently omits link-installed packages, which made the GPL negative test pass vacuously. Packages whose directory does not exist (other platforms' optional binaries) are not evaluated; CI evaluates its own platform. | 1.1.3 |
+| 2026-09-15 | PyYAML and jsonschema added as dev dependencies (both MIT, transitive deps all MIT) | Policy is YAML (task files are YAML from 6.1.1); manifest validation against `schema.json` needs a real validator or the schema is decoration. | 1.1.3 |
+| 2026-09-15 | GitHub Actions pinned to commit SHAs with the tag in a comment | Plan rule from 1.1.5, applied from the first workflow. | 1.1.3 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)
@@ -86,8 +91,9 @@ None. 1.1.3 has not begun.
 |---|---|---|---|
 | Money type placement (core-semantic vs domain) not yet validated by the insurance stub | 2.1.1 | Stub does not exist yet | 2.1.3: if the stub cannot use `Money` without commerce vocabulary leaking, revisit |
 | `make verify` does not include `provenance`; that target exits 2 with a message | 1.1.1 | Not implemented until 4.1.1 | 4.1.1 adds `provenance` to `verify` |
-| Transitive build-time deps with licences off the allowlist: `lightningcss` (MPL-2.0), `caniuse-lite` (CC-BY-4.0) | 1.1.2 | Pulled in by vite/tailwind; not distributed in the artifact | 1.1.3: `policy.yaml` waivers with reason "build-time only", or replace |
-| Brand names inside `sim/apps/Ebay`, `sim/apps/TencentMeeting`, and upstream docs under `sim/docs` | 1.1.2 | Reference apps are needed until 3.3.1; docs describe the platform | 1.1.3 waiver for the two apps; 3.3.1 deletes them; docs get a brand sweep in 1.1.3 |
+| MPL-2.0 (`lightningcss*`) and CC-BY-4.0 (`caniuse-lite`) build-time deps carry dated waivers | 1.1.3 | Pulled in by vite/tailwind; not distributed | Waivers expire 2027-03-15: renew with reasoning or replace the dependency |
+| Reference apps `sim/apps/Ebay`, `sim/apps/TencentMeeting` carry an all-terms brand waiver | 1.1.3 | Needed as structural reference | Expires 2026-12-31; 3.3.1 deletes the directories and the waiver |
+| Brand guard reads `docs/plan/**` never (exempt) | 1.1.3 | The plan quotes brand names as examples | If the plan is ever published, sweep it first |
 | Kept system apps run on empty stubs (no alarms, cities, contacts, SMS settings) | 1.1.2 | Content arrives with Hebrew resources in Phase 3 | 3.3.1 or first task that needs SMS/Contacts content |
 | `sim/eslint.config.js` references eslint packages that are not installed | 1.1.2 | Lint rules are written in 1.1.4 | 1.1.4 rewrites it |
 | Launcher home-screen widgets render an error box: their theme XML lived in the purged dataset (`/cdn/themes/...`) | 1.1.2 | Boot criterion is "serves a page"; the launcher theme is replaced by our surface generator | 3.3.1 (storefront shell) at the latest; 5.2.2 owns the launcher theme |

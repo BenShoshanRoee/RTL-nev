@@ -284,9 +284,14 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `tools/licence/policy.yaml`
 - `tools/licence/brandlist.txt`
 - `tools/provenance/schema.json` (minimal v1 manifest schema: `schema_version`, and per asset `path`, `sha256`, `licence`)
+- `tools/test_licence_gate.sh` (negative tests: brand-named file, unlisted asset, GPL dependency; part of `make gates`)
+- `tools/licence/testdata/gpl-fixture/package.json` (GPL-3.0 package installed offline only during the negative test)
 - `.github/workflows/licence-gate.yml`
 
 **Key Logic:**
+- `brandlist.txt` has two tiers: a `~` prefix marks an ambiguous term (ordinary word or code identifier) matched only in content-bearing paths and file names; every other term is matched in every tracked text file. The tier changes where a term is searched, never whether a hit fails.
+- Every waiver in `policy.yaml` carries a reason and an expiry date; an expired or reason-less waiver is itself a finding.
+- JS dependencies are enumerated with `pnpm ls -r --depth Infinity --json` and each licence read from the package's own `package.json`; `pnpm licenses list` omits link-installed packages. Python dependencies come from the uv environment's installed metadata. No licence-listing tool is added.
 - Extends the 1.1.2 `scan.py` add-only: `--mode nc` and `--mode purge-audit` keep their behaviour; this sub-chunk adds `--mode deps` and `--mode brand`.
 - Three checks, each failing the build:
   1. **NC guard** — (a) any path listed in `nc_purge_manifest.json` that reappears fails; (b) any file under `content/` with no entry in `content/MANIFEST.json` fails; (c) any entry whose `licence` is not on the allowlist (including any `CC-BY-NC*`) fails. Uses the minimal v1 schema defined here. **Forward-compatibility rule: 4.1.1 ADDS fields to this schema; it never redefines, renames or removes a v1 field, and a v1 manifest must always validate against every later schema.**
@@ -300,7 +305,8 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - [ ] Add a GPL dependency → CI fails with a licence error naming the package
 - [ ] Add an asset without a provenance entry → CI fails naming the file
 - [ ] The empty `content/MANIFEST.json` from 1.1.2 validates against `tools/provenance/schema.json`
-- [ ] `make licence` output matches CI output exactly
+- [ ] `make licence` output matches CI output exactly (manual: compare the local run against the Actions log)
+- [ ] `make gates` passes: each of the three violations above is rejected by name after a clean pass
 
 **Dependencies:** 1.1.2
 
