@@ -25,7 +25,7 @@ None. 1.1.4 has not begun.
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
-| 1.1.3 | Push + 🔧 CI comparison | 1.1.3 is committed locally. Say "push"; then open the `licence-gate` run under Actions and compare its final four lines with the local `make licence` output (both must read `scan[nc]: 0`, `scan[deps]: 0`, `scan[brand]: 0`). Actions must be enabled on the repo. |
+| 1.1.3 | Decide: allowlist PSF-2.0? | Python Software Foundation licence, permissive. Currently a dated waiver on `typing_extensions`. Say "allowlist PSF-2.0" or leave the waiver. |
 
 ## Operator queue (not blocking code, time-sensitive)
 | Item | Sub-chunk | Why it can't wait | Status |
@@ -73,6 +73,8 @@ None. 1.1.4 has not begun.
 | 2026-09-15 | JS dependencies enumerated via `pnpm ls -r --depth Infinity --json`, licence read from each package's own manifest | `pnpm licenses list` silently omits link-installed packages, which made the GPL negative test pass vacuously. Packages whose directory does not exist (other platforms' optional binaries) are not evaluated; CI evaluates its own platform. | 1.1.3 |
 | 2026-09-15 | PyYAML and jsonschema added as dev dependencies (both MIT, transitive deps all MIT) | Policy is YAML (task files are YAML from 6.1.1); manifest validation against `schema.json` needs a real validator or the schema is decoration. | 1.1.3 |
 | 2026-09-15 | GitHub Actions pinned to commit SHAs with the tag in a comment | Plan rule from 1.1.5, applied from the first workflow. | 1.1.3 |
+| 2026-09-15 | `.python-version` pins 3.11 for uv | The first CI run of the licence gate failed on `typing_extensions` (PSF-2.0), present on CI but not locally. Cause: uv chose Python 3.14 locally and 3.12 on CI; neither was the declared 3.11. Criterion 5 (local equals CI) is what exposed it. | 1.1.3 |
+| 2026-09-15 | `typing_extensions` PSF-2.0 handled by a dated waiver, not by widening the allowlist | The allowlist is the operator's; PSF-2.0 is permissive and OSI-approved, so allowlisting it is proposed for the operator to decide. | 1.1.3 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)

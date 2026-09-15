@@ -39,6 +39,13 @@ dependency_waivers:
     added: 2026-09-15
     expires: 2027-03-15
 
+  - package: typing_extensions
+    ecosystem: pypi
+    licence: PSF-2.0
+    reason: Python Software Foundation licence (permissive, OSI-approved). Backport shim pulled in transitively on some Python versions; dev tooling only, never distributed. Allowlisting PSF-2.0 itself is proposed to the operator; until decided this waiver keeps the decision visible.
+    added: 2026-09-15
+    expires: 2027-03-15
+
 # Brand-term waivers, path-scoped. A waived term is still reported everywhere outside its paths.
 brand_waivers:
   - term: Ebay
