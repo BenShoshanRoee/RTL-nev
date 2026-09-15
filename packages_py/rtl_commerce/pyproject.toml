@@ -1,0 +1,10 @@
+[project]
+name = "rtl-commerce"
+version = "0.0.0"
+description = "verifiers-spec environment package for RTL commerce. Shipped as a wheel (sub-chunk 8.1.1)."
+requires-python = ">=3.11"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.10,<0.11"]
+build-backend = "uv_build"

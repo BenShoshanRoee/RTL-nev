@@ -1,0 +1,22 @@
+{
+  "name": "rtl-environments",
+  "version": "0.0.0",
+  "private": true,
+  "description": "RTL agentic environments and evals. See CLAUDE.md.",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": "^22 || ^24"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "depcruise": "depcruise --config .dependency-cruiser.cjs packages"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^18.3.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.1"
+  }
+}

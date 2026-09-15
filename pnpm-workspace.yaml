@@ -1,0 +1,4 @@
+packages:
+  - "packages/*"
+  - "packages/domains/*"
+  # sim/ joins the workspace in sub-chunk 1.1.2 (MobileGym fork)
