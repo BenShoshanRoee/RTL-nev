@@ -460,9 +460,12 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `packages/domains/commerce/tests/*.test.ts`
 
 **Key Logic:**
-- Entities: Product (with variants: size, colour), Inventory, Cart, CartLine, Coupon, Address, ShippingOption, Order, OrderLine, Return, Customer.
-- Operations: `search`, `addToCart`, `changeVariant`, `setQuantity`, `applyCoupon`, `removeCoupon`, `setShipping`, `splitDelivery`, `checkout`, `cancelLine`, `requestReturn`.
-- Invariants: cart total equals sum of lines minus discount plus shipping; inventory never negative; a coupon never applies twice; an order line cannot be cancelled after dispatch; VAT computed at the Israeli rate and stored as a separate field.
+- Entities (16 keyed schemas plus the cart singleton): Product (with variants: size, colour), Variant, Inventory, Cart, CartLine, DeliveryGroup, Coupon, Address, ShippingOption, DeliverySlot, PaymentMethod, SavedItem, Order, OrderLine, Shipment, ReturnRequest, Customer. Collections are records keyed by id.
+- Operations (26): shopper: `search`, `viewProduct`, `addToCart`, `changeVariant`, `setQuantity`, `removeLine`, `saveForLater`, `moveToCart`, `applyCoupon`, `removeCoupon`, `applyLoyaltyPoints`, `addAddress`, `editAddress`, `setAddress`, `setShipping`, `selectDeliverySlot`, `splitDelivery`, `setPaymentMethod`, `checkout`, `cancelLine`, `cancelOrder`, `requestReturn`, `trackOrder`; system actor: `advanceClock`, `advanceShipment`, `restock`. `search` and `viewProduct` record their results in `session` so milestones can assert what the agent found without reading the screen.
+- Invariants (15): cart totals consistent; inventory never negative; reserved stock equals pending order lines; coupon applies once (one per cart, uses within max, uses equal consuming orders); no cancellation after dispatch (frozen snapshot per shipment); VAT consistent; referential integrity; delivery groups partition the cart; returns bounded (per line, per return refund, order refunds never exceed what was paid); slot capacity; loyalty points non-negative; single currency across the state; lines well-formed; order status derived; counters monotonic.
+- Prices are VAT-inclusive, as Israeli consumer prices are; `vat` is the VAT contained in the total, computed by integer scaling at `config.vatPercent` (18). Refunds return each line's paid share (net of discount and loyalty, rounded down) plus shipping once an order is fully cancelled.
+- No language in the seed: names, sizes, colours, cities and reasons are resource keys the surface layer resolves; size systems (numeric, letters, words) vary per product for the size-sort pathology.
+- Time is explicit state (`session.now`) advanced only by the system operation `advanceClock`; coupon expiry and the return window read it. The domain never touches a wall clock.
 - Money uses the core `Money` type: `{ minor: integer, currency: 'ILS' }`. **No floats anywhere in money paths.** Hebrew commerce is ILS-only, but the type is currency-generic so Arabic markets (including 3-decimal KWD/BHD) are a content swap.
 - `splitDelivery` and `cancelLine` exist specifically because they are where agents fail; they are not decoration.
 
@@ -471,7 +474,9 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - [ ] Property test: 10,000 random legal operation sequences, invariants hold after every one
 - [ ] Coupon double-application rejected
 - [ ] Money test covers a 3-decimal currency: a cart priced in `KWD` (`{ minor: 1500, currency: 'KWD' }` = 1.500 KWD) totals correctly with exponent 3, and adding an `ILS` line to it throws a named error
-- [ ] `grep -rn "\.toFixed\|parseFloat" packages/domains/commerce/src/` returns nothing in money paths
+- [ ] `grep -rn "\.toFixed\|parseFloat" packages/domains/commerce/src/` returns nothing in money paths (a test also greps for `Math.round`, `/ 100` and any Hebrew or Arabic script under `src/`)
+- [ ] Commerce passes the identical core conformance suite the insurance stub will run
+- [ ] Every operation's `sample()` returns params its own precondition accepts, across hundreds of states
 
 **Dependencies:** 2.1.1
 

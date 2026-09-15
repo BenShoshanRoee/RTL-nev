@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createLogger, jsonSink, type LogRecord } from "../src/logging";
+import { createLogger, jsonSink, type LogRecord } from "../src/logging.js";
 
 const fixedClock = () => new Date("2026-09-15T12:00:00.000Z");
 

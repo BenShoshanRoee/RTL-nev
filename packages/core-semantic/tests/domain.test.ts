@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { conformanceChecks } from "../src/conformance/suite";
-import type { DomainDefinition } from "../src/domain";
-import { checkInvariants } from "../src/invariant";
-import { add, money, type Money } from "../src/money";
-import { execute } from "../src/operation";
-import { Rng } from "../src/rng";
-import { hashState } from "../src/state";
+import { conformanceChecks } from "../src/conformance/suite.js";
+import type { DomainDefinition } from "../src/domain.js";
+import { checkInvariants } from "../src/invariant.js";
+import { add, money, type Money } from "../src/money.js";
+import { execute } from "../src/operation.js";
+import { Rng } from "../src/rng.js";
+import { hashState } from "../src/state.js";
 
 /** A deliberately neutral toy domain: labelled slots with a level, a counter, and funds. */
 type Slot = { id: string; label: string; level: number };

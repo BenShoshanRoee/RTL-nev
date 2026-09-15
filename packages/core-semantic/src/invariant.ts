@@ -1,6 +1,6 @@
 /** Predicates that must hold after every operation. A violation rejects the operation. */
 
-import type { JsonObject } from "./state";
+import type { JsonObject } from "./state.js";
 
 export type InvariantResult = { ok: true } | { ok: false; detail: string };
 

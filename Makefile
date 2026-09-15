@@ -13,8 +13,9 @@ verify: verify-tree gates lint licence test
 verify-tree:
 	@tools/verify_tree.sh
 
-## gates: negative tests proving each gate actually rejects what it should
+## gates: negative tests proving each gate actually rejects what it should (builds first: the boundary gate resolves packages through dist)
 gates:
+	@pnpm -r build >/dev/null
 	@tools/test_depcruise_gate.sh
 	@tools/test_verify_tree_gate.sh
 	@tools/test_licence_gate.sh
@@ -23,17 +24,20 @@ gates:
 
 test: test-js test-py
 
+## test-js: build first so workspace packages resolve to fresh dist (tests exercise the shipped shape)
 test-js:
+	pnpm -r build
 	pnpm -r test
 
 test-py:
 	uv run pytest
 
-## lint: architecture boundaries, typecheck, python lint
+## lint: build first (workspace packages resolve through dist), then boundaries, eslint, python lint
 lint:
+	pnpm -r build
+	@tools/check_dist_importable.sh
 	pnpm exec depcruise --config .dependency-cruiser.cjs packages
 	pnpm exec eslint .
-	pnpm -r typecheck
 	uv run ruff check .
 
 ## sbom: CycloneDX 1.5 for both ecosystems, validated; CI uploads dist/sbom.cdx.json

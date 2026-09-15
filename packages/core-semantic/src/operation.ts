@@ -4,11 +4,11 @@
  * lets the conformance suite and property tests drive any domain blind.
  */
 
-import type { Invariant, InvariantViolation } from "./invariant";
-import { checkInvariants } from "./invariant";
-import { isCurrency } from "./money";
-import type { Rng } from "./rng";
-import { deepFreeze, diff, hashState, snapshot, type Changeset, type JsonObject, type JsonValue } from "./state";
+import type { Invariant, InvariantViolation } from "./invariant.js";
+import { checkInvariants } from "./invariant.js";
+import { isCurrency } from "./money.js";
+import type { Rng } from "./rng.js";
+import { deepFreeze, diff, hashState, snapshot, type Changeset, type JsonObject, type JsonValue } from "./state.js";
 
 export type FieldSpec =
   | "string"

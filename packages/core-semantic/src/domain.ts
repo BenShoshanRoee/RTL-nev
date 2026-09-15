@@ -10,10 +10,10 @@
  * - invariants hold on the seed state and after every legal operation
  */
 
-import type { Invariant } from "./invariant";
-import type { EntitySchema, OperationDefinition } from "./operation";
-import type { Rng } from "./rng";
-import type { JsonObject } from "./state";
+import type { Invariant } from "./invariant.js";
+import type { EntitySchema, OperationDefinition } from "./operation.js";
+import type { Rng } from "./rng.js";
+import type { JsonObject } from "./state.js";
 
 export interface DomainDefinition<S extends JsonObject> {
   /** Stable identifier chosen by the domain, e.g. its package name. */

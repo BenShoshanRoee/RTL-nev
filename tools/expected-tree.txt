@@ -65,6 +65,7 @@ packages/core-semantic/tests/fixtures
 packages/domains
 packages/domains/commerce
 packages/domains/commerce/src
+packages/domains/commerce/src/operations
 packages/domains/commerce/tests
 packages/domains/insurance-stub
 packages/domains/insurance-stub/src

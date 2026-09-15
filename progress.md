@@ -1,7 +1,7 @@
 # Progress
 
-**Current sub-chunk:** 2.1.2 — Commerce Domain Implementation (not started)
-**Last updated:** 2026-09-16 (2.1.1 complete)
+**Current sub-chunk:** 2.1.3 — Stub Second Domain (not started)
+**Last updated:** 2026-09-16 (2.1.2 complete)
 **Phase:** 2 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
@@ -15,6 +15,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 2.1.2 | Commerce Domain Implementation | 2026-09-16 | `make verify` (27 commerce vitest cases: full flow, 10,000+ applied operations with invariants after each, coupon rules, KWD totals + ILS mix throws, conformance, sample/precondition agreement, hygiene grep); PR #5 (all seven CI checks) | 16 entity schemas + cart singleton, 26 operations, 15 invariants, seed of ~50 products / ~100 variants / 7 coupons / 2 historical orders. No new dependencies. |
 | 2.1.1 | Domain Interface Definition | 2026-09-16 | `make verify` (47 vitest incl. 9 conformance checks on a toy domain, state parity fixture, KWD money; 41 pytest); `make gates` incl. `tools/test_vocab_gate.sh`; PR #4 (all seven CI checks) | `DomainDefinition`, `execute()`, `diff/patch/hashState`, `Money`, `conformanceChecks()`, Python mirror. No new dependencies. |
 | 1.1.5 | CI/CD Pipeline | 2026-09-15 | ci run 35019454784 on af8bb48: all 7 jobs green; branch run 35019091689 failed naming the planted test; `gh run download 35019454784 -n sbom`; release run 35019829058 for tag v0.0.1 created the Release with wheel + SBOM + sim build; `docker pull ghcr.io/benshoshanroee/rtl-nev:0.0.1` serves / and /cdn/; `make release` and `make smoke` locally | Ruleset 23489863 requires all 7 checks, strict. Placeholder Dockerfile until 8.1.2. |
 | 1.1.4 | Determinism & Logging Foundations | 2026-09-15 | `make verify` (exit 0: 17 vitest + 19 pytest tests incl. cross-language parity; `make gates` incl. `tools/test_rng_gate.sh`); `rg -n 'Math\.random\(' packages/ sim/apps/Storefront/` returns only rng.ts | sfc32 + SHA-256 child seeds in both languages, shared fixture; structured JSON loggers; ESLint entropy ban; pytest lint + ruff S311. Local only until pushed. |
@@ -23,7 +24,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 2.1.2 has not begun.
+None. 2.1.3 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
@@ -98,6 +99,15 @@ None. 2.1.2 has not begun.
 | 2026-09-16 | Currency table covers ILS, the Gulf three-decimal currencies, the majors and JPY (exponent 0) | Arabic markets in Phase 12 become a content swap; the table is the only place decimals live. | 2.1.1 |
 | 2026-09-16 | `no-domain-vocabulary` is an ESLint `no-restricted-syntax` rule with camelCase-aware word boundaries | Plain substring matching flagged `ordered` and `"production"`; the boundary form fails `cartTotal`, `orders`, `Price` and passes `production`, `recorder`, `ordered`. Probed both ways. | 2.1.1 |
 | 2026-09-16 | Conformance suite is test-runner agnostic (`conformanceChecks()` returns named results) | core-semantic must not import vitest; each domain's test file turns results into cases, so the insurance stub and commerce run the identical checks. | 2.1.1 |
+| 2026-09-16 | Commerce enriched beyond the plan: 16 entity schemas, 26 operations, 15 invariants (operator asked for richness where it serves tasks) | Added PaymentMethod (expired card), DeliverySlot (capacity), SavedItem, Shipment; operations for view/track (recorded in session for milestones), save-for-later, address add/edit, slot selection, payment, cancelOrder, loyalty points, and three system-actor ops (advanceClock, advanceShipment, restock) so tasks can stage delivered orders. Plan text updated. | 2.1.2 |
+| 2026-09-16 | Prices are VAT-inclusive; `vat` is the VAT contained in the total at `config.vatPercent` = 18 | Israeli consumer prices include VAT; the rate has been 18% since 2025-01-01. Integer scaling, rounding half-up. | 2.1.2 |
+| 2026-09-16 | Refunds are paid shares: gross line amount scaled by (subtotal − discount − loyalty) / subtotal, rounded down; shipping refunded when an order is fully cancelled | First implementation refunded gross prices and the `returns-bounded` invariant rejected it on a coupon order: the invariant caught a real bug before any test named it. | 2.1.2 |
+| 2026-09-16 | Time is explicit state (`session.now`), advanced only by `advanceClock`; the domain ignores `ctx.now` | Preconditions have no context argument, and a judge must see the time the domain reasoned with. Coupon expiry and the return window read `session.now`. | 2.1.2 |
+| 2026-09-16 | Seed contains no language: names, sizes, colours, cities, reasons are resource keys (`size.words.small`, `city.tel_aviv`) | Non-negotiable: no Hebrew in the semantic layer; Arabic becomes a content swap. A hygiene test rejects Hebrew or Arabic script anywhere under `src/`. | 2.1.2 |
+| 2026-09-16 | `make lint` builds (`pnpm -r build`) and `make test-js` builds before testing | Workspace packages resolve through their `dist`; without a build first, domain tests ran against a stale core and CI would have failed the first time a domain imported core. | 2.1.2 |
+| 2026-09-16 | TypeScript emits NodeNext ESM with explicit `.js` on relative imports; `make lint` imports every built package in plain Node (`tools/check_dist_importable.sh`) | The previous Bundler resolution emitted extensionless imports that vitest tolerated and bare Node rejected, so a buyer's runtime could not have loaded the packages. Found while counting operations through the built dist. | 2.1.2 |
+| 2026-09-16 | `make lint` and `make gates` build before dependency-cruiser runs | CI starts without any `dist`; dependency-cruiser resolves `@rtl/*` through package exports to `dist`, so PR #5's lint job failed on 12 unresolvable imports while a stale local build passed. Reproduced locally by deleting every `dist`. | 2.1.2 |
+| 2026-09-16 | Entity types are type aliases, not interfaces; core `Money` likewise | Interfaces lack the implicit index signature TypeScript needs to satisfy the JSON state constraint. No behaviour change. | 2.1.2 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)
@@ -125,6 +135,9 @@ None. 2.1.2 has not begun.
 | Container is linux/amd64 only (runs under emulation on Apple silicon) | 1.1.5 | Single `docker build` on an amd64 runner | 8.1.2: multi-arch build (buildx) if buyers run arm64 |
 | Path sorting in `diff` compares object keys by UTF-16 code units in TS and code points in Python; identical for BMP characters (Hebrew, Arabic, Latin), divergent only for astral-plane keys | 2.1.1 | Keys with emoji are not a realistic state shape | If a domain ever keys a record by non-BMP text, canonicalise keys or add a fixture case |
 | `FieldSpec` validation of params is shallow (type only); `record` params are not validated against the entity schema | 2.1.1 | Sufficient for 2.1.2's operations | 2.2.4 task schema, or the first operation taking a nested record |
+| Return requests stop at `requested`; approval, receipt and refund progression are not modelled | 2.1.2 | No task needs back-office return processing yet | First task family that checks refund status (6.1.2 "return within policy") adds a system op |
+| Product prices never change after seed (no `updatePrice` system op), so the cart price-drift pathology has no domain hook | 2.1.2 | `stale-cart` is a surface pathology in 3.2.1; a domain hook is optional | 3.2.1 if the injector needs server-side price drift |
+| Coupon discount is not apportioned per line in order records; refunds use the order-level share | 2.1.2 | Sufficient for bounded refunds | If a task asserts per-line refund amounts |
 | Release tag `v0.0.1` exists as a release-path test; the package is not a real deliverable | 1.1.5 | Criterion 4 required a real tag | 8.1.3 versioning policy decides whether to keep or yank it |
 | No pull-request requirement on `main`: direct pushes still allowed | 1.1.5 | Solo operator; PR flow adds friction now | Revisit when a second contributor or 6.2.3 author PRs arrive |
 | Kept system apps run on empty stubs (no alarms, cities, contacts, SMS settings) | 1.1.2 | Content arrives with Hebrew resources in Phase 3 | 3.3.1 or first task that needs SMS/Contacts content |

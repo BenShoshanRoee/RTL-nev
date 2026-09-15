@@ -10,7 +10,7 @@
  * (tests/fixtures/state-parity.json).
  */
 
-import { sha256Hex } from "./rng";
+import { sha256Hex } from "./rng.js";
 
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
