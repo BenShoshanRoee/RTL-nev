@@ -30,9 +30,14 @@ echo "licence-gate: OK nc (unlisted content asset rejected by name)"
 
 # 3. dependency licence: install a local GPL-3.0 package offline, expect a named failure
 cp package.json package.json.bak; cp pnpm-lock.yaml pnpm-lock.yaml.bak
-restore() { mv package.json.bak package.json; mv pnpm-lock.yaml.bak pnpm-lock.yaml; pnpm install --offline --silent >/dev/null 2>&1 || pnpm install --silent >/dev/null 2>&1; }
+restore() { mv package.json.bak package.json; mv pnpm-lock.yaml.bak pnpm-lock.yaml; pnpm install --prefer-offline --frozen-lockfile --silent >/dev/null 2>&1; }
 trap restore EXIT
-pnpm add -Dw --offline ./tools/licence/testdata/gpl-fixture >/dev/null 2>&1 || fail "could not install the GPL fixture offline"
+# link: install; --prefer-offline uses the local store and only reaches the registry if a
+# package is missing from it (a cold CI store), so the test behaves the same everywhere.
+if ! add_out=$(pnpm add -Dw --prefer-offline ./tools/licence/testdata/gpl-fixture 2>&1); then
+  echo "$add_out" | tail -5
+  fail "could not install the GPL fixture"
+fi
 out=$($scan --mode deps 2>&1) && fail "GPL-3.0 dependency was NOT caught"
 grep -q "gpl-fixture" <<<"$out" || fail "deps mode failed but did not name gpl-fixture"
 grep -q "GPL-3.0" <<<"$out" || fail "deps mode failed but did not name the licence"
