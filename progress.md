@@ -1,8 +1,8 @@
 # Progress
 
-**Current sub-chunk:** 1.1.5 — CI/CD Pipeline (not started)
-**Last updated:** 2026-09-15 (1.1.4 complete)
-**Phase:** 1 of 12
+**Current sub-chunk:** 2.1.1 — Domain Interface Definition (not started)
+**Last updated:** 2026-09-15 (1.1.5 complete; Phase 1 code complete)
+**Phase:** 2 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
 "Verified by" is the exact command the operator ran. Append to Decisions for every call
@@ -15,18 +15,19 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 1.1.5 | CI/CD Pipeline | 2026-09-15 | ci run 35019454784 on af8bb48: all 7 jobs green; branch run 35019091689 failed naming the planted test; `gh run download 35019454784 -n sbom`; release run 35019829058 for tag v0.0.1 created the Release with wheel + SBOM + sim build; `docker pull ghcr.io/benshoshanroee/rtl-nev:0.0.1` serves / and /cdn/; `make release` and `make smoke` locally | Ruleset 23489863 requires all 7 checks, strict. Placeholder Dockerfile until 8.1.2. |
 | 1.1.4 | Determinism & Logging Foundations | 2026-09-15 | `make verify` (exit 0: 17 vitest + 19 pytest tests incl. cross-language parity; `make gates` incl. `tools/test_rng_gate.sh`); `rg -n 'Math\.random\(' packages/ sim/apps/Storefront/` returns only rng.ts | sfc32 + SHA-256 child seeds in both languages, shared fixture; structured JSON loggers; ESLint entropy ban; pytest lint + ruff S311. Local only until pushed. |
 | 1.1.3 | Licence Firewall CI | 2026-09-15 | `make verify` (exit 0, incl. `make gates` with the three licence negatives and `make licence`); GitHub Actions run 35014296443 on 58e3852: identical `scan[...]: 0 finding(s)` lines to the local run | scan.py modes nc/deps/brand/all; policy.yaml with dated waivers; two-tier brandlist; SHA-pinned workflow. Local only until pushed. |
 | 1.1.2 | MobileGym Fork & NC Purge | 2026-09-15 | `make verify` (incl. `make licence`); `make purge-audit`; `grep -ri mobilegym-data sim/ \| wc -l` = 0; `pnpm --filter @rtl/sim --fail-if-no-match build`; `curl -s -o /dev/null -w '%{http_code}' localhost:3000/` = 200 | Two commits: A = purged fork + audit records (f2ac336), B = workspace adaptation. Upstream 6,676 files: 463 kept, 6,213 removed, 5 replaced. sim/ is 7.7 MB. |
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 1.1.5 has not begun.
+None. Phase 1 code sub-chunks are complete; 2.1.1 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
-| 1.1.4 | Push | 1.1.4 is committed locally. Say "push". |
+| 1.1.5 | Dependabot PR #1 | Grouped uv update (uv-build backend range). Its CI ran before the gate-script fix and needs a rebase: comment `@dependabot rebase` on the PR, or close it. Merging a dependency bump is your call. |
 | 1.1.3, 1.1.4 | Decide: allowlist PSF-2.0 and BlueOak-1.0.0? | Both permissive and OSI-approved; each currently a dated waiver (`typing_extensions`, `minimatch`). Say "allowlist both", one of them, or leave the waivers until 2027-03-15. |
 
 ## Operator queue (not blocking code, time-sensitive)
@@ -82,6 +83,12 @@ None. 1.1.5 has not begun.
 | 2026-09-15 | Wall-clock ban (`Date.now`) applies to generation code only: `packages/domains`, `surface-gen`, `pathology` | Loggers legitimately read the clock (injectable for tests); generated data must not. | 1.1.4 |
 | 2026-09-15 | Upstream `react-hooks/*` disable directives resolved by a no-op stub plugin inside the exemption block, not by installing the plugin | Keeps dependencies to the approved set; 3.3.2 decides whether to adopt the plugin for our components. | 1.1.4 |
 | 2026-09-15 | `minimatch` BlueOak-1.0.0 handled by a dated waiver, allowlisting proposed | Same policy as PSF-2.0: the allowlist is the operator's. | 1.1.4 |
+| 2026-09-15 | CI job graph: lint, then test-js / test-py / licence / sbom in parallel, build-sim, e2e-smoke | The plan's strict seven-job chain reinstalls the workspace seven times in series. Same jobs, same coverage, a third of the wall time. Plan text updated. | 1.1.5 |
+| 2026-09-15 | SBOM by our own generator over the licence scanner's enumeration, serialised and validated by `cyclonedx-python-lib` (Apache-2.0) | The npm CycloneDX tool assumes npm's lockfile and misbehaves on pnpm workspaces. Deterministic output: sorted components, content-derived serial number. | 1.1.5 |
+| 2026-09-15 | Release path uses only `docker` and the `gh` CLI on the runner; six SHA-pinned actions total | Every third-party action is supply-chain surface. Base images pinned by digest. | 1.1.5 |
+| 2026-09-15 | Placeholder Dockerfile: nginx serving the built simulator and `content/` at `/cdn/` | The release path needs an image now; 8.1.2 designs the buyer image and replaces this file. | 1.1.5 |
+| 2026-09-15 | Ruleset 23489863 set by API to require all seven ci checks, strict up-to-date | The operator-created ruleset had an empty checks list, which enforced nothing. Operator approved the API change. | 1.1.5 |
+| 2026-09-15 | Licence gate test installs its GPL fixture with `--prefer-offline`, printing pnpm's error on failure | `--offline` failed on CI's cold store and the script hid the message; first main run failed at `make gates`. | 1.1.5 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)
@@ -105,6 +112,10 @@ None. 1.1.5 has not begun.
 | Brand guard reads `docs/plan/**` never (exempt) | 1.1.3 | The plan quotes brand names as examples | If the plan is ever published, sweep it first |
 | 18 `Math.random()` + 27 `Date.now`/`randomUUID`/`getRandomValues` calls in `sim/os`, `sim/system` under an ESLint exemption | 1.1.4 | Inherited upstream code; deterministic OS state is 3.3.2's job | 3.3.2 routes them through `Rng` and deletes the exemption block |
 | `bench/rtlenv/logging.py` shadows the stdlib name inside the package namespace | 1.1.4 | Plan names the file; absolute imports keep it safe | If any module needs stdlib logging, import it as `_stdlib_logging`; revisit in 7.1.2 |
+| Dockerfile is a placeholder (nginx + static sim); no bench layer, no Playwright, no healthcheck beyond `/` | 1.1.5 | 8.1.2 owns the buyer image | 8.1.2 replaces `Dockerfile` and `.dockerignore` |
+| Container is linux/amd64 only (runs under emulation on Apple silicon) | 1.1.5 | Single `docker build` on an amd64 runner | 8.1.2: multi-arch build (buildx) if buyers run arm64 |
+| Release tag `v0.0.1` exists as a release-path test; the package is not a real deliverable | 1.1.5 | Criterion 4 required a real tag | 8.1.3 versioning policy decides whether to keep or yank it |
+| No pull-request requirement on `main`: direct pushes still allowed | 1.1.5 | Solo operator; PR flow adds friction now | Revisit when a second contributor or 6.2.3 author PRs arrive |
 | Kept system apps run on empty stubs (no alarms, cities, contacts, SMS settings) | 1.1.2 | Content arrives with Hebrew resources in Phase 3 | 3.3.1 or first task that needs SMS/Contacts content |
 | `sim/eslint.config.js` references eslint packages that are not installed | 1.1.2 | Lint rules are written in 1.1.4 | 1.1.4 rewrites it |
 | Launcher home-screen widgets render an error box: their theme XML lived in the purged dataset (`/cdn/themes/...`) | 1.1.2 | Boot criterion is "serves a page"; the launcher theme is replaced by our surface generator | 3.3.1 (storefront shell) at the latest; 5.2.2 owns the launcher theme |

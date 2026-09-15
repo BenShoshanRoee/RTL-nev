@@ -89,7 +89,9 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
 | `make licence` | `scan.py --mode all`: NC guard + content manifest, dependency licences, brand guard. Same command as CI |
 | `make purge-audit` | Local only: purge manifest equals upstream minus `sim/` (needs `refs/upstream/mobilegym`) |
-| `make release` | Tag-driven: wheel, container, GHCR push, GitHub Release |
+| `make sbom` | CycloneDX 1.5 for both ecosystems into `dist/sbom.cdx.json`, validated |
+| `make smoke` | Built simulator serves `/` and `/cdn/` (same script as the CI e2e-smoke job) |
+| `make release` | Local dry run: wheel, SBOM, container. The real release is `git tag vX.Y.Z && git push --tags` |
 
 ## Layout (see plan Appendix A for the full tree)
 `packages/` TS workspace · `sim/` MobileGym fork (`UPSTREAM.md`; never edit `refs/upstream`) · `bench/` Python bench + tasks ·
@@ -97,5 +99,5 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 survey captures · `tools/` CLIs · `docs/` · `.github/workflows/`
 
 ## Current phase
-**Phase 1 of 12 — Foundation & Infrastructure.** Next sub-chunk: **1.1.5 CI/CD Pipeline.**
+**Phase 2 of 12 — Semantic Layer & Verification Engine.** Next sub-chunk: **2.1.1 Domain Interface Definition.**
 Authoritative state lives in `progress.md`; update that, not this line, unless the phase changes.
