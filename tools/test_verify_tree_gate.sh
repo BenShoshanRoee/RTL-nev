@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Negative test for verify-tree: an undeclared directory must make it fail with a diff.
+# Negative test for verify-tree: an undeclared directory holding a file must fail with a diff.
 set -u
 cd "$(dirname "$0")/.."
 tools/verify_tree.sh >/dev/null || { echo "verify-tree-gate: FAIL (clean tree does not pass; negative test would be vacuous)"; exit 1; }
 rogue=packages/__verify_tree_gate_rogue__
-mkdir -p "$rogue"
-trap 'rmdir "$rogue"' EXIT
+mkdir -p "$rogue" && touch "$rogue/file.txt"
+trap 'rm -rf "$rogue"' EXIT
 if out=$(tools/verify_tree.sh 2>&1); then
   echo "verify-tree-gate: FAIL (undeclared directory was NOT caught)"; exit 1
 fi

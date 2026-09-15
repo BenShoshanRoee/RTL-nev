@@ -82,7 +82,7 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 |---|---|
 | `make setup` | Install JS (pnpm) and Python (uv) workspaces from lockfiles |
 | `make verify` | Full local gate: verify-tree + gates + lint + test (+ licence from 1.1.3, provenance from 4.1.1) |
-| `make verify-tree` | Sorted `find -type d` diffed against `tools/expected-tree.txt` |
+| `make verify-tree` | Directories from git's file view diffed against `tools/expected-tree.txt` |
 | `make gates` | Negative tests: each gate must pass clean, then reject a planted violation |
 | `make test` | vitest + pytest |
 | `make lint` | ESLint (incl. no-Math.random, no-physical-CSS), dependency-cruiser, ruff |

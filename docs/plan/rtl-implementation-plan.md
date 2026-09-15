@@ -208,7 +208,7 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `packages/core-semantic` must have **zero** imports from `packages/domains/*` — enforced by a dependency-cruiser rule in CI
 - `sim/` is the fork; everything else is ours
 - Root `Makefile` exposes: `setup`, `verify`, `verify-tree`, `test`, `lint`, `provenance`, `licence`, `release`
-- `tools/expected-tree.txt` is the checked-in, sorted list of every directory in Appendix A. `make verify-tree` runs `find . -type d` (excluding `.git`, `node_modules`, `refs`, `dist`, `__pycache__`, `.venv`), sorts it, and diffs against that file. No `tree` binary anywhere.
+- `tools/expected-tree.txt` is the checked-in, sorted list of every directory in Appendix A. `make verify-tree` derives the directory set from `git ls-files -co --exclude-standard` (ancestors of every tracked or untracked-but-not-ignored file), sorts it, and diffs against that file. Generated, gitignored directories can never trip it. No `tree` binary anywhere.
 
 **Test Criteria:**
 - [ ] `make setup` succeeds on a clean clone
