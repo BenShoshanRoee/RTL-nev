@@ -1,0 +1,68 @@
+# Release: fully automated from a version tag. No inputs, no approvals, no manual steps.
+#   git tag v1.2.3 && git push --tags
+# -> version derived from the tag and applied to every manifest (build-time only)
+# -> wheel (uv build) + SBOM + simulator build
+# -> container built and pushed to GHCR as :<version> and :latest
+# -> GitHub Release created with the artifacts attached and generated notes
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write   # create the release
+  packages: write   # push to GHCR
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      IMAGE: ghcr.io/${{ github.repository }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+
+      - name: Derive version from tag and apply to manifests
+        id: version
+        run: |
+          version=$(uv run python tools/release/version.py --from-tag "$GITHUB_REF_NAME" --apply)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "image=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Verify (full local gate, same as the operator runs)
+        run: make verify
+
+      - name: Build artifacts
+        run: |
+          pnpm -r build
+          uv build --package rtl-commerce --out-dir dist/wheels
+          uv run python tools/sbom/generate.py --output dist/sbom.cdx.json --validate --version "${{ steps.version.outputs.version }}"
+          tar -czf dist/sim-dist-${{ steps.version.outputs.version }}.tar.gz -C sim dist
+
+      - name: Build and push container
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker build --build-arg VERSION="${{ steps.version.outputs.version }}" \
+            -t "${{ steps.version.outputs.image }}:${{ steps.version.outputs.version }}" \
+            -t "${{ steps.version.outputs.image }}:latest" .
+          docker push "${{ steps.version.outputs.image }}:${{ steps.version.outputs.version }}"
+          docker push "${{ steps.version.outputs.image }}:latest"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "RTL Environments ${{ steps.version.outputs.version }}" \
+            --generate-notes \
+            dist/wheels/*.whl dist/sbom.cdx.json dist/sim-dist-*.tar.gz

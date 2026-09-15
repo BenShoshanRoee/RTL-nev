@@ -53,6 +53,13 @@ dependency_waivers:
     added: 2026-09-15
     expires: 2027-03-15
 
+  - package: defusedxml
+    ecosystem: pypi
+    licence: PSF-2.0
+    reason: Python Software Foundation licence, transitive dependency of cyclonedx-python-lib (SBOM generation, dev tooling only). Same decision as typing_extensions.
+    added: 2026-09-15
+    expires: 2027-03-15
+
 # Brand-term waivers, path-scoped. A waived term is still reported everywhere outside its paths.
 brand_waivers:
   - term: Ebay

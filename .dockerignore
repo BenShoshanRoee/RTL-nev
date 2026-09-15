@@ -1,0 +1,17 @@
+# Only what the image build needs reaches the daemon.
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!.npmrc
+!tsconfig.base.json
+!packages
+!sim
+!content
+**/node_modules
+**/dist
+**/.vite
+sim/bench_env
+sim/docs
+sim/tests
+sim/scripts

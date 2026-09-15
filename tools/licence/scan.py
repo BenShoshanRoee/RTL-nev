@@ -222,6 +222,8 @@ PY_LICENCE_TEXT = {
     "isc license (iscl)": "ISC",
     "isc": "ISC",
     "python software foundation license": "PSF-2.0",
+    "psfl": "PSF-2.0",
+    "psf": "PSF-2.0",
     "the unlicense (unlicense)": "Unlicense",
     "cc0 1.0 universal (cc0 1.0) public domain dedication": "CC0-1.0",
 }

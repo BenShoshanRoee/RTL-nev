@@ -7,6 +7,8 @@
 .claude/skills/subchunk
 .claude/skills/verify
 .github
+.github/actions
+.github/actions/setup
 .github/workflows
 bench
 bench/calibration
@@ -198,6 +200,7 @@ tools/licensing
 tools/pipeline
 tools/provenance
 tools/release
+tools/sbom
 tools/security
 tools/survey
 training

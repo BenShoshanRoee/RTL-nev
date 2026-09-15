@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup verify verify-tree gates test test-js test-py lint provenance licence purge-audit release
+.PHONY: setup verify verify-tree gates test test-js test-py lint provenance licence purge-audit sbom smoke release
 
 ## setup: install JS and Python workspaces from committed lockfiles
 setup:
@@ -35,6 +35,14 @@ lint:
 	pnpm -r typecheck
 	uv run ruff check .
 
+## sbom: CycloneDX 1.5 for both ecosystems, validated; CI uploads dist/sbom.cdx.json
+sbom:
+	uv run python tools/sbom/generate.py --output dist/sbom.cdx.json --validate
+
+## smoke: the built simulator serves its page and the content root (needs pnpm -r build)
+smoke:
+	@tools/smoke.sh
+
 provenance:
 	@echo "make provenance: not implemented until sub-chunk 4.1.1 (minimal manifest check arrives in 1.1.3)"; exit 2
 
@@ -46,5 +54,11 @@ licence:
 purge-audit:
 	uv run python tools/licence/scan.py --mode purge-audit
 
+## release: local dry run of release.yml (no push, no tag): wheel, SBOM, container image.
+## The real release is tag-triggered: git tag vX.Y.Z && git push --tags
 release:
-	@echo "make release: not implemented until sub-chunk 1.1.5"; exit 2
+	pnpm -r build
+	uv build --package rtl-commerce --out-dir dist/wheels
+	uv run python tools/sbom/generate.py --output dist/sbom.cdx.json --validate
+	docker build --build-arg VERSION=0.0.0-local -t rtl-environments:local .
+	@echo "release dry run OK: dist/wheels, dist/sbom.cdx.json, image rtl-environments:local"
