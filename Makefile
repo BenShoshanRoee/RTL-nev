@@ -23,17 +23,20 @@ gates:
 
 test: test-js test-py
 
+## test-js: build first so workspace packages resolve to fresh dist (tests exercise the shipped shape)
 test-js:
+	pnpm -r build
 	pnpm -r test
 
 test-py:
 	uv run pytest
 
-## lint: architecture boundaries, typecheck, python lint
+## lint: architecture boundaries, eslint, tsc build (typecheck + emit, topological), python lint
 lint:
 	pnpm exec depcruise --config .dependency-cruiser.cjs packages
 	pnpm exec eslint .
-	pnpm -r typecheck
+	pnpm -r build
+	@tools/check_dist_importable.sh
 	uv run ruff check .
 
 ## sbom: CycloneDX 1.5 for both ecosystems, validated; CI uploads dist/sbom.cdx.json

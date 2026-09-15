@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PACKAGE_NAME } from "../src/index";
+import { PACKAGE_NAME } from "../src/index.js";
 
 describe("@rtl/core-semantic", () => {
   it("exports its package name", () => {

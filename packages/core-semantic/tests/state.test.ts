@@ -12,7 +12,7 @@ import {
   unchanged,
   type Changeset,
   type JsonValue,
-} from "../src/state";
+} from "../src/state.js";
 
 type Parity = {
   cases: Array<{ name: string; before: JsonValue; after: JsonValue; changeset: Changeset; hash_before: string; hash_after: string; canonical_before: string }>;

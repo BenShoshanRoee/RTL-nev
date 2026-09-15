@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { Rng, childSeed, seedFromString, sha256Hex } from "../src/rng";
+import { Rng, childSeed, seedFromString, sha256Hex } from "../src/rng.js";
 
 type Parity = {
   sha256: Record<string, string>;

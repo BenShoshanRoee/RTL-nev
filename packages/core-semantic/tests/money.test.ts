@@ -12,7 +12,7 @@ import {
   subtract,
   sum,
   zero,
-} from "../src/money";
+} from "../src/money.js";
 
 describe("Money", () => {
   it("is integer minor units plus an ISO-4217 code, with a per-currency exponent", () => {

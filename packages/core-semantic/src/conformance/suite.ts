@@ -8,11 +8,11 @@
  * absorbs one domain's assumptions, the other fails here.
  */
 
-import type { DomainDefinition } from "../domain";
-import { checkInvariants } from "../invariant";
-import { execute, type OperationContext } from "../operation";
-import { Rng } from "../rng";
-import { canonicalJson, diff, hashState, isEmpty, patch, type JsonObject, type JsonValue } from "../state";
+import type { DomainDefinition } from "../domain.js";
+import { checkInvariants } from "../invariant.js";
+import { execute, type OperationContext } from "../operation.js";
+import { Rng } from "../rng.js";
+import { canonicalJson, diff, hashState, isEmpty, patch, type JsonObject, type JsonValue } from "../state.js";
 
 export interface ConformanceCheck {
   id: string;

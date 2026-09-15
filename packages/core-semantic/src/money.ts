@@ -13,10 +13,11 @@ export const CURRENCY_EXPONENT = {
 
 export type CurrencyCode = keyof typeof CURRENCY_EXPONENT;
 
-export interface Money {
+/** A type alias (not an interface) so it satisfies the JSON index signature of state trees. */
+export type Money = {
   readonly minor: number;
   readonly currency: CurrencyCode;
-}
+};
 
 export type Rounding = "half-up" | "half-even" | "down" | "up";
 
