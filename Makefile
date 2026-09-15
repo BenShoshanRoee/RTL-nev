@@ -31,12 +31,12 @@ test-js:
 test-py:
 	uv run pytest
 
-## lint: architecture boundaries, eslint, tsc build (typecheck + emit, topological), python lint
+## lint: build first (workspace packages resolve through dist), then boundaries, eslint, python lint
 lint:
-	pnpm exec depcruise --config .dependency-cruiser.cjs packages
-	pnpm exec eslint .
 	pnpm -r build
 	@tools/check_dist_importable.sh
+	pnpm exec depcruise --config .dependency-cruiser.cjs packages
+	pnpm exec eslint .
 	uv run ruff check .
 
 ## sbom: CycloneDX 1.5 for both ecosystems, validated; CI uploads dist/sbom.cdx.json
