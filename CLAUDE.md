@@ -83,7 +83,7 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 | `make setup` | Install JS (pnpm) and Python (uv) workspaces from lockfiles |
 | `make verify` | Full local gate: verify-tree + gates + lint + test (+ licence from 1.1.3, provenance from 4.1.1) |
 | `make verify-tree` | Directories from git's file view diffed against `tools/expected-tree.txt` |
-| `make gates` | Negative tests: each gate must pass clean, then reject a planted violation |
+| `make gates` | Negative tests: each gate must pass clean, then reject a planted violation (boundary, tree, licence x3, entropy x2, vocabulary) |
 | `make test` | vitest + pytest |
 | `make lint` | dependency-cruiser, ESLint (`eslint.config.mjs`: recommended on packages/, entropy ban), tsc, ruff (S311) |
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
@@ -99,5 +99,5 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 survey captures · `tools/` CLIs · `docs/` · `.github/workflows/`
 
 ## Current phase
-**Phase 2 of 12 — Semantic Layer & Verification Engine.** Next sub-chunk: **2.1.1 Domain Interface Definition.**
+**Phase 2 of 12 — Semantic Layer & Verification Engine.** Next sub-chunk: **2.1.2 Commerce Domain Implementation.**
 Authoritative state lives in `progress.md`; update that, not this line, unless the phase changes.

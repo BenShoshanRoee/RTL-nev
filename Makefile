@@ -19,6 +19,7 @@ gates:
 	@tools/test_verify_tree_gate.sh
 	@tools/test_licence_gate.sh
 	@tools/test_rng_gate.sh
+	@tools/test_vocab_gate.sh
 
 test: test-js test-py
 

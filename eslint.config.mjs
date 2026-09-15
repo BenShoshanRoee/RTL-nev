@@ -41,6 +41,25 @@ export default tseslint.config(
       ],
     },
   },
+  // core-semantic is domain-agnostic: no commerce or insurance vocabulary in identifiers or
+  // string literals. The insurance stub (2.1.3) is the runtime check; this is the static one.
+  // Word boundaries respect camelCase: cartTotal and orders fail, production and ordered pass.
+  {
+    files: ["packages/core-semantic/src/**/*.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "Identifier[name=/(^|[^a-zA-Z])(product|Product|PRODUCT|cart|Cart|CART|price|Price|PRICE|checkout|Checkout|CHECKOUT|order|Order|ORDER|coupon|Coupon|COUPON|sku|Sku|SKU|customer|Customer|CUSTOMER|inventory|Inventory|INVENTORY|shipping|Shipping|SHIPPING|payment|Payment|PAYMENT|catalog|Catalog|CATALOG|policy|Policy|POLICY|claim|Claim|CLAIM|premium|Premium|PREMIUM|beneficiary|Beneficiary|BENEFICIARY)s?($|[^a-z])/]",
+          message: "no domain vocabulary in core-semantic: this word belongs to a domain package",
+        },
+        {
+          selector: "Literal[value=/(^|[^a-zA-Z])(product|Product|PRODUCT|cart|Cart|CART|price|Price|PRICE|checkout|Checkout|CHECKOUT|order|Order|ORDER|coupon|Coupon|COUPON|sku|Sku|SKU|customer|Customer|CUSTOMER|inventory|Inventory|INVENTORY|shipping|Shipping|SHIPPING|payment|Payment|PAYMENT|catalog|Catalog|CATALOG|policy|Policy|POLICY|claim|Claim|CLAIM|premium|Premium|PREMIUM|beneficiary|Beneficiary|BENEFICIARY)s?($|[^a-z])/]",
+          message: "no domain vocabulary in core-semantic: this word belongs to a domain package",
+        },
+      ],
+    },
+  },
   // The one legitimate home of entropy primitives.
   { files: ["packages/core-semantic/src/rng.ts"], rules: { "no-restricted-properties": "off" } },
   // Upstream simulator code (sim/os, sim/system, the two reference apps, upstream tests and
