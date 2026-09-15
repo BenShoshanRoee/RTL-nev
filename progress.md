@@ -25,14 +25,14 @@ None. 1.1.3 has not begun.
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
 | 1.1.2 | Push | Commit B is local only. Say "push" to publish both 1.1.2 commits. |
-| 1.1.3 | 🔧 Brandlist | `tools/licence/brandlist.txt`: ~150 Israeli retail, bank and payment brands, Hebrew and English. The brand guard cannot be tested without it. |
+| 1.1.3 | 🔧 Brandlist review | Draft at `tools/licence/brandlist.txt`. Fix Hebrew spellings, delete wrong entries, add missing ones. |
 
 ## Operator queue (not blocking code, time-sensitive)
 | Item | Sub-chunk | Why it can't wait | Status |
 |---|---|---|---|
 | Buyer pipeline tracker + target list | 11.1.1 | Relationships take a quarter to form; plan says start in the Phase 1 window | Not started |
 | Entity, invoicing, accountant | 10.2.1 | Long lead time; buyers pay net 30–60 | Not started |
-| Populate `brandlist.txt` (~150 Israeli retail/bank/payment brands, he+en) | 1.1.3 | Brand guard is a build gate from 1.1.3 onward | Not started |
+| Review `tools/licence/brandlist.txt` draft (agent-written, Hebrew spellings unverified) | 1.1.3 | Brand guard is a build gate from 1.1.3 onward | Draft written 2026-09-15; awaiting operator review |
 | Read MobileGym licences in full before purge | 1.1.2 | Purge is a single auditable commit; must be right first time | Done 2026-09-15 |
 | Open one trivial upstream PR to MobileGym (typo or doc fix) | 1.1.2 | Proves the contribution process before 11.2.4 relies on it | Not started |
 

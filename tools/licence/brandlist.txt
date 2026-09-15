@@ -1,0 +1,319 @@
+# Brand guard list. DRAFT written by the engineering agent on 2026-09-15; the operator reviews
+# every line before 1.1.3 turns this into a build gate. Hebrew spellings in particular need a
+# native eye: fix, delete, add.
+#
+# Format: one term per line, UTF-8. Lines starting with # are comments. Blank lines ignored.
+# Matching (defined in 1.1.3): case-insensitive, whole-word, applied to file names and to text
+# in every tracked file outside refs/ and docs/business/. A hit fails the build unless
+# tools/licence/policy.yaml carries a dated waiver naming the path and the reason.
+#
+# Scope: Israeli and international retailers, marketplaces, delivery, banks, card issuers,
+# payment brands, and telecom carriers a shopper meets in a checkout flow. Big-tech platform
+# names (Google, Apple, Meta, Microsoft) are deliberately NOT here: they appear legitimately in
+# code and docs (Apple Pay, Google Pay, Google Maps) and the guard would drown in false hits.
+# The payment products are listed instead.
+#
+# Known collisions with ordinary vocabulary, to be handled by whole-word matching plus a waiver
+# where a common noun is unavoidable: Fox, Max, Golf, Next, Wish, Bit, Cal, Bug, Ace, Delta,
+# Mango, Be, Yes, Hot, Victory, Pepper, Hever, One Zero.
+
+# ---- Supermarkets and grocery ----
+Shufersal
+שופרסל
+Rami Levy
+רמי לוי
+Victory
+ויקטורי
+Yochananof
+יוחננוף
+Osher Ad
+אושר עד
+Mega
+מגה
+Tiv Taam
+טיב טעם
+Hatzi Hinam
+חצי חינם
+Yenot Bitan
+יינות ביתן
+Carrefour
+קרפור
+Super-Pharm
+Super Pharm
+סופר פארם
+Good Pharm
+גוד פארם
+AM:PM
+AMPM
+Super Yuda
+סופר יודה
+Freshmarket
+פרשמרקט
+Keshet Teamim
+קשת טעמים
+Zol Ubegadol
+זול ובגדול
+Machsanei Hashuk
+מחסני השוק
+Stop Market
+סטופ מרקט
+Shuk Mahane Yehuda
+Cofix
+קופיקס
+
+# ---- Fashion and department stores ----
+Castro
+קסטרו
+Fox
+פוקס
+Fox Home
+פוקס הום
+Renuar
+רנואר
+Golf
+גולף
+Golf & Co
+H&O
+Hoodies
+הודיס
+Zara
+זארה
+H&M
+Terminal X
+טרמינל איקס
+Adika
+עדיקה
+Laline
+ללין
+Delta
+דלתא
+Honigman
+הוניגמן
+Twentyfourseven
+Next
+נקסט
+American Eagle
+אמריקן איגל
+Nike
+נייק
+Adidas
+אדידס
+Puma
+פומה
+Mango
+מנגו
+Shein
+שיאין
+Asos
+Hamashbir
+המשביר
+המשביר לצרכן
+Golbary
+גולברי
+Crazy Line
+קרייזי ליין
+Timberland
+Nautica
+Steve Madden
+Aldo
+Scoop
+Naaman
+נעמן
+Vardinon
+ורדינון
+Kitan
+כיתן
+Ikea
+איקאה
+Home Center
+הום סנטר
+Ace
+אייס
+Max Stock
+מקס סטוק
+Toys R Us
+טויס אר אס
+Kfar Hashaashuim
+כפר השעשועים
+Steimatzky
+סטימצקי
+Tzomet Sfarim
+צומת ספרים
+
+# ---- Electronics ----
+KSP
+קיי אס פי
+Ivory
+אייבורי
+Bug
+באג
+Machsanei Hashmal
+מחסני חשמל
+Shekem Electric
+שקם אלקטריק
+Electra
+אלקטרה
+Big Electric
+ביג אלקטריק
+Payngo
+פיינגו
+Lastprice
+לאסטפרייס
+Zap
+זאפ
+Wisebuy
+ווייסבאי
+
+# ---- Online marketplaces ----
+Amazon
+אמזון
+AliExpress
+אליאקספרס
+eBay
+איביי
+Temu
+טמו
+Wish
+Walmart
+iHerb
+אייהרב
+Groo
+גרו
+Baligam
+בליגם
+Etsy
+Booking.com
+Airbnb
+
+# ---- Delivery and mobility ----
+Wolt
+וולט
+10bis
+תן ביס
+Cibus
+סיבוס
+Yango
+יאנגו
+Gett
+גט
+Uber
+Israel Post
+דואר ישראל
+Boxit
+בוקסיט
+Pango
+פנגו
+Cellopark
+סלופארק
+Rav-Kav
+רב קו
+
+# ---- Banks ----
+Bank Hapoalim
+Hapoalim
+בנק הפועלים
+הפועלים
+Bank Leumi
+Leumi
+בנק לאומי
+לאומי
+Discount Bank
+Bank Discount
+בנק דיסקונט
+דיסקונט
+Mizrahi Tefahot
+Mizrahi-Tefahot
+מזרחי טפחות
+First International Bank
+Habeinleumi
+הבינלאומי
+Bank Yahav
+בנק יהב
+Otsar Hahayal
+אוצר החייל
+Mercantile
+מרכנתיל
+Bank of Jerusalem
+בנק ירושלים
+Union Bank
+בנק איגוד
+Bank Massad
+בנק מסד
+One Zero
+וואן זירו
+Pepper
+פפר
+Bank of Israel
+בנק ישראל
+Postal Bank
+בנק הדואר
+
+# ---- Card issuers and payment brands ----
+Visa
+ויזה
+Mastercard
+מאסטרקארד
+American Express
+Amex
+אמריקן אקספרס
+Isracard
+ישראכרט
+Cal
+כאל
+Max
+מקס
+Leumi Card
+לאומי קארד
+Diners
+דיינרס
+PayPal
+פייפאל
+Bit
+ביט
+PayBox
+פייבוקס
+Apple Pay
+אפל פיי
+Google Pay
+גוגל פיי
+Tranzila
+טרנזילה
+Pelecard
+פלאקארד
+Cardcom
+קארדקום
+Meshulam
+משולם
+Z-Credit
+Hyp
+Klarna
+Buyme
+באיימי
+Hever
+חבר
+Tav Hazahav
+תו הזהב
+Multipass
+מולטיפס
+Cibus Card
+Payme
+
+# ---- Telecom carriers (appear in OTP and account flows) ----
+Cellcom
+סלקום
+Partner
+פרטנר
+Pelephone
+פלאפון
+HOT
+הוט
+HOT Mobile
+Bezeq
+בזק
+012 Mobile
+Golan Telecom
+גולן טלקום
+We4G
+Yes
+יס
+019 Mobile
