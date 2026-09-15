@@ -1,0 +1,414 @@
+{
+ "generated_by": "uv run python -m rtlenv.domain_protocol --vectors",
+ "cases": [
+  {
+   "name": "identical",
+   "before": {
+    "a": {
+     "b": [
+      1,
+      2,
+      {
+       "c": "x"
+      }
+     ]
+    },
+    "n": null
+   },
+   "after": {
+    "a": {
+     "b": [
+      1,
+      2,
+      {
+       "c": "x"
+      }
+     ]
+    },
+    "n": null
+   },
+   "changeset": {
+    "changes": []
+   },
+   "canonical_before": "{\"a\":{\"b\":[1,2,{\"c\":\"x\"}]},\"n\":null}",
+   "hash_before": "8ea619b0472d82648b1e83d81e6850fa53ee6b6d87e79a5fefd46671dbae51c0",
+   "hash_after": "8ea619b0472d82648b1e83d81e6850fa53ee6b6d87e79a5fefd46671dbae51c0"
+  },
+  {
+   "name": "leaf-changes",
+   "before": {
+    "a": 1,
+    "b": {
+     "x": 1,
+     "y": 2
+    },
+    "l": [
+     1,
+     2
+    ]
+   },
+   "after": {
+    "a": 2,
+    "b": {
+     "x": 1,
+     "z": 3
+    },
+    "l": [
+     1,
+     2,
+     3
+    ]
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "a"
+      ],
+      "kind": "changed",
+      "before": 1,
+      "after": 2
+     },
+     {
+      "path": [
+       "b",
+       "y"
+      ],
+      "kind": "removed",
+      "before": 2
+     },
+     {
+      "path": [
+       "b",
+       "z"
+      ],
+      "kind": "added",
+      "after": 3
+     },
+     {
+      "path": [
+       "l",
+       2
+      ],
+      "kind": "added",
+      "after": 3
+     }
+    ]
+   },
+   "canonical_before": "{\"a\":1,\"b\":{\"x\":1,\"y\":2},\"l\":[1,2]}",
+   "hash_before": "271d7128c398dd446f0ae167ff30fb46910ea8acf1dbc984eb241087fab484ed",
+   "hash_after": "ea43d9efb842f08f5d51072e3057745eb808a59b4b2303dc61de2334d538d624"
+  },
+  {
+   "name": "type-change",
+   "before": {
+    "a": {
+     "x": 1
+    }
+   },
+   "after": {
+    "a": [
+     1
+    ]
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "a"
+      ],
+      "kind": "changed",
+      "before": {
+       "x": 1
+      },
+      "after": [
+       1
+      ]
+     }
+    ]
+   },
+   "canonical_before": "{\"a\":{\"x\":1}}",
+   "hash_before": "b6dc583443509414420dc9334bc187790e483f659799a5c2c27e4f0bad1ee958",
+   "hash_after": "ff5464c34287e9ec505b9f76573a4cb0bd408c96c6537b458fdd993fc7c615ce"
+  },
+  {
+   "name": "keyed-collection",
+   "before": {
+    "k": {
+     "1": {
+      "v": 1
+     },
+     "2": {
+      "v": 2
+     }
+    }
+   },
+   "after": {
+    "k": {
+     "2": {
+      "v": 5
+     },
+     "3": {
+      "v": 3
+     }
+    }
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "k",
+       "1"
+      ],
+      "kind": "removed",
+      "before": {
+       "v": 1
+      }
+     },
+     {
+      "path": [
+       "k",
+       "2",
+       "v"
+      ],
+      "kind": "changed",
+      "before": 2,
+      "after": 5
+     },
+     {
+      "path": [
+       "k",
+       "3"
+      ],
+      "kind": "added",
+      "after": {
+       "v": 3
+      }
+     }
+    ]
+   },
+   "canonical_before": "{\"k\":{\"1\":{\"v\":1},\"2\":{\"v\":2}}}",
+   "hash_before": "79a1304d79530a049cfe49e02c6031adfdb5a4bd24d63c12882336300766d981",
+   "hash_after": "fa3238e8b3bc77bdb9137055a9c7cf5532bcad354f2808a2d8d45a62ebfdba0d"
+  },
+  {
+   "name": "array-shrink",
+   "before": {
+    "arr": [
+     1,
+     [
+      2,
+      3
+     ],
+     4
+    ]
+   },
+   "after": {
+    "arr": [
+     1,
+     [
+      2
+     ]
+    ]
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "arr",
+       1,
+       1
+      ],
+      "kind": "removed",
+      "before": 3
+     },
+     {
+      "path": [
+       "arr",
+       2
+      ],
+      "kind": "removed",
+      "before": 4
+     }
+    ]
+   },
+   "canonical_before": "{\"arr\":[1,[2,3],4]}",
+   "hash_before": "e0eea341037d427ac58c15a3a098a27dad89a88748d22a1f84272a6d8f53b4f4",
+   "hash_after": "6f45f8220ec6acde4ac6590692121c35644ab003de58f622402beeac5d2b4b04"
+  },
+  {
+   "name": "unicode",
+   "before": {
+    "שם": "דני",
+    "ar": "مرحبا",
+    "q": "a\"b\\c\n"
+   },
+   "after": {
+    "שם": "רות",
+    "ar": "مرحبا",
+    "q": "a\"b\\c\n"
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "שם"
+      ],
+      "kind": "changed",
+      "before": "דני",
+      "after": "רות"
+     }
+    ]
+   },
+   "canonical_before": "{\"ar\":\"مرحبا\",\"q\":\"a\\\"b\\\\c\\n\",\"שם\":\"דני\"}",
+   "hash_before": "d7748a07440bf584a115a797c24665b4576ec41c079d18dfa6c0509e71c92c7e",
+   "hash_after": "b0938bfd434fc11d889fb9a8e5c539a93fec93a682afaab20fdeb2dbc9745985"
+  },
+  {
+   "name": "nested-add-remove",
+   "before": {
+    "a": {
+     "b": {
+      "c": 1
+     }
+    }
+   },
+   "after": {
+    "a": {
+     "b": {}
+    },
+    "d": {
+     "e": {
+      "f": [
+       true,
+       false,
+       null
+      ]
+     }
+    }
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "a",
+       "b",
+       "c"
+      ],
+      "kind": "removed",
+      "before": 1
+     },
+     {
+      "path": [
+       "d"
+      ],
+      "kind": "added",
+      "after": {
+       "e": {
+        "f": [
+         true,
+         false,
+         null
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "canonical_before": "{\"a\":{\"b\":{\"c\":1}}}",
+   "hash_before": "23b7fe02eabd305fc16aa735008b290c197a7e0514c2a4a31f2fe2d68825394e",
+   "hash_after": "a34da909c39c22ce27f88dc237362732a3cc8c39d3a7eb7ee5ed688b68405da4"
+  },
+  {
+   "name": "money-fields",
+   "before": {
+    "total": {
+     "minor": 1990,
+     "currency": "ILS"
+    }
+   },
+   "after": {
+    "total": {
+     "minor": 2490,
+     "currency": "ILS"
+    }
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "total",
+       "minor"
+      ],
+      "kind": "changed",
+      "before": 1990,
+      "after": 2490
+     }
+    ]
+   },
+   "canonical_before": "{\"total\":{\"currency\":\"ILS\",\"minor\":1990}}",
+   "hash_before": "4d0d7a332eda6143dbecd784e5f9fbb786f165d93aa5f493b219abb7954c02b7",
+   "hash_after": "e6790a3397ba42d621f1ec1caeec2ad340805e17ca9dd961296ae7cdc7c0c062"
+  },
+  {
+   "name": "empty-to-full",
+   "before": {},
+   "after": {
+    "x": {
+     "y": [
+      1,
+      {
+       "z": "q"
+      }
+     ]
+    }
+   },
+   "changeset": {
+    "changes": [
+     {
+      "path": [
+       "x"
+      ],
+      "kind": "added",
+      "after": {
+       "y": [
+        1,
+        {
+         "z": "q"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "canonical_before": "{}",
+   "hash_before": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+   "hash_after": "78219ca2f1b595339b2252fd495d81e0f4312a7ce11afdc48bde8fa5f78b1ce5"
+  },
+  {
+   "name": "key-order-irrelevant",
+   "before": {
+    "z": 1,
+    "a": 2,
+    "m": {
+     "q": 1,
+     "b": 2
+    }
+   },
+   "after": {
+    "a": 2,
+    "m": {
+     "b": 2,
+     "q": 1
+    },
+    "z": 1
+   },
+   "changeset": {
+    "changes": []
+   },
+   "canonical_before": "{\"a\":2,\"m\":{\"b\":2,\"q\":1},\"z\":1}",
+   "hash_before": "e3fa38e1a816ad1bfb975ac0deb0a1c01184f8f777ff2ad57bee38ae5d2b1202",
+   "hash_after": "e3fa38e1a816ad1bfb975ac0deb0a1c01184f8f777ff2ad57bee38ae5d2b1202"
+  }
+ ]
+}

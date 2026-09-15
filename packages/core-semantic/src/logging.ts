@@ -46,13 +46,13 @@ const CONTEXT_KEYS = ["ts", "level", "run_id", "seed", "task_id", "component", "
 
 /** Serialise a record as one line with a fixed leading key order and sorted extras. */
 export function toJsonLine(record: LogRecord): string {
-  const ordered: Record<string, unknown> = {};
-  for (const k of CONTEXT_KEYS) if (record[k] !== undefined) ordered[k] = record[k];
+  const arranged: Record<string, unknown> = {};
+  for (const k of CONTEXT_KEYS) if (record[k] !== undefined) arranged[k] = record[k];
   const extras = Object.keys(record)
     .filter((k) => !(CONTEXT_KEYS as readonly string[]).includes(k))
     .sort();
-  for (const k of extras) ordered[k] = record[k];
-  return JSON.stringify(ordered);
+  for (const k of extras) arranged[k] = record[k];
+  return JSON.stringify(arranged);
 }
 
 /** A sink writing JSON lines through `write` (default: console.log). */

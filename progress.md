@@ -1,7 +1,7 @@
 # Progress
 
-**Current sub-chunk:** 2.1.1 — Domain Interface Definition (not started)
-**Last updated:** 2026-09-15 (1.1.5 complete; Phase 1 code complete)
+**Current sub-chunk:** 2.1.2 — Commerce Domain Implementation (not started)
+**Last updated:** 2026-09-16 (2.1.1 complete)
 **Phase:** 2 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
@@ -15,6 +15,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 2.1.1 | Domain Interface Definition | 2026-09-16 | `make verify` (47 vitest incl. 9 conformance checks on a toy domain, state parity fixture, KWD money; 41 pytest); `make gates` incl. `tools/test_vocab_gate.sh`; landed via PR (see Decisions) | `DomainDefinition`, `execute()`, `diff/patch/hashState`, `Money`, `conformanceChecks()`, Python mirror. No new dependencies. |
 | 1.1.5 | CI/CD Pipeline | 2026-09-15 | ci run 35019454784 on af8bb48: all 7 jobs green; branch run 35019091689 failed naming the planted test; `gh run download 35019454784 -n sbom`; release run 35019829058 for tag v0.0.1 created the Release with wheel + SBOM + sim build; `docker pull ghcr.io/benshoshanroee/rtl-nev:0.0.1` serves / and /cdn/; `make release` and `make smoke` locally | Ruleset 23489863 requires all 7 checks, strict. Placeholder Dockerfile until 8.1.2. |
 | 1.1.4 | Determinism & Logging Foundations | 2026-09-15 | `make verify` (exit 0: 17 vitest + 19 pytest tests incl. cross-language parity; `make gates` incl. `tools/test_rng_gate.sh`); `rg -n 'Math\.random\(' packages/ sim/apps/Storefront/` returns only rng.ts | sfc32 + SHA-256 child seeds in both languages, shared fixture; structured JSON loggers; ESLint entropy ban; pytest lint + ruff S311. Local only until pushed. |
 | 1.1.3 | Licence Firewall CI | 2026-09-15 | `make verify` (exit 0, incl. `make gates` with the three licence negatives and `make licence`); GitHub Actions run 35014296443 on 58e3852: identical `scan[...]: 0 finding(s)` lines to the local run | scan.py modes nc/deps/brand/all; policy.yaml with dated waivers; two-tier brandlist; SHA-pinned workflow. Local only until pushed. |
@@ -22,7 +23,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. Phase 1 code sub-chunks are complete; 2.1.1 has not begun.
+None. 2.1.2 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
@@ -89,6 +90,14 @@ None. Phase 1 code sub-chunks are complete; 2.1.1 has not begun.
 | 2026-09-15 | Placeholder Dockerfile: nginx serving the built simulator and `content/` at `/cdn/` | The release path needs an image now; 8.1.2 designs the buyer image and replaces this file. | 1.1.5 |
 | 2026-09-15 | Ruleset 23489863 set by API to require all seven ci checks, strict up-to-date | The operator-created ruleset had an empty checks list, which enforced nothing. Operator approved the API change. | 1.1.5 |
 | 2026-09-15 | Licence gate test installs its GPL fixture with `--prefer-offline`, printing pnpm's error on failure | `--offline` failed on CI's cold store and the script hid the message; first main run failed at `make gates`. | 1.1.5 |
+| 2026-09-16 | Every operation declares `sample(state, rng)` returning legal params or null | The conformance suite and 2.1.2's 10,000-sequence property test must drive any domain without knowing its vocabulary. A domain that cannot sample its own operations cannot be tested blind. Plan text updated. | 2.1.1 |
+| 2026-09-16 | State numbers are integers only; `canonicalJson` throws on a float | Money is minor units already; JS and Python format floats differently, which would break cross-language hashing and therefore judging. | 2.1.1 |
+| 2026-09-16 | Entity collections are records keyed by id, not arrays | Array diffs are index-based; an insertion would shift every later element into the changeset. Documented in `domain.ts`; the conformance suite does not enforce it (it cannot tell a collection from a list of primitives). | 2.1.1 |
+| 2026-09-16 | `execute()` freezes a copy of the input state and throws `MutationError` if `apply` mutates it; a result violating an invariant is rejected with the untouched input state | A silently mutating operation would corrupt the before-state the judge diffs against. | 2.1.1 |
+| 2026-09-16 | `Money.scale()` uses BigInt with explicit rounding (`half-up` default, `half-even`, `down`, `up`) | VAT and discounts in 2.1.2 need integer-safe percentages; the rounding mode must be a visible choice, never a float artefact. | 2.1.1 |
+| 2026-09-16 | Currency table covers ILS, the Gulf three-decimal currencies, the majors and JPY (exponent 0) | Arabic markets in Phase 12 become a content swap; the table is the only place decimals live. | 2.1.1 |
+| 2026-09-16 | `no-domain-vocabulary` is an ESLint `no-restricted-syntax` rule with camelCase-aware word boundaries | Plain substring matching flagged `ordered` and `"production"`; the boundary form fails `cartTotal`, `orders`, `Price` and passes `production`, `recorder`, `ordered`. Probed both ways. | 2.1.1 |
+| 2026-09-16 | Conformance suite is test-runner agnostic (`conformanceChecks()` returns named results) | core-semantic must not import vitest; each domain's test file turns results into cases, so the insurance stub and commerce run the identical checks. | 2.1.1 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)
@@ -114,6 +123,8 @@ None. Phase 1 code sub-chunks are complete; 2.1.1 has not begun.
 | `bench/rtlenv/logging.py` shadows the stdlib name inside the package namespace | 1.1.4 | Plan names the file; absolute imports keep it safe | If any module needs stdlib logging, import it as `_stdlib_logging`; revisit in 7.1.2 |
 | Dockerfile is a placeholder (nginx + static sim); no bench layer, no Playwright, no healthcheck beyond `/` | 1.1.5 | 8.1.2 owns the buyer image | 8.1.2 replaces `Dockerfile` and `.dockerignore` |
 | Container is linux/amd64 only (runs under emulation on Apple silicon) | 1.1.5 | Single `docker build` on an amd64 runner | 8.1.2: multi-arch build (buildx) if buyers run arm64 |
+| Path sorting in `diff` compares object keys by UTF-16 code units in TS and code points in Python; identical for BMP characters (Hebrew, Arabic, Latin), divergent only for astral-plane keys | 2.1.1 | Keys with emoji are not a realistic state shape | If a domain ever keys a record by non-BMP text, canonicalise keys or add a fixture case |
+| `FieldSpec` validation of params is shallow (type only); `record` params are not validated against the entity schema | 2.1.1 | Sufficient for 2.1.2's operations | 2.2.4 task schema, or the first operation taking a nested record |
 | Release tag `v0.0.1` exists as a release-path test; the package is not a real deliverable | 1.1.5 | Criterion 4 required a real tag | 8.1.3 versioning policy decides whether to keep or yank it |
 | No pull-request requirement on `main`: direct pushes still allowed | 1.1.5 | Solo operator; PR flow adds friction now | Revisit when a second contributor or 6.2.3 author PRs arrive |
 | Kept system apps run on empty stubs (no alarms, cities, contacts, SMS settings) | 1.1.2 | Content arrives with Hebrew resources in Phase 3 | 3.3.1 or first task that needs SMS/Contacts content |
