@@ -85,7 +85,7 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 | `make verify-tree` | Directories from git's file view diffed against `tools/expected-tree.txt` |
 | `make gates` | Negative tests: each gate must pass clean, then reject a planted violation (boundary, tree, licence x3, entropy x2, vocabulary) |
 | `make test` | vitest + pytest + the judge meta-test harness |
-| `make metatest` | Per-task fixture counts, verdict mismatches, mutation score, escaped mutants |
+| `make metatest` | Per-task fixture counts, verdict mismatches, mutation score, escaped mutants, coverage matrix (sole/refused per check), redundant clusters |
 | `make lint` | dependency-cruiser, ESLint (`eslint.config.mjs`: recommended on packages/, entropy ban), tsc, ruff (S311) |
 | `make provenance` | Audit `content/MANIFEST.json` against every file under `content/` |
 | `make licence` | `scan.py --mode all`: NC guard + content manifest, dependency licences, brand guard. Same command as CI |

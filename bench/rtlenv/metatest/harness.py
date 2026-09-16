@@ -387,6 +387,75 @@ def mutation_run(entry: TaskEntry) -> MutationReport:
     return MutationReport(total=len(ms), caught=caught, escaped=escaped)
 
 
+# ----------------------------------------------------------------------------- coverage
+@dataclass(frozen=True)
+class CheckCoverage:
+    label: str
+    refused: int
+    sole: int
+    fixtures: list[str]
+
+
+@dataclass(frozen=True)
+class Cluster:
+    refusers: list[str]
+    fixtures: list[str]
+
+
+@dataclass(frozen=True)
+class CoverageReport:
+    checks: list[CheckCoverage]
+    clusters: list[Cluster]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "checks": [c.__dict__ for c in self.checks],
+            "clusters": [c.__dict__ for c in self.clusters],
+        }
+
+
+def coverage(entry: TaskEntry, cluster_min: int = 3) -> CoverageReport:
+    """Which checks refuse which fixtures. `sole` counts fixtures a check refuses on its own:
+    a check with sole == 0 is never tested in isolation. Clusters are groups of fixtures
+    refused by the identical set of checks (redundant near-misses)."""
+    goals = entry.task.get("goal_matchers", [])
+    subtrees = entry.task.get("unchanged_subtrees", [])
+    labels = [
+        f"goal[{i}] {g.get('kind')} {'/'.join(map(str, g.get('path', [])))}"
+        for i, g in enumerate(goals)
+    ]
+    labels += [f"unchanged[{i}] {'/'.join(map(str, p))}" for i, p in enumerate(subtrees)]
+    refused_by: dict[str, list[str]] = {label: [] for label in labels}
+    sole_by: dict[str, list[str]] = {label: [] for label in labels}
+    by_set: dict[tuple[str, ...], list[str]] = {}
+    for f in sorted(entry.fixtures, key=lambda x: x.name):
+        if f.kind == "correct":
+            continue
+        v = judge(entry.task, f.rollout)
+        refusers = [labels[i] for i, r in enumerate(v.evidence["goal"]) if not r["ok"]]
+        violated = v.evidence["violated_subtrees"]
+        refusers += [
+            labels[len(goals) + i] for i, sp in enumerate(subtrees) if list(sp) in violated
+        ]
+        for r in refusers:
+            refused_by[r].append(f.name)
+        if len(refusers) == 1:
+            sole_by[refusers[0]].append(f.name)
+        by_set.setdefault(tuple(refusers), []).append(f.name)
+    checks = [
+        CheckCoverage(
+            label=lb, refused=len(refused_by[lb]), sole=len(sole_by[lb]), fixtures=refused_by[lb]
+        )
+        for lb in labels
+    ]
+    clusters = [
+        Cluster(refusers=list(k), fixtures=v)
+        for k, v in sorted(by_set.items())
+        if len(v) >= cluster_min
+    ]
+    return CoverageReport(checks=checks, clusters=clusters)
+
+
 # ----------------------------------------------------------------------------- run
 def run(root: Path = TASKS_ROOT) -> HarnessReport:
     t0 = time.perf_counter()
@@ -409,6 +478,7 @@ def run(root: Path = TASKS_ROOT) -> HarnessReport:
         by_author = {}
         for f in e.fixtures:
             by_author[f.author] = by_author.get(f.author, 0) + 1
+        cov = coverage(e) if not (p_min or p_ver) else CoverageReport([], [])
         rows.append(
             {
                 "id": e.id,
@@ -418,6 +488,7 @@ def run(root: Path = TASKS_ROOT) -> HarnessReport:
                 "caught": rep.caught,
                 "escaped": rep.escaped,
                 "problems": len(p_min + p_ver),
+                "coverage": cov.to_dict(),
             }
         )
     elapsed = time.perf_counter() - t0
@@ -443,6 +514,17 @@ def main() -> None:
         )
         for m in r["escaped"]:
             print(f"  escaped mutant: {m}  (add a fixture that only this check refuses)")
+        cov = r["coverage"]
+        if cov["checks"]:
+            print("  coverage (sole/refused):")
+            for c in cov["checks"]:
+                flag = "  <- never the sole refuser" if c["sole"] == 0 else ""
+                print(f"    {c['sole']:2d}/{c['refused']:2d}  {c['label']}{flag}")
+            for cl in cov["clusters"]:
+                print(
+                    f"  cluster: {len(cl['fixtures'])} fixtures refused by exactly"
+                    f" {cl['refusers']}: {cl['fixtures']}"
+                )
     for p in report.problems:
         print(f"PROBLEM: {p}")
     n_pw = sum(r["fixtures"].get("plausibly_wrong", 0) for r in report.tasks)

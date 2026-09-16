@@ -119,3 +119,57 @@ def test_a_fixture_from_the_wrong_base_state_is_refused(tmp_path: Path) -> None:
     entry = discover_tasks(tmp_path)[0]
     problems = check_minimums(entry) + check_verdicts(entry)
     assert any("state_ref" in p or "base state" in p for p in problems)
+
+
+# ---- coverage matrix ------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("entry", TASKS, ids=lambda e: e.id)
+def test_every_check_has_a_fixture_it_alone_refuses(entry) -> None:
+    """Sharper than mutation: each goal matcher and each protected subtree must be the sole reason
+    at least one fixture is refused. A check that only ever fails alongside others is untested
+    in isolation and its weakening could hide behind its neighbours."""
+    from rtlenv.metatest.harness import coverage
+
+    cov = coverage(entry)
+    assert cov.checks, "no checks"
+    gaps = [c.label for c in cov.checks if c.sole == 0]
+    assert gaps == [], f"checks never the sole refuser: {gaps}"
+    for c in cov.checks:
+        assert c.refused >= c.sole >= 0
+
+
+def test_coverage_reports_redundant_clusters_and_is_deterministic(tmp_path: Path) -> None:
+    """Three fixtures refused by the identical set of checks are a cluster worth knowing about."""
+    import json
+
+    from rtlenv.metatest.harness import coverage
+
+    src_dir = next(TASKS_ROOT.rglob("task.yaml")).parent
+    dst = tmp_path / "he" / "commerce" / src_dir.name
+    (dst / "fixtures").mkdir(parents=True)
+    (dst / "task.yaml").write_text(
+        (src_dir / "task.yaml").read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    base = json.loads((src_dir / "fixtures" / "wrong_quantity.json").read_text(encoding="utf-8"))
+    for i in range(3):
+        clone = {**base, "name": f"clone_{i}", "cheat": f"clone {i} of wrong_quantity"}
+        (dst / "fixtures" / f"clone_{i}.json").write_text(json.dumps(clone), encoding="utf-8")
+    for name in ("correct", "nothing_done_declared_done"):
+        (dst / "fixtures" / f"{name}.json").write_text(
+            (src_dir / "fixtures" / f"{name}.json").read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    entry = discover_tasks(tmp_path)[0]
+    cov = coverage(entry)
+    assert any(set(c.fixtures) == {"clone_0", "clone_1", "clone_2"} for c in cov.clusters), (
+        cov.clusters
+    )
+    assert coverage(entry).to_dict() == cov.to_dict()
+
+
+def test_harness_cli_prints_the_coverage_matrix() -> None:
+    proc = subprocess.run(
+        [sys.executable, "-m", "rtlenv.metatest.harness"], capture_output=True, text=True
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "coverage" in proc.stdout and "sole" in proc.stdout
