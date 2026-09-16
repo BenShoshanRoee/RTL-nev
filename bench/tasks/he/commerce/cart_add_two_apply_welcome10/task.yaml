@@ -1,9 +1,12 @@
-# First real task. Scaffolded by the engineering agent in sub-chunk 2.2.3 to prove the harness;
-# the plausibly-wrong fixtures marked author: agent-draft are placeholders for the operator's
-# hand-written transcripts (plan 2.2.3 manual step).
+# First real task (sub-chunk 2.2.3). Fixtures: 16 agent-draft plus 15 written blind by a separate
+# agent (author: plan-agent). Routing fields (suite, split, difficulty_target, version) per 2.2.4;
+# the directory name is the id's segments after the suite joined by "_".
 id: he.commerce.cart.add_two_apply_welcome10
-suite: core
+suite: commerce
 domain: commerce
+split: train
+difficulty_target: L1
+version: 1
 setup:
   domain: commerce
   seed: 42

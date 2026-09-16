@@ -36,18 +36,18 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 from rtlenv.domain_protocol import patch
 from rtlenv.judge import Rollout, judge
 from rtlenv.judge.reward import DEFAULT_WEIGHTS
-from rtlenv.task.schema import TaskContractError, validate_task
+from rtlenv.task.registry import RegistryError, iter_task_files
+from rtlenv.task.schema import FIXTURE_FLOOR, TaskContractError, validate_definition
+from rtlenv.task.validate import TaskFileError, load_task_file
 
 BENCH = Path(__file__).resolve().parents[2]
 TASKS_ROOT = BENCH / "tasks"
 STATES_ROOT = Path(__file__).resolve().parent / "fixtures" / "states"
 FIXTURE_KINDS = ("correct", "clearly_wrong", "plausibly_wrong")
-MINIMUMS = {"correct": 1, "clearly_wrong": 1, "plausibly_wrong": 3}
+MINIMUMS = dict(FIXTURE_FLOOR)
 MUTATION_THRESHOLD = 0.9
 
 
@@ -191,11 +191,20 @@ def load_fixture(path: Path) -> Fixture:
 
 
 def discover_tasks(root: Path = TASKS_ROOT) -> list[TaskEntry]:
+    """Every task under ``root`` with its fixtures. The task.yaml walk is the registry's."""
     entries: list[TaskEntry] = []
-    for task_file in sorted(Path(root).rglob("task.yaml")):
-        task = yaml.safe_load(task_file.read_text(encoding="utf-8")) or {}
-        fixtures: list[Fixture] = []
+    try:
+        task_files = iter_task_files(Path(root))
+    except RegistryError:
+        return []
+    for task_file in task_files:
         errors: list[str] = []
+        try:
+            task = load_task_file(task_file)
+        except TaskFileError as e:
+            task = {}
+            errors.append(f"{task_file.parent.name}: {e}")
+        fixtures: list[Fixture] = []
         for f in sorted((task_file.parent / "fixtures").glob("*.json")):
             try:
                 fixtures.append(load_fixture(f))
@@ -216,16 +225,20 @@ def discover_tasks(root: Path = TASKS_ROOT) -> list[TaskEntry]:
 # ----------------------------------------------------------------------------- checks
 def check_minimums(entry: TaskEntry) -> list[str]:
     problems = list(entry.load_errors)
+    minimums = dict(MINIMUMS)
     try:
-        validate_task(entry.task)
+        definition = validate_definition(entry.task)
     except TaskContractError as e:
         problems.append(f"{entry.id}: task contract: {e}")
+    else:
+        for kind, n in definition.fixtures.items():
+            minimums[kind] = max(minimums[kind], n)
     counts = {k: sum(1 for f in entry.fixtures if f.kind == k) for k in FIXTURE_KINDS}
-    short = [f"{k}: {counts[k]} of {n} required" for k, n in MINIMUMS.items() if counts[k] < n]
+    short = [f"{k}: {counts[k]} of {n} required" for k, n in minimums.items() if counts[k] < n]
     if short:
-        need = ", ".join(f">= {n} {k}" for k, n in MINIMUMS.items())
+        need = ", ".join(f">= {n} {k}" for k, n in minimums.items())
         problems.append(
-            f"{entry.id}: fixture minimums not met ({'; '.join(short)}); every task needs {need}"
+            f"{entry.id}: fixture minimums not met ({'; '.join(short)}); this task needs {need}"
         )
     names = [f.name for f in entry.fixtures]
     if len(names) != len(set(names)):
