@@ -99,5 +99,5 @@ Filtered pnpm calls always take `--fail-if-no-match`. A gate must pass clean bef
 survey captures · `tools/` CLIs · `docs/` · `.github/workflows/`
 
 ## Current phase
-**Phase 2 of 12 — Semantic Layer & Verification Engine.** Next sub-chunk: **2.1.3 Stub Second Domain.**
+**Phase 2 of 12 — Semantic Layer & Verification Engine.** Next sub-chunk: **2.2.1 State-Diff Judge Core.**
 Authoritative state lives in `progress.md`; update that, not this line, unless the phase changes.
