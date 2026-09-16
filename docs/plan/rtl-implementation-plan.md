@@ -632,23 +632,24 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 **Output:** A task schema, registry and validator
 
 **Files:**
-- `bench/rtlenv/task/schema.py` (extend the 2.2.1 minimal contract: add fields only)
-- `bench/rtlenv/task/registry.py`
-- `bench/rtlenv/task/validate.py`
-- `bench/tests/task/test_schema.py`
+- `bench/rtlenv/task/schema.py` (extend the 2.2.1 minimal contract: add fields only; `validate_definition` layered over `validate_task`)
+- `bench/rtlenv/task/registry.py` (the one `task.yaml` walker; the meta-test harness reuses it)
+- `bench/rtlenv/task/validate.py` (per-file schema plus layout checks; CLI)
+- `bench/tests/task/{test_schema,test_registry}.py`, `bench/tests/task/conftest.py`
+- `bench/tests/test_import_order.py` (every public module imports first in a fresh interpreter; fixed a latent judge/schema import cycle found here)
 
 **Key Logic:**
 - **Extends, never redefines.** The 2.2.1 fields (`id`, `setup`, `goal_matchers`, `unchanged_subtrees`) keep their names and meanings; this sub-chunk adds the authoring concerns below. A task valid under 2.2.1 plus the added mandatory fields is valid here.
-- A task declares: `id`, `suite`, `domain`, `description_template` (slotted, per-language), `setup` (seeded state injection), `milestones`, `goal_matchers`, `unchanged_subtrees`, `cheat_surface` (documented known exploits), `fixtures`, `difficulty_target`.
-- IDs are stable and namespaced: `he.commerce.checkout.coupon_then_variant_change`.
-- Validator rejects a task lacking `unchanged_subtrees` or `cheat_surface`. Both are mandatory.
-- Registry auto-discovers tasks under `bench/tasks/` and exposes splits (`train`, `test`, `pathology`, `calibration`).
+- A task declares: `id`, `suite`, `domain`, `split`, `difficulty_target` (L1–L4), `description_template` (slotted, per-language; the task's own language mandatory, identical identifier slots in every language), `setup` (seeded state injection with `state_ref`), `milestones`, `goal_matchers`, `unchanged_subtrees`, `cheat_surface` (≥3 documented known exploits), optional `fixtures` (per-kind minimums that may raise but never lower the harness floor), optional `version` (positive integer, default 1; licensing and compatibility key on id + version) and `deprecated` (default false; deprecated tasks still run). Unknown fields pass through for 3.2.2.
+- IDs are stable and namespaced: `<lang>.<suite>.<area>.<name>` in lowercase snake case, e.g. `he.commerce.checkout.coupon_then_variant_change`. The directory is derived from the id: `bench/tasks/<lang>/<suite>/<segments after the suite joined by _>/task.yaml`, so a task is located from its id alone and cannot move without changing identity. `suite` equals the id's second segment and the directory (`commerce`, `pathology`, `reference`); `domain` equals `setup.domain`.
+- Validator rejects a task lacking `unchanged_subtrees` or `cheat_surface`. Both are mandatory. It also rejects a protected path deeper than two segments (red-team finding #1: protect subtrees, not leaves), `suite: pathology` without `split: pathology` and the reverse, and `suite: reference` in `split: train` (7.2.1's hold-out, enforced from day one).
+- Registry auto-discovers tasks under `bench/tasks/` (a root parameter, so the wheel can point elsewhere), refuses a root with any invalid or repeated task, orders by id alone, exposes every split (`train`, `test`, `pathology`, `calibration`) and `select(language, suite, domain, split, difficulty, include_deprecated)`. `--list --json` is the machine-readable form 8.1.3's compatibility check diffs.
 
 **Test Criteria:**
-- [ ] `python -m rtlenv.task.validate --all` passes
+- [ ] `uv run python -m rtlenv.task.validate --all` passes
 - [ ] A task missing `unchanged_subtrees` is rejected with a named error
-- [ ] `python -m rtlenv.task.registry --list` shows tasks grouped by suite and split
-- [ ] Task IDs are stable across runs (no ordering dependence)
+- [ ] `uv run python -m rtlenv.task.registry --list` shows tasks grouped by suite and split
+- [ ] Task IDs are stable across runs (no ordering dependence): the registry built from the file list in three different orders serialises identically, and two CLI runs are byte-identical
 
 **Dependencies:** 2.2.3
 

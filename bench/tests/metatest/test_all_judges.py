@@ -61,15 +61,15 @@ def test_registering_a_task_without_fixtures_fails_with_a_clear_message(tmp_path
     task_dir.mkdir(parents=True)
     src = next(TASKS_ROOT.rglob("task.yaml"))
     task = yaml.safe_load(src.read_text(encoding="utf-8"))
-    task["id"] = "he.commerce.empty_task"
+    task["id"] = "he.commerce.cart.empty_task"
     (task_dir / "task.yaml").write_text(yaml.safe_dump(task, allow_unicode=True), encoding="utf-8")
     entries = discover_tasks(tmp_path)
-    assert [e.id for e in entries] == ["he.commerce.empty_task"]
+    assert [e.id for e in entries] == ["he.commerce.cart.empty_task"]
     problems = check_minimums(entries[0])
     assert problems, "a task with no fixtures must be refused"
     msg = " ".join(problems)
     assert (
-        "he.commerce.empty_task" in msg
+        "he.commerce.cart.empty_task" in msg
         and "plausibly_wrong" in msg
         and str(MINIMUMS["plausibly_wrong"]) in msg
     )
@@ -79,7 +79,7 @@ def test_registering_a_task_without_fixtures_fails_with_a_clear_message(tmp_path
         text=True,
     )
     assert proc.returncode != 0
-    assert "he.commerce.empty_task" in proc.stdout + proc.stderr
+    assert "he.commerce.cart.empty_task" in proc.stdout + proc.stderr
 
 
 def test_a_plausibly_wrong_fixture_without_a_cheat_line_is_refused(tmp_path: Path) -> None:

@@ -45,6 +45,7 @@ bench/tasks/he/reference
 bench/tests
 bench/tests/judge
 bench/tests/metatest
+bench/tests/task
 content
 content/catalogs
 content/catalogs/ar
