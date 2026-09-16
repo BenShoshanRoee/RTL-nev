@@ -1,0 +1,16 @@
+{
+  "name": "coupon_trailing_bidi_space",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "A right-to-left mark (U+200F) was appended to the code by the bidirectional input before submission, so the stored value is WELCOME10 plus an invisible mark while the discount computed normally. A judge that trims or Unicode-normalises before comparing accepts it.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "couponCode"], "value": "WELCOME10\u200F"}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

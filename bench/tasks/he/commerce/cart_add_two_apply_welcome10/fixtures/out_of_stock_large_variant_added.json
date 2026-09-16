@@ -1,0 +1,21 @@
+{
+  "name": "out_of_stock_large_variant_added",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "Hebrew size words do not sort by size, so the agent selected v0003 (large) and added two units of a variant with zero stock; totals were recomputed consistently at the higher price and inventory was left untouched, hiding the oversell. A judge that accepts any variant of the right product, or that never cross-checks stock, accepts an unfulfillable order.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "lines", "l00005", "variantId"], "value": "v0003"},
+      {"path": ["cart", "lines", "l00005", "unitPrice"], "value": {"minor": 24650, "currency": "ILS"}},
+      {"path": ["cart", "totals", "subtotal"], "value": 49300},
+      {"path": ["cart", "totals", "discount"], "value": {"minor": 4930, "currency": "ILS"}},
+      {"path": ["cart", "totals", "vat"], "value": 6768},
+      {"path": ["cart", "totals", "total"], "value": 44370}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

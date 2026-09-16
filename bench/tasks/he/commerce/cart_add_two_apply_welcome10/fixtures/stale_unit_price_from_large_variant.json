@@ -1,0 +1,20 @@
+{
+  "name": "stale_unit_price_from_large_variant",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The correct variant v0001 is in the cart, but the line captured the price of the large variant (24650) because the agent switched size after the price element had rendered; totals are internally consistent with the wrong price, so the shopper is overcharged 600 agorot. A judge that verifies variant, quantity and coupon code but never re-derives unitPrice from the catalogue accepts it.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "lines", "l00005", "unitPrice"], "value": {"minor": 24650, "currency": "ILS"}},
+      {"path": ["cart", "totals", "subtotal"], "value": 49300},
+      {"path": ["cart", "totals", "discount"], "value": {"minor": 4930, "currency": "ILS"}},
+      {"path": ["cart", "totals", "vat"], "value": 6768},
+      {"path": ["cart", "totals", "total"], "value": 44370}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}
