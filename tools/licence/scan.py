@@ -408,11 +408,17 @@ def load_brand_terms() -> list[tuple[str, bool]]:
     return terms
 
 
-def term_regex(term: str) -> re.Pattern[str]:
+def term_regex(term: str, ambiguous: bool = False) -> re.Pattern[str]:
+    """Strict terms match in any case. Ambiguous Latin terms (ordinary words such as Next,
+    Max, Delta) match only in the brand's own casing or all caps: a lowercase "next" in prose
+    is the word, not the retailer. Hebrew has no case, so its ambiguous terms are unchanged."""
     words = [re.escape(w) for w in term.split()]
     body = r"[\s_-]+".join(words)
     if re.search(f"[{HEBREW}]", term):
         return re.compile(f"(?<![{HEBREW}])[{HEBREW_PREFIXES}]?{body}(?![{HEBREW}])")
+    if ambiguous:
+        upper = r"[\s_-]+".join(re.escape(w.upper()) for w in term.split())
+        return re.compile(rf"(?<![A-Za-z0-9])(?:{body}|{upper})(?![A-Za-z0-9])")
     return re.compile(rf"(?<![A-Za-z0-9]){body}(?![A-Za-z0-9])", re.IGNORECASE)
 
 
@@ -427,7 +433,7 @@ def mode_brand(policy: dict, today: dt.date) -> int:
             findings.append(problem)
         else:
             waived[w["term"].lower()] = w.get("paths", [])
-    terms = [(t, amb, term_regex(t)) for t, amb in load_brand_terms()]
+    terms = [(t, amb, term_regex(t, amb)) for t, amb in load_brand_terms()]
 
     def is_waived(term: str, path: str) -> bool:
         # a waiver with term "*" covers every term inside its paths (reference apps until 3.3.1)

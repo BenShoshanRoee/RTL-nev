@@ -1,0 +1,16 @@
+{
+  "name": "coupon_lowercase_stored",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The coupon code is stored as \"welcome10\" because the RTL input field lower-cased the Latin run on commit; the discount applied correctly. A judge that compares the code case-insensitively accepts a state whose stored value does not match the required literal.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "couponCode"], "value": "welcome10"}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

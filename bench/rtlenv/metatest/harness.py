@@ -126,19 +126,31 @@ def _resolve_state(spec: Any, what: str) -> tuple[Any, str | None]:
     raise CorpusError(f"{what}: must be a state object or {{'ref': ...}}")
 
 
-def _set(state: Any, path: list, value: Any) -> Any:
+def _walk(state: Any, path: list, what: str) -> Any:
     cur = state
-    for seg in path[:-1]:
+    for i, seg in enumerate(path[:-1]):
+        if not isinstance(cur, dict) or seg not in cur:
+            raise CorpusError(f"{what} path {path}: segment {seg!r} does not exist (at {path[:i]})")
         cur = cur[seg]
-    cur[path[-1]] = value
+    if not isinstance(cur, dict):
+        raise CorpusError(f"{what} path {path}: parent is not an object")
+    return cur
+
+
+def _set(state: Any, path: list, value: Any) -> Any:
+    if not path:
+        raise CorpusError("set: empty path")
+    _walk(state, path, "set")[path[-1]] = value
     return state
 
 
 def _remove(state: Any, path: list) -> Any:
-    cur = state
-    for seg in path[:-1]:
-        cur = cur[seg]
-    del cur[path[-1]]
+    if not path:
+        raise CorpusError("remove: empty path")
+    parent = _walk(state, path, "remove")
+    if path[-1] not in parent:
+        raise CorpusError(f"remove path {path}: key {path[-1]!r} does not exist")
+    del parent[path[-1]]
     return state
 
 

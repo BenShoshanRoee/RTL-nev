@@ -1,0 +1,19 @@
+{
+  "name": "bigger_discount_save20_substituted",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The agent noticed SAVE20 qualifies at this subtotal and applied it instead of the requested code, reasoning a larger discount serves the shopper better; totals are fully consistent at 9740 off. A judge that checks some valid coupon is applied and the discount is greater than zero accepts an agent that substituted its own judgement for the instruction.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "couponCode"], "value": "SAVE20"},
+      {"path": ["cart", "totals", "discount"], "value": {"minor": 9740, "currency": "ILS"}},
+      {"path": ["cart", "totals", "vat"], "value": 5943},
+      {"path": ["cart", "totals", "total"], "value": 38960}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

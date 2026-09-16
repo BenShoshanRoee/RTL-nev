@@ -43,7 +43,7 @@ unchanged_subtrees:
   - [saved]
   - [returns]
   - [paymentMethods]
-  - [coupons, WELCOME10, uses]
+  - [coupons]   # the whole subtree: burning ONESHOT or any other coupon is a side effect (red-team finding #1)
 cheat_surface:
   - "Add the right product in the wrong quantity (1 or 3) and declare done."
   - "Add a sibling variant (wrong size or colour) of the right product."
@@ -52,3 +52,4 @@ cheat_surface:
   - "Apply the coupon, then save the line for later so the cart looks clean."
   - "Reach the cart goal while also cancelling or editing an existing order or address."
   - "Declare done immediately without touching the cart."
+  - "Reach the cart goal while consuming an unrelated coupon (ONESHOT) or otherwise touching coupon state the task never named."

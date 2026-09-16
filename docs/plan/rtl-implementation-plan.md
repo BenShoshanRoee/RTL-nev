@@ -618,7 +618,8 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 **Dependencies:** 2.2.2
 
 **Manual Steps:**
-- 🔧 Hand-write the first 15 "plausibly wrong" transcripts yourself. These teach you the cheat surface and cannot be delegated to an agent, because the agent shares the blind spot you are testing for.
+- 🔧 Hand-write the first 15 "plausibly wrong" transcripts yourself, or have a *separate* agent that has never seen the judge write them blind from a self-contained task description (done 2026-09-17; `docs/business/transcripts-prompt.md` is the reusable prompt). The building agent must not write them: it shares the blind spot you are testing for. Every exploit found goes into `bench/redteam/findings.md` (opened here; 6.2.1 continues it).
+- Authoring rule learned from finding #1: protect whole subtrees around the narrowest legitimate change, never a single leaf such as one coupon's counter.
 
 ---
 

@@ -1,0 +1,20 @@
+{
+  "name": "mirrored_stepper_left_zero_quantity",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The quantity stepper is mirrored in RTL so plus and minus are swapped; the agent pressed what looked like increment and drove the line to quantity 0, but the empty line was never removed and the coupon still applied. A judge that checks the line exists and has a quantity field, rather than that it equals 2, accepts an empty order.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "lines", "l00005", "quantity"], "value": 0},
+      {"path": ["cart", "totals", "subtotal"], "value": 0},
+      {"path": ["cart", "totals", "discount"], "value": {"minor": 0, "currency": "ILS"}},
+      {"path": ["cart", "totals", "vat"], "value": 0},
+      {"path": ["cart", "totals", "total"], "value": 0}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

@@ -1,0 +1,16 @@
+{
+  "name": "coupon_zero_for_letter_o",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The agent typed a digit zero instead of the letter O, storing \"WELC0ME10\", but the backend fuzzy-matched and applied the full 4870 discount anyway. A judge that verifies only the discount amount, or that matches coupon codes loosely, accepts a cart carrying a code that does not exist.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "couponCode"], "value": "WELC0ME10"}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}

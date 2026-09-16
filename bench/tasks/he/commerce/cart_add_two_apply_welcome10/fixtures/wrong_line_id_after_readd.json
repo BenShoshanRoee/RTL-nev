@@ -1,0 +1,18 @@
+{
+  "name": "wrong_line_id_after_readd",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "The agent added the item, removed it, then re-added it, so the line is l00006 rather than l00005; variant, quantity, coupon and every total are otherwise exactly correct. A judge that iterates cart.lines and inspects the first entry, instead of keying by the required line id, accepts it.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "lines", "l00006"], "value": {"id": "l00006", "variantId": "v0001", "quantity": 2, "unitPrice": {"minor": 24350, "currency": "ILS"}}}
+    ],
+    "remove": [
+      ["cart", "lines", "l00005"]
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

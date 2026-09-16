@@ -1,0 +1,17 @@
+{
+  "name": "quantity_split_across_two_lines",
+  "kind": "plausibly_wrong",
+  "author": "plan-agent",
+  "cheat": "Two units of the correct variant were added as two separate lines of one unit each, so the summed quantity is 2 and every total matches the correct end-state exactly. A judge that sums quantities across lines, or that checks totals instead of line structure, accepts a cart with two entries where exactly one is required.",
+  "before": {"ref": "commerce/seed-42"},
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {"path": ["cart", "lines", "l00005", "quantity"], "value": 1},
+      {"path": ["cart", "lines", "l00006"], "value": {"id": "l00006", "variantId": "v0001", "quantity": 1, "unitPrice": {"minor": 24350, "currency": "ILS"}}}
+    ],
+    "remove": []
+  },
+  "trace": [],
+  "declared_done": true
+}
