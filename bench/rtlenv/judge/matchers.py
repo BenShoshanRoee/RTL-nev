@@ -69,6 +69,17 @@ def _is_int(v: Any) -> bool:
     return isinstance(v, int) and not isinstance(v, bool)
 
 
+def strict_equal(a: Any, b: Any) -> bool:
+    """JSON-typed equality: Python says 1 == True and 1 == 1.0; JSON does not, and neither do we."""
+    if type(a) is not type(b):
+        return False
+    if isinstance(a, dict):
+        return a.keys() == b.keys() and all(strict_equal(a[k], b[k]) for k in a)
+    if isinstance(a, list):
+        return len(a) == len(b) and all(strict_equal(x, y) for x, y in zip(a, b, strict=True))
+    return a == b
+
+
 def _is_money(v: Any) -> bool:
     return (
         isinstance(v, dict)
@@ -112,11 +123,7 @@ class FieldEquals:
             return MatchResult(
                 False, self.kind, self.path, "path missing", {"expected": self.expected}
             )
-        ok = (
-            actual == self.expected and type(actual) is type(self.expected)
-            if not isinstance(self.expected, (dict, list))
-            else actual == self.expected
-        )
+        ok = strict_equal(actual, self.expected)
         return MatchResult(
             bool(ok),
             self.kind,
@@ -276,7 +283,9 @@ class Unchanged:
 
     def evaluate(self, before: Any, after: Any) -> MatchResult:
         # fast path: direct equality of each subtree; diff only what differs, for evidence
-        moved = [p for p in self.subtrees if get_path(before, p) != get_path(after, p)]
+        moved = [
+            p for p in self.subtrees if not strict_equal(get_path(before, p), get_path(after, p))
+        ]
         if not moved:
             return MatchResult(
                 True, self.kind, None, "subtrees unchanged", {"subtrees": self.subtrees}
