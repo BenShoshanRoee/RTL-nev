@@ -1,15 +1,21 @@
-// Export deterministic commerce states for the Python judge tests. Run after `pnpm -r build`:
-//   pnpm node tools/judge/export_state.mjs > bench/tests/judge/fixtures/commerce-states.json
-// Everything derives from seed 42 and named child seeds; re-running yields identical bytes.
+// Export deterministic commerce states for the Python judge and meta-test harness. Run after
+// `pnpm -r build`:
+//   pnpm node tools/judge/export_state.mjs
+// Writes bench/rtlenv/metatest/fixtures/states/commerce/*.json. Everything derives from seed 42
+// and named child seeds; re-running yields identical bytes.
+import { mkdirSync, writeFileSync } from "node:fs";
 import { execute, Rng } from "../../packages/core-semantic/dist/index.js";
 import { commerceDomain, seedCommerce } from "../../packages/domains/commerce/dist/index.js";
 
+const OUT = new URL("../../bench/rtlenv/metatest/fixtures/states/commerce/", import.meta.url);
+mkdirSync(OUT, { recursive: true });
 const ctx = { rng: new Rng(7, "export"), now: () => 0 };
 const step = (state, op, params) => {
   const r = execute(commerceDomain, state, op, params, ctx);
   if (!r.ok) throw new Error(`${op} rejected: ${r.reason}`);
   return r;
 };
+const write = (name, value) => writeFileSync(new URL(`${name}.json`, OUT), JSON.stringify(value) + "\n");
 
 const seed = seedCommerce(new Rng(42, "seed"), { currency: "ILS" });
 const variantId = Object.keys(seed.variants).sort().find((id) => {
@@ -33,9 +39,10 @@ r = step(r.state, "setPaymentMethod", { paymentMethodId: "pm01" });
 r = step(r.state, "checkout", {});
 const afterCheckout = r.state;
 
-process.stdout.write(JSON.stringify({
-  generated_by: "pnpm node tools/judge/export_state.mjs",
-  ids: { variantId, sibling, lineId, productId: product.id },
-  states: { seed, afterAdd, afterCoupon, afterCheckout },
-  trace_add_and_coupon: trace,
-}, null, 0) + "\n");
+write("seed-42", seed);
+write("seed-42-after-add", afterAdd);
+write("seed-42-after-coupon", afterCoupon);
+write("seed-42-after-checkout", afterCheckout);
+write("trace-add-coupon", trace);
+write("ids", { generated_by: "pnpm node tools/judge/export_state.mjs", variantId, sibling, lineId, productId: product.id });
+console.log(`wrote 6 files to ${OUT.pathname}`);

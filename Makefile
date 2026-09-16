@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup verify verify-tree gates test test-js test-py lint provenance licence purge-audit sbom smoke release
+.PHONY: setup verify verify-tree gates test test-js test-py metatest lint provenance licence purge-audit sbom smoke release
 
 ## setup: install JS and Python workspaces from committed lockfiles
 setup:
@@ -12,6 +12,10 @@ verify: verify-tree gates lint licence test
 ## verify-tree: directory tree must match tools/expected-tree.txt
 verify-tree:
 	@tools/verify_tree.sh
+
+## metatest: judge meta-test harness report (also part of test-py)
+metatest:
+	uv run python -m rtlenv.metatest.harness
 
 ## gates: negative tests proving each gate actually rejects what it should (builds first: the boundary gate resolves packages through dist)
 gates:
@@ -31,6 +35,7 @@ test-js:
 
 test-py:
 	uv run pytest
+	uv run python -m rtlenv.metatest.harness
 
 ## lint: build first (workspace packages resolve through dist), then boundaries, eslint, python lint
 lint:

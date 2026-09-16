@@ -1,0 +1,16 @@
+{
+  "name": "correct",
+  "kind": "correct",
+  "author": "agent-draft",
+  "cheat": "The reference transcript: add two units, apply WELCOME10, touch nothing else.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon"
+  },
+  "trace": {
+    "ref": "commerce/trace-add-coupon"
+  },
+  "declared_done": true
+}

@@ -1,0 +1,25 @@
+{
+  "name": "sibling_variant",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "The sibling variant (other size) of the right product. Same product page, wrong size; a product-level check accepts it.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "cart",
+          "lines",
+          "l00005",
+          "variantId"
+        ],
+        "value": "v0002"
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

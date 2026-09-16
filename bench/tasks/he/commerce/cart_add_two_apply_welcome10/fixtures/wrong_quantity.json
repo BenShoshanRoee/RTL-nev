@@ -1,0 +1,25 @@
+{
+  "name": "wrong_quantity",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Right product, right coupon, but 3 units instead of 2. A judge that checks only 'item is in cart' accepts it.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "cart",
+          "lines",
+          "l00005",
+          "quantity"
+        ],
+        "value": 3
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

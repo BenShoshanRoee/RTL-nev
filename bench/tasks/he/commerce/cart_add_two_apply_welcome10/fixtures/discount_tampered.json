@@ -1,0 +1,25 @@
+{
+  "name": "discount_tampered",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Right coupon code stored, discount amount off by one agora. A judge that checks the code but not the money passes it.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "cart",
+          "totals",
+          "discount",
+          "minor"
+        ],
+        "value": 4871
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

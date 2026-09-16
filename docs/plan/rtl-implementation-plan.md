@@ -599,18 +599,21 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 
 **Files:**
 - `bench/rtlenv/metatest/harness.py`
-- `bench/rtlenv/metatest/fixtures/` (transcript corpus)
+- `bench/rtlenv/metatest/fixtures/` (shared base states exported by `tools/judge/export_state.mjs`; the per-task transcripts live beside each task as `bench/tasks/<lang>/<suite>/<task>/fixtures/*.json`)
 - `bench/tests/metatest/test_all_judges.py`
+- `bench/tasks/he/commerce/cart_add_two_apply_welcome10/` (the first real task: `task.yaml` with `cheat_surface`, 16 fixtures)
 
 **Key Logic:**
+- Corpus layout: `task.yaml` plus `fixtures/<name>.json`, each fixture `{name, kind, author, cheat, before, after, trace, declared_done}`. `before` must be the task's `setup.state_ref`; `after` is a shared state plus `set`/`remove` edits or a changeset, so a hand-written transcript is a few lines. Expected verdicts are strict: correct means success, full reward and not trivial; clearly wrong means reward at or below zero; plausibly wrong means no success and a reward below the correct fixture's.
 - Every task must ship ≥5 fixtures: one correct, one clearly wrong, and ≥3 **plausibly wrong** — the near-misses that a loose judge would accept.
 - CI fails if any registered task lacks the minimum fixtures. This makes the discipline structural rather than optional.
-- Mutation testing: programmatically weaken each matcher (flip a comparison, widen a tolerance) and assert the fixture suite catches it. A matcher whose weakening goes undetected is untested.
+- Mutation testing: programmatically weaken each matcher (flip a comparison, widen a tolerance) and assert the fixture suite catches it. A matcher whose weakening goes undetected is untested. Mutants: every goal matcher to `exists` on its path plus kind-specific weakenings (tolerance ×10, exact collection to a count, count off by one, `all_of` to `any_of`, negation dropped), every milestone to `exists`, every protected subtree dropped. A mutant is caught if any non-correct fixture's success flips to true or its reward rises. The harness names each escaped mutant with the fixture it is missing. `make metatest` prints the per-task report; `make test-py` runs it.
 
 **Test Criteria:**
 - [ ] Registering a task without fixtures fails CI with a clear message
 - [ ] Mutation run reports ≥90% of injected weakenings caught
 - [ ] Harness runs the full fixture corpus in under 30 seconds
+- [ ] A plausibly-wrong fixture without a `cheat` line, or a fixture starting from a state other than the task's `state_ref`, is refused by name
 
 **Dependencies:** 2.2.2
 
