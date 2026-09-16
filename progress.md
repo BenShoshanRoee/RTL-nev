@@ -1,7 +1,7 @@
 # Progress
 
-**Current sub-chunk:** 2.2.2 — Partial Credit & Reward Shaping (not started)
-**Last updated:** 2026-09-16 (2.2.1 complete)
+**Current sub-chunk:** 2.2.3 — Judge Meta-Test Harness (not started)
+**Last updated:** 2026-09-16 (2.2.2 complete)
 **Phase:** 2 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
@@ -15,6 +15,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 2.2.2 | Partial Credit & Reward Shaping | 2026-09-16 | `uv run pytest bench/tests/judge -q --benchmark-disable` (13 reward/progress cases: 3-of-5 strictly between, three out-of-order shapes, transient milestones, tampered trace, false-complete below every honest failure, 10,000 random verdicts in range, real commerce trace); PR (see Decisions) | `judge/progress.py`, `judge/reward.py`; core and schema extended (optional `milestones`, `reward`). No new dependencies. |
 | 2.2.1 | State-Diff Judge Core | 2026-09-16 | `uv run pytest bench/tests/judge -q --benchmark-columns=median,max` (1 correct, 14 incorrect transcripts, 6 side-effect cases, contract refusals, byte-identical verdicts, 17 hardening cases incl. load-bearing proofs; benchmark median ~98 µs); PR #7 + hardening PR #8 | `judge/{core,matchers,verdict}.py`, `task/schema.py`, 12 matcher kinds. New dev dep: pytest-benchmark (BSD-2-Clause). |
 | 2.1.3 | Stub Second Domain | 2026-09-16 | `pnpm --filter @rtl/domain-insurance-stub --fail-if-no-match test` (11 conformance + 3 behaviour); `git diff --stat main -- packages/core-semantic` empty; CI `test-js` log lists both domain suites; PR #6 (all seven CI checks) | 5 entities, 4 operations, 6 invariants, 152-line domain. Zero core changes. |
 | 2.1.2 | Commerce Domain Implementation | 2026-09-16 | `make verify` (27 commerce vitest cases: full flow, 10,000+ applied operations with invariants after each, coupon rules, KWD totals + ILS mix throws, conformance, sample/precondition agreement, hygiene grep); PR #5 (all seven CI checks) | 16 entity schemas + cart singleton, 26 operations, 15 invariants, seed of ~50 products / ~100 variants / 7 coupons / 2 historical orders. No new dependencies. |
@@ -26,7 +27,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 2.2.2 has not begun.
+None. 2.2.3 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
@@ -120,6 +121,10 @@ None. 2.2.2 has not begun.
 | 2026-09-16 | pytest-benchmark added (BSD-2-Clause; dep py-cpuinfo2 allowlisted) | The plan's literal `pytest --benchmark` criterion and a buyer-visible latency table. | 2.2.1 |
 | 2026-09-16 | Judge hardening pass after 2.2.1 (operator: "make sure it meets all standards"): strict JSON-typed equality, protected-path existence check, load-bearing proofs, logging hook, versioned verdict, float-safe serialisation, explicit public API | Line-by-line adversarial review found: Python `==` conflates 1/True/1.0 (JSON does not); a typo in `unchanged_subtrees` silently protected nothing; verdict floats were lossy; no verdict logging despite the judge skill's rule. Each fix has a test. `test_hardening.py` also proves every goal matcher and every protected subtree of the reference task is load-bearing by weakening it and watching an incorrect transcript pass. Benchmark median 26 µs -> 98 µs, still 10x under target. | 2.2.1 |
 | 2026-09-16 | PSF-2.0 and BlueOak-1.0.0 added to the licence allowlist; the three waivers (typing_extensions, defusedxml, minimatch) removed | Operator decision. Both are permissive, OSI-approved, attribution-only; equivalent footing to MIT for a buyer's vendor review. | 1.1.3 |
+| 2026-09-16 | Milestones are measured by replaying the trace with every hash verified; an invalid trace earns zero progress | Final-state-only evaluation cannot see transient milestones or verify order; an unverified trace is a cheat surface (forge a step, collect credit). Costs one hash per step, outside the core judge's fast path. | 2.2.2 |
+| 2026-09-16 | Reward defaults 0.6 / 0.4 / 0.25 (cap 4) / 0.5 in [−1, 1], with three validated invariants (w_false ≥ w_progress, w_success > w_progress, w_success + w_progress ≤ max) | The invariants are what make the plan's guarantees true for any task-level override, not just the defaults: false-complete below every honest failure, shortcut success above every failure, full success never clamped. | 2.2.2 |
+| 2026-09-16 | A task without milestones scores progress 1.0 iff its goal holds | Keeps 2.2.1 tasks meaningful under shaping; 2.2.4 may require milestones for suites that need gradient. | 2.2.2 |
+| 2026-09-16 | A goal reached with a side effect keeps its progress but loses success and pays w_side per effect | The plan's formula; a damaged-but-complete rollout scores 0.15 by default, far below 1.0 and above a false-complete. | 2.2.2 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)
@@ -147,11 +152,10 @@ None. 2.2.2 has not begun.
 | Container is linux/amd64 only (runs under emulation on Apple silicon) | 1.1.5 | Single `docker build` on an amd64 runner | 8.1.2: multi-arch build (buildx) if buyers run arm64 |
 | Path sorting in `diff` compares object keys by UTF-16 code units in TS and code points in Python; identical for BMP characters (Hebrew, Arabic, Latin), divergent only for astral-plane keys | 2.1.1 | Keys with emoji are not a realistic state shape | If a domain ever keys a record by non-BMP text, canonicalise keys or add a fixture case |
 | `FieldSpec` validation of params is shallow (type only); `record` params are not validated against the entity schema | 2.1.1 | Sufficient for 2.1.2's operations | 2.2.4 task schema, or the first operation taking a nested record |
+| Milestone replay hashes every step (~0.3 ms each on a 40 KB state); a 50-step trace costs ~15 ms, above the core judge's 1 ms budget | 2.2.2 | Correctness over microseconds; shaping runs once per rollout | 7.1.2 if rollout throughput needs it: verify chain hashes only and spot-check states |
 | Return requests stop at `requested`; approval, receipt and refund progression are not modelled | 2.1.2 | No task needs back-office return processing yet | First task family that checks refund status (6.1.2 "return within policy") adds a system op |
 | Product prices never change after seed (no `updatePrice` system op), so the cart price-drift pathology has no domain hook | 2.1.2 | `stale-cart` is a surface pathology in 3.2.1; a domain hook is optional | 3.2.1 if the injector needs server-side price drift |
 | Coupon discount is not apportioned per line in order records; refunds use the order-level share | 2.1.2 | Sufficient for bounded refunds | If a task asserts per-line refund amounts |
-| `progress` and `reward` in the verdict are 1/0 placeholders | 2.2.1 | Milestones and shaping are 2.2.2's deliverable | 2.2.2 |
-| The judge does not yet read the action trace (only its length) | 2.2.1 | Final-state judging needs no trace; ordered milestones do | 2.2.2 |
 | Inherited simulator shell is LTR and Chinese-locale: `<html lang="zh-CN">` with no `dir`, locale module knows only `zh-Hans`/`en`, 44 physical CSS properties in `sim/os` | 1.1.2 | Phase 3 replaces the surface; the shell's own chrome is upstream code | 3.1.3 (logical-properties lint and mirrored layout) and 3.3.1 (`dir="rtl"`, `lang="he"`, locale plumbing) |
 | Release tag `v0.0.1` exists as a release-path test; the package is not a real deliverable | 1.1.5 | Criterion 4 required a real tag | 8.1.3 versioning policy decides whether to keep or yank it |
 | No pull-request requirement on `main`: direct pushes still allowed | 1.1.5 | Solo operator; PR flow adds friction now | Revisit when a second contributor or 6.2.3 author PRs arrive |

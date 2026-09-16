@@ -11,10 +11,11 @@ effects, and a task without it is permissive by construction.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from rtlenv.judge.matchers import MatcherSpecError, parse
+from rtlenv.judge.reward import RewardConfigError, validate_weights
 
 Path = list[str | int]
 
@@ -35,6 +36,9 @@ class TaskContract:
     setup: TaskSetup
     goal_matchers: list[dict[str, Any]]
     unchanged_subtrees: list[Path]
+    # optional (2.2.2): ordered milestone matcher specs and reward weight overrides
+    milestones: list[dict[str, Any]] = field(default_factory=list)
+    reward: dict[str, float] = field(default_factory=dict)
 
 
 def _is_path(p: Any) -> bool:
@@ -94,6 +98,29 @@ def validate_task(obj: Any) -> TaskContract:
         if key in seen:
             raise TaskContractError(f"unchanged_subtrees: duplicate path {p}")
         seen.add(key)
+    milestones = obj.get("milestones", [])
+    if not isinstance(milestones, list):
+        raise TaskContractError("milestones: must be a list of matcher specs")
+    parsed_milestones = []
+    for i, spec in enumerate(milestones):
+        try:
+            parsed_milestones.append(parse(spec))
+        except MatcherSpecError as e:
+            raise TaskContractError(f"milestones[{i}]: {e}") from e
+    for i, m in enumerate(parsed_milestones):
+        for mp in m.paths():
+            for up in subtrees:
+                if _prefix(up, mp):
+                    raise TaskContractError(
+                        f"milestones[{i}]: path {mp} lies inside unchanged subtree {up}"
+                    )
+    reward = obj.get("reward", {})
+    if not isinstance(reward, dict):
+        raise TaskContractError("reward: must be an object of weight overrides")
+    try:
+        validate_weights(reward)
+    except RewardConfigError as e:
+        raise TaskContractError(f"reward: {e}") from e
     for m in parsed:
         for gp in m.paths():
             for up in subtrees:
@@ -106,4 +133,6 @@ def validate_task(obj: Any) -> TaskContract:
         setup=TaskSetup(domain=setup["domain"], seed=seed),
         goal_matchers=list(goals),
         unchanged_subtrees=[list(p) for p in subtrees],
+        milestones=list(milestones),
+        reward=dict(reward),
     )
