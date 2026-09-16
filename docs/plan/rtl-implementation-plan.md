@@ -493,18 +493,18 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 **Output:** A minimal insurance domain that passes the conformance suite
 
 **Files:**
-- `packages/domains/insurance-stub/src/*.ts`
-- `packages/domains/insurance-stub/tests/conformance.test.ts`
+- `packages/domains/insurance-stub/src/*.ts` (`domain.ts`: entities, seed, operations, invariants in one file; `index.ts`)
+- `packages/domains/insurance-stub/tests/conformance.test.ts` (the identical suite commerce runs), `tests/behaviour.test.ts`
 
 **Key Logic:**
-- Entities: Policy, Claim, Premium, Beneficiary. Operations: `fileClaim`, `uploadDocument`, `checkStatus`, `updateBeneficiary`.
+- Entities: Policy, Claim, Premium, Beneficiary, plus Document (what `uploadDocument` creates). Operations: `fileClaim`, `uploadDocument`, `checkStatus`, `updateBeneficiary`. Six invariants (claims within coverage, document/claim consistency, beneficiary shares 0..100 summing to at most 100, premium per policy, single currency, counters). Claims never progress past `filed`: there is no reviewer operation because the stub has nothing to prove about workflows, only about the interface.
 - Deliberately thin. Its only job is to fail loudly if `core-semantic` has absorbed commerce assumptions.
 - Kept in CI permanently. If a future change to the core breaks the stub, the core has leaked.
 
 **Test Criteria:**
 - [ ] Insurance stub passes the identical conformance suite commerce passes
-- [ ] Zero code changes to `core-semantic` were required to add it
-- [ ] CI runs both domains' conformance suites
+- [ ] Zero code changes to `core-semantic` were required to add it (`git diff --stat main -- packages/core-semantic` is empty on the PR)
+- [ ] CI runs both domains' conformance suites (the `test-js` job log lists both `packages/domains/*` test runs)
 
 **Dependencies:** 2.1.1, 2.1.2
 
