@@ -32,7 +32,6 @@ None. 2.2.2 has not begun.
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
 | 1.1.5 | Dependabot PR #1 | Grouped uv update (uv-build backend range). Its CI ran before the gate-script fix and needs a rebase: comment `@dependabot rebase` on the PR, or close it. Merging a dependency bump is your call. |
-| 1.1.3, 1.1.4 | Decide: allowlist PSF-2.0 and BlueOak-1.0.0? | Both permissive and OSI-approved; each currently a dated waiver (`typing_extensions`, `minimatch`). Say "allowlist both", one of them, or leave the waivers until 2027-03-15. |
 
 ## Operator queue (not blocking code, time-sensitive)
 | Item | Sub-chunk | Why it can't wait | Status |
@@ -120,6 +119,7 @@ None. 2.2.2 has not begun.
 | 2026-09-16 | Judge test fixture exported from the built TypeScript seed (`tools/judge/export_state.mjs`), checked in, re-exported bytes identical | Incorrect transcripts and the benchmark run on the real state shape, not a toy; the same bytes the browser would produce. | 2.2.1 |
 | 2026-09-16 | pytest-benchmark added (BSD-2-Clause; dep py-cpuinfo2 allowlisted) | The plan's literal `pytest --benchmark` criterion and a buyer-visible latency table. | 2.2.1 |
 | 2026-09-16 | Judge hardening pass after 2.2.1 (operator: "make sure it meets all standards"): strict JSON-typed equality, protected-path existence check, load-bearing proofs, logging hook, versioned verdict, float-safe serialisation, explicit public API | Line-by-line adversarial review found: Python `==` conflates 1/True/1.0 (JSON does not); a typo in `unchanged_subtrees` silently protected nothing; verdict floats were lossy; no verdict logging despite the judge skill's rule. Each fix has a test. `test_hardening.py` also proves every goal matcher and every protected subtree of the reference task is load-bearing by weakening it and watching an incorrect transcript pass. Benchmark median 26 µs -> 98 µs, still 10x under target. | 2.2.1 |
+| 2026-09-16 | PSF-2.0 and BlueOak-1.0.0 added to the licence allowlist; the three waivers (typing_extensions, defusedxml, minimatch) removed | Operator decision. Both are permissive, OSI-approved, attribution-only; equivalent footing to MIT for a buyer's vendor review. | 1.1.3 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)

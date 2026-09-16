@@ -16,6 +16,8 @@ licence_allowlist:
   - OFL-1.1
   - CC0-1.0
   - Unlicense
+  - PSF-2.0            # Python Software Foundation licence (permissive; Python itself ships under it)
+  - BlueOak-1.0.0      # Blue Oak Model License (permissive, OSI-approved)
   - proprietary        # assets we authored or generated ourselves (content/ only)
 
 # Dependency waivers: package + ecosystem + the exact licence being waived.
@@ -39,26 +41,8 @@ dependency_waivers:
     added: 2026-09-15
     expires: 2027-03-15
 
-  - package: typing_extensions
-    ecosystem: pypi
-    licence: PSF-2.0
-    reason: Python Software Foundation licence (permissive, OSI-approved). Backport shim pulled in transitively on some Python versions; dev tooling only, never distributed. Allowlisting PSF-2.0 itself is proposed to the operator; until decided this waiver keeps the decision visible.
-    added: 2026-09-15
-    expires: 2027-03-15
 
-  - package: minimatch
-    ecosystem: npm
-    licence: BlueOak-1.0.0
-    reason: Blue Oak Model License 1.0.0 (permissive, OSI-approved). Transitive dev dependency of eslint / typescript-eslint; lint tooling only, never distributed. Allowlisting BlueOak-1.0.0 is proposed to the operator alongside PSF-2.0.
-    added: 2026-09-15
-    expires: 2027-03-15
 
-  - package: defusedxml
-    ecosystem: pypi
-    licence: PSF-2.0
-    reason: Python Software Foundation licence, transitive dependency of cyclonedx-python-lib (SBOM generation, dev tooling only). Same decision as typing_extensions.
-    added: 2026-09-15
-    expires: 2027-03-15
 
 # Brand-term waivers, path-scoped. A waived term is still reported everywhere outside its paths.
 brand_waivers:
