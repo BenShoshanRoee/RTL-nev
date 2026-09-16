@@ -569,8 +569,9 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `bench/tests/judge/test_reward.py`
 
 **Key Logic:**
-- Progress is defined per task as an ordered list of milestone predicates. Progress rate = fraction of milestones reached, in order. Out-of-order milestones do not count.
-- Reward = `w_success · success + w_progress · progress − w_side · side_effects − w_false · false_complete`, weights in task config, defaults documented.
+- Progress is defined per task as an ordered list of milestone predicates (matcher specs, `milestones` in the task). Progress rate = fraction of milestones reached, in order. Out-of-order milestones do not count.
+- Milestones are evaluated over the states the agent actually passed through: the trace is replayed from the setup state by applying each step's changeset and every hash in the chain is verified. A trace that does not reconstruct (forged, truncated, inconsistent) is invalid and earns zero partial credit. A milestone is reached at the first step where it holds, so transient milestones (item in cart before checkout empties it) count. Without a trace, only the final state is evaluated and order cannot be verified.
+- Reward = `w_success · success + w_progress · progress − w_side · min(side_effects, side_cap) − w_false · false_complete`, weights in task config (`reward`), defaults documented in `reward.py`: w_success 0.6, w_progress 0.4, w_side 0.25, side_cap 4, w_false 0.5, range [−1, 1]. The validator enforces w_false ≥ w_progress (a false-complete never outscores an honest failure), w_success > w_progress (a shortcut success still outranks every failure), and w_success + w_progress ≤ max (full success is never clamped).
 - **False-complete penalty is non-negotiable:** an agent that declares done without satisfying the goal scores below one that fails honestly. Otherwise models learn to claim success.
 - Reward is clamped to a documented range so a single task cannot dominate a batch.
 
@@ -579,6 +580,8 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - [ ] Out-of-order milestone completion does not inflate progress
 - [ ] False-complete transcript scores below an honest-failure transcript
 - [ ] Reward never exits the documented range across 10,000 random verdicts
+- [ ] A tampered or inconsistent trace yields zero progress and is named in the verdict evidence
+- [ ] Milestones on the real commerce trace fixture are reached at the expected steps
 
 **Dependencies:** 2.2.1
 

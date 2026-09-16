@@ -12,6 +12,7 @@ from pathlib import Path
 import pytest
 from rtlenv.domain_protocol import money
 from rtlenv.judge.core import Rollout, judge
+from rtlenv.judge.reward import DEFAULT_WEIGHTS
 from rtlenv.judge.verdict import Verdict
 from rtlenv.task.schema import TaskContractError, validate_task
 
@@ -138,7 +139,9 @@ INCORRECT = {
 def test_incorrect_transcripts_fail(name: str) -> None:
     v = judge(TASK, rollout(INCORRECT[name]()))
     assert v.success is False, name
-    assert v.reward == 0.0, name
+    # a failure can earn at most w_progress; success earns 1.0
+    assert v.reward <= DEFAULT_WEIGHTS["w_progress"], name
+    assert v.reward < judge(TASK, rollout(AFTER_COUPON)).reward, name
 
 
 @pytest.mark.parametrize(
