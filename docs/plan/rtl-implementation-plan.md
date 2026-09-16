@@ -527,9 +527,13 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - `bench/rtlenv/judge/matchers.py`
 - `bench/rtlenv/judge/verdict.py`
 - `bench/rtlenv/task/schema.py` (minimal task contract, see below)
-- `bench/tests/judge/test_core.py`
+- `bench/tests/judge/test_core.py`, `bench/tests/judge/test_matchers.py`
+- `bench/tests/judge/fixtures/commerce-states.json` (four deterministic commerce states + trace, exported by `tools/judge/export_state.mjs` from the built TypeScript seed; byte-identical on re-run)
 
 **Key Logic:**
+- Matchers are data: JSON specs (`{"kind": "field_equals", "path": [...], "expected": ...}`) parsed by `matchers.parse`, so YAML tasks declare them and the meta-test harness can weaken them programmatically. Kinds: the six named below plus `delta_equals`, `exists`, `absent`, `all_of`, `any_of`, `not`. Every matcher is exact: no "contains", tolerances are integers only and never apply to money, collections are exact key sets.
+- The validator also rejects an empty `unchanged_subtrees`, duplicate subtrees, and a goal matcher whose path lies inside a protected subtree (the goal could never be reached). Unknown fields pass through for 2.2.4.
+- `evidence.goal_held_before` reports a goal that already holds on the setup state, so the fixture harness (2.2.3) can reject trivial tasks.
 - **Defines the minimal task contract the judge consumes**, in `bench/rtlenv/task/schema.py`: `id`, `setup` (seeded state reference), `goal_matchers`, `unchanged_subtrees`. Nothing about authoring, suites or difficulty. 2.2.4 extends this contract; it never redefines these fields.
 - Verdict schema: `success: bool`, `progress: float`, `side_effects: list`, `false_complete: bool`, `reward: float`, `evidence: dict`.
 - Matchers are composable predicates over the state tree: `field_equals`, `collection_contains_exactly`, `count_is`, `money_equals`, `within_tolerance`, `unchanged`.
@@ -542,8 +546,8 @@ Sub-chunks are ordered chronologically. Work them in order. No time estimates ar
 - [ ] Judge returns failure on each of ≥10 hand-built incorrect transcripts
 - [ ] Judge flags a side effect when an unrelated subtree changed
 - [ ] Judge refuses a task object lacking `unchanged_subtrees` with a named error
-- [ ] `pytest --benchmark` shows median judge latency under 1 ms
-- [ ] Judging the same transcript twice returns byte-identical verdicts
+- [ ] `pytest --benchmark` shows median judge latency under 1 ms (measured on the real-sized commerce fixture; a plain timing assertion runs alongside)
+- [ ] Judging the same transcript twice returns byte-identical verdicts, including when the after-state's key order differs
 
 **Dependencies:** 2.1.2
 

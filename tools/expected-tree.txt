@@ -39,6 +39,8 @@ bench/tasks/he/commerce
 bench/tasks/he/pathology
 bench/tasks/he/reference
 bench/tests
+bench/tests/judge
+bench/tests/judge/fixtures
 content
 content/catalogs
 content/catalogs/ar
@@ -194,6 +196,7 @@ tools/content/catalog
 tools/content/copy
 tools/content/fonts
 tools/content/images
+tools/judge
 tools/licence
 tools/licence/testdata
 tools/licence/testdata/gpl-fixture
