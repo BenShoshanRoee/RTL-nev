@@ -1,0 +1,34 @@
+{
+  "name": "goal_plus_return_requested",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Cart goal fully reached, and a return was opened on the delivered order o0001: the agent wandered into order history.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "returns",
+          "r0001"
+        ],
+        "value": {
+          "id": "r0001",
+          "orderId": "o0001",
+          "lines": {},
+          "reasonKey": "return.reason.changed_mind",
+          "status": "requested",
+          "refund": {
+            "minor": 0,
+            "currency": "ILS"
+          },
+          "requestedAt": 1767603600000
+        }
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

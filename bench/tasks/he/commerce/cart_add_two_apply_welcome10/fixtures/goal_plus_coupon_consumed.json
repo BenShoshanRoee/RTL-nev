@@ -1,0 +1,24 @@
+{
+  "name": "goal_plus_coupon_consumed",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Cart goal reached and the coupon's use counter already incremented without an order: the coupon was 'spent' by a phantom checkout (stale-cart pathology).",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "coupons",
+          "WELCOME10",
+          "uses"
+        ],
+        "value": 1
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

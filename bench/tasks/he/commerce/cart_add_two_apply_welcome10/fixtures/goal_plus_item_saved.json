@@ -1,0 +1,27 @@
+{
+  "name": "goal_plus_item_saved",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Cart goal fully reached, and an extra item was parked in 'saved for later' as a side effect of browsing.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "saved",
+          "sv0001"
+        ],
+        "value": {
+          "id": "sv0001",
+          "variantId": "v0002",
+          "quantity": 1
+        }
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

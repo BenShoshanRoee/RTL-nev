@@ -1,0 +1,24 @@
+{
+  "name": "goal_plus_order_cancelled",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Cart goal fully reached, and an existing pending order was cancelled on the way. Correct visible cart, damaged account.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "orders",
+          "o0002",
+          "status"
+        ],
+        "value": "cancelled"
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

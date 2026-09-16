@@ -1,0 +1,24 @@
+{
+  "name": "goal_plus_address_edited",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Cart goal fully reached, and the default delivery address was edited along the way (house number changed).",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "addresses",
+          "a001",
+          "houseNumber"
+        ],
+        "value": "999"
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

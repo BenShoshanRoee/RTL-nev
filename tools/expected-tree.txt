@@ -26,6 +26,8 @@ bench/rtlenv/env
 bench/rtlenv/judge
 bench/rtlenv/metatest
 bench/rtlenv/metatest/fixtures
+bench/rtlenv/metatest/fixtures/states
+bench/rtlenv/metatest/fixtures/states/commerce
 bench/rtlenv/metrics
 bench/rtlenv/runner
 bench/rtlenv/task
@@ -36,11 +38,13 @@ bench/tasks/ar/pathology
 bench/tasks/ar/reference
 bench/tasks/he
 bench/tasks/he/commerce
+bench/tasks/he/commerce/cart_add_two_apply_welcome10
+bench/tasks/he/commerce/cart_add_two_apply_welcome10/fixtures
 bench/tasks/he/pathology
 bench/tasks/he/reference
 bench/tests
 bench/tests/judge
-bench/tests/judge/fixtures
+bench/tests/metatest
 content
 content/catalogs
 content/catalogs/ar

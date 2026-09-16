@@ -1,0 +1,14 @@
+{
+  "name": "nothing_done_declared_done",
+  "kind": "clearly_wrong",
+  "author": "agent-draft",
+  "cheat": "Declares done without touching the cart.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42"
+  },
+  "trace": [],
+  "declared_done": true
+}

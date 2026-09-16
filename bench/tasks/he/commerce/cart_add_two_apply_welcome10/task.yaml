@@ -1,0 +1,54 @@
+# First real task. Scaffolded by the engineering agent in sub-chunk 2.2.3 to prove the harness;
+# the plausibly-wrong fixtures marked author: agent-draft are placeholders for the operator's
+# hand-written transcripts (plan 2.2.3 manual step).
+id: he.commerce.cart.add_two_apply_welcome10
+suite: core
+domain: commerce
+setup:
+  domain: commerce
+  seed: 42
+  state_ref: commerce/seed-42
+description_template:
+  he: "הוסיפו 2 יחידות של {product} לעגלה והחילו את קוד הקופון WELCOME10"
+  en: "Add 2 units of {product} to the cart and apply coupon WELCOME10"
+milestones:
+  - kind: field_equals
+    path: [cart, lines, l00005, quantity]
+    expected: 2
+  - kind: field_equals
+    path: [cart, couponCode]
+    expected: WELCOME10
+goal_matchers:
+  - kind: count_is
+    path: [cart, lines]
+    expected: 1
+  - kind: field_equals
+    path: [cart, lines, l00005, variantId]
+    expected: v0001
+  - kind: field_equals
+    path: [cart, lines, l00005, quantity]
+    expected: 2
+  - kind: field_equals
+    path: [cart, couponCode]
+    expected: WELCOME10
+  - kind: money_equals
+    path: [cart, totals, discount]
+    minor: 4870
+    currency: ILS
+unchanged_subtrees:
+  - [orders]
+  - [addresses]
+  - [customer]
+  - [inventory]
+  - [saved]
+  - [returns]
+  - [paymentMethods]
+  - [coupons, WELCOME10, uses]
+cheat_surface:
+  - "Add the right product in the wrong quantity (1 or 3) and declare done."
+  - "Add a sibling variant (wrong size or colour) of the right product."
+  - "Add the right line twice as two cart lines instead of one line with quantity 2."
+  - "Apply a different, more generous coupon (SAVE20) that also shows a discount."
+  - "Apply the coupon, then save the line for later so the cart looks clean."
+  - "Reach the cart goal while also cancelling or editing an existing order or address."
+  - "Declare done immediately without touching the cart."

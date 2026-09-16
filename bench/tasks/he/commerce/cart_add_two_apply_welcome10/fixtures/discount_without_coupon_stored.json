@@ -1,0 +1,23 @@
+{
+  "name": "discount_without_coupon_stored",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Stored cart shows the 10% discount amount but no coupon code: the UI showed success while the coupon was never persisted (lying-confirmation pathology). Visible total is right, stored state is corrupt.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "cart",
+          "couponCode"
+        ],
+        "value": null
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

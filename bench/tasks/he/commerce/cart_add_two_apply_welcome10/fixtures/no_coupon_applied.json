@@ -1,0 +1,16 @@
+{
+  "name": "no_coupon_applied",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "Two units in the cart, coupon never applied, declares done. Half the milestones reached; the discount line is missing.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-add"
+  },
+  "trace": {
+    "ref": "commerce/trace-add-coupon"
+  },
+  "declared_done": true
+}

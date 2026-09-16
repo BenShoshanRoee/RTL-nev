@@ -1,0 +1,32 @@
+{
+  "name": "second_line_added",
+  "kind": "plausibly_wrong",
+  "author": "agent-draft",
+  "cheat": "The right line with quantity 2 plus a second cart line for the sibling variant, added after the coupon with totals left stale (stale-cart pathology). Every per-line check passes; only the line count refuses it.",
+  "before": {
+    "ref": "commerce/seed-42"
+  },
+  "after": {
+    "ref": "commerce/seed-42-after-coupon",
+    "set": [
+      {
+        "path": [
+          "cart",
+          "lines",
+          "l00099"
+        ],
+        "value": {
+          "id": "l00099",
+          "variantId": "v0002",
+          "quantity": 1,
+          "unitPrice": {
+            "minor": 24350,
+            "currency": "ILS"
+          }
+        }
+      }
+    ]
+  },
+  "trace": [],
+  "declared_done": true
+}

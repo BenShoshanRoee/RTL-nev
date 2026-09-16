@@ -3,19 +3,27 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import pytest
 from rtlenv.domain_protocol import diff, hash_state
 from rtlenv.judge import Rollout, judge
 from rtlenv.judge.progress import compute_progress
 from rtlenv.judge.reward import DEFAULT_WEIGHTS, RewardConfigError, compute_reward, validate_weights
+from rtlenv.metatest.harness import load_state_ref
 from rtlenv.rng import Rng
 from rtlenv.task.schema import TaskContractError
 
-FIX = json.loads(
-    (Path(__file__).parent / "fixtures" / "commerce-states.json").read_text(encoding="utf-8")
-)
+FIX = {
+    "ids": load_state_ref("commerce/ids"),
+    "states": {
+        "seed": load_state_ref("commerce/seed-42"),
+        "afterAdd": load_state_ref("commerce/seed-42-after-add"),
+        "afterCoupon": load_state_ref("commerce/seed-42-after-coupon"),
+        "afterCheckout": load_state_ref("commerce/seed-42-after-checkout"),
+    },
+    "trace_add_and_coupon": load_state_ref("commerce/trace-add-coupon"),
+}
+
 SEED, AFTER_COUPON, TRACE = (
     FIX["states"]["seed"],
     FIX["states"]["afterCoupon"],

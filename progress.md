@@ -1,7 +1,7 @@
 # Progress
 
-**Current sub-chunk:** 2.2.3 — Judge Meta-Test Harness (not started)
-**Last updated:** 2026-09-16 (2.2.2 complete)
+**Current sub-chunk:** 2.2.4 — Task Schema & Registry (not started)
+**Last updated:** 2026-09-17 (2.2.3 complete)
 **Phase:** 2 of 12
 
 Rules for this file: update at the END of every sub-chunk, never at the start.
@@ -15,6 +15,7 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | scaffold | CLAUDE.md, progress.md, skills, settings, tree | 2026-09-15 | `find . -name .gitkeep \| wc -l` = 76 | Pre-1.1.1. No implementation code. |
 | 1.1.1-manual | Toolchain + GitHub repo (plan's 🔧 steps) | 2026-09-15 | `docker run --rm hello-world`; `gh auth status`; `git ls-remote --heads origin` | Node 25, pnpm 10, uv + Python 3.11.14, Docker 29.8, origin = github.com/BenShoshanRoee/RTL-nev |
 | 1.1.1 | Monorepo Structure | 2026-09-15 | `git clone . <tmp> && make setup && make verify` (both exit 0); `make gates` | 6 TS packages + 2 Python packages, all stubs. Commit 557a125 on main, pushed. |
+| 2.2.3 | Judge Meta-Test Harness | 2026-09-17 | `make metatest` (1 task, 16 fixtures, 16/16 mutants caught, 0.28 s); `uv run pytest bench/tests/metatest -q` (minimums, verdict-per-kind, mutation ≥90%, <30 s, empty-task refusal, cheat-line refusal, wrong-base refusal); PR (see Decisions) | `metatest/harness.py` + CLI; shared states corpus; first real task with `cheat_surface`. All 16 fixtures are `author: agent-draft` pending the operator's manual step. |
 | 2.2.2 | Partial Credit & Reward Shaping | 2026-09-16 | `uv run pytest bench/tests/judge -q --benchmark-disable` (16 reward/progress cases: 3-of-5 strictly between, three out-of-order shapes, transient milestones, tampered trace, false-complete below every honest failure, 10,000 random verdicts in range, real commerce trace, held-before exclusion, trivial-instance zero, per-subtree penalty); PR #10 + hardening PR #11 | `judge/progress.py`, `judge/reward.py`; core and schema extended (optional `milestones`, `reward`). No new dependencies. |
 | 2.2.1 | State-Diff Judge Core | 2026-09-16 | `uv run pytest bench/tests/judge -q --benchmark-columns=median,max` (1 correct, 14 incorrect transcripts, 6 side-effect cases, contract refusals, byte-identical verdicts, 17 hardening cases incl. load-bearing proofs; benchmark median ~98 µs); PR #7 + hardening PR #8 | `judge/{core,matchers,verdict}.py`, `task/schema.py`, 12 matcher kinds. New dev dep: pytest-benchmark (BSD-2-Clause). |
 | 2.1.3 | Stub Second Domain | 2026-09-16 | `pnpm --filter @rtl/domain-insurance-stub --fail-if-no-match test` (11 conformance + 3 behaviour); `git diff --stat main -- packages/core-semantic` empty; CI `test-js` log lists both domain suites; PR #6 (all seven CI checks) | 5 entities, 4 operations, 6 invariants, 152-line domain. Zero core changes. |
@@ -27,11 +28,12 @@ payback trigger. Keep under 400 lines; archive completed phases to `docs/progres
 | plan-rev-1 | Nine plan corrections applied to `rtl-implementation-plan.md` | 2026-09-15 | see Decisions rows dated 2026-09-15 (plan-rev-1) | 34 edits, 67 sub-chunks unchanged in count |
 
 ## In progress
-None. 2.2.3 has not begun.
+None. 2.2.4 has not begun.
 
 ## Blocked / awaiting manual step
 | Sub-chunk | Blocking step | What I need from the operator |
 |---|---|---|
+| 2.2.3 | 🔧 15 plausibly-wrong transcripts | Plan manual step. Write them as fixtures under `bench/tasks/he/commerce/cart_add_two_apply_welcome10/fixtures/` (copy any `goal_plus_*.json`, set `author` to your name, write the `cheat` line first, then the `set` edits). `make metatest` tells you whether each one is refused and whether it closes a mutant. The 14 agent-draft ones may be replaced or kept. |
 | 1.1.5 | Dependabot PR #1 | Grouped uv update (uv-build backend range). Its CI ran before the gate-script fix and needs a rebase: comment `@dependabot rebase` on the PR, or close it. Merging a dependency bump is your call. |
 
 ## Operator queue (not blocking code, time-sensitive)
@@ -126,6 +128,10 @@ None. 2.2.3 has not begun.
 | 2026-09-16 | A task without milestones scores progress 1.0 iff its goal holds | Keeps 2.2.1 tasks meaningful under shaping; 2.2.4 may require milestones for suites that need gradient. | 2.2.2 |
 | 2026-09-16 | A goal reached with a side effect keeps its progress but loses success and pays w_side per effect | The plan's formula; a damaged-but-complete rollout scores 0.15 by default, far below 1.0 and above a false-complete. | 2.2.2 |
 | 2026-09-16 | Reward hardening after 2.2.2 (operator review request): held-before milestones excluded, trivial instances pay zero, side-effect penalty per violated subtree | Adversarial pass found three free-credit holes: a milestone already true at setup was "reached" at step one for nothing; a seed that happens to satisfy a template paid 1.0 for declaring done immediately; cancelling one order counted as five side effects and saturated the cap. Each fix has a test; `success` stays state-truth, only the pay-out changes. | 2.2.2 |
+| 2026-09-17 | Per-task fixtures live beside the task (`bench/tasks/.../fixtures/`), reference shared exported base states, and express the after-state as `set`/`remove` edits | A 40 KB state per fixture would make a corpus of hundreds unreviewable; a patch shows exactly what the transcript changed, and the operator's hand-written transcripts are a few lines each. The shared states are the single source for the judge tests too. | 2.2.3 |
+| 2026-09-17 | A mutant is caught if any fixture's success flips or its reward rises; milestones are mutated as well as goals and subtrees | Success-only detection misses weakened milestones, which inflate reward without flipping success. | 2.2.3 |
+| 2026-09-17 | Every fixture must start from the task's `setup.state_ref`; plausibly-wrong fixtures must carry a `cheat` line; the task's own `cheat_surface` is required by the harness | A fixture from another state is not a transcript of that task; a near-miss without a named cheat teaches nothing. | 2.2.3 |
+| 2026-09-17 | 16 agent-draft fixtures ship with the first task so the harness and CI are real today; the operator's 15 transcripts are additive | With five fixtures the harness itself reported 12 of 16 weakenings escaping and named the missing fixture for each; closing them is a mechanical property. The operator's transcripts add cheats the agent cannot think of, which is the plan's point, and the report shows agent-draft counts until they land. | 2.2.3 |
 | 2026-09-15 | (plan-rev-1 #9) 5.2.3 renumbered 6.3.1 under new "Chunk 6.3: Gate 1 — Randomisation Validation", moved to the end of Phase 6; dependency set to 5.2.2 + 6.2.3; Phase 5/6 Outcome text, Appendix B/C/D updated; two "formerly 5.2.3" notes left as breadcrumbs | It depended on Chunk 6 and executed after it per Appendix C. Dependency on 6.2.3 (not 6.1.3) is my call: Appendix C places GATE 1 after 6.2.3 and the experiment needs calibrated tasks. | 6.3.1 |
 
 ## Reference material (gitignored, local only)

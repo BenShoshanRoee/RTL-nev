@@ -7,18 +7,26 @@ import copy
 import json
 import statistics
 import time
-from pathlib import Path
 
 import pytest
 from rtlenv.domain_protocol import money
 from rtlenv.judge.core import Rollout, judge
 from rtlenv.judge.reward import DEFAULT_WEIGHTS
 from rtlenv.judge.verdict import Verdict
+from rtlenv.metatest.harness import load_state_ref
 from rtlenv.task.schema import TaskContractError, validate_task
 
-FIX = json.loads(
-    (Path(__file__).parent / "fixtures" / "commerce-states.json").read_text(encoding="utf-8")
-)
+FIX = {
+    "ids": load_state_ref("commerce/ids"),
+    "states": {
+        "seed": load_state_ref("commerce/seed-42"),
+        "afterAdd": load_state_ref("commerce/seed-42-after-add"),
+        "afterCoupon": load_state_ref("commerce/seed-42-after-coupon"),
+        "afterCheckout": load_state_ref("commerce/seed-42-after-checkout"),
+    },
+    "trace_add_and_coupon": load_state_ref("commerce/trace-add-coupon"),
+}
+
 IDS = FIX["ids"]
 SEED = FIX["states"]["seed"]
 AFTER_ADD = FIX["states"]["afterAdd"]
