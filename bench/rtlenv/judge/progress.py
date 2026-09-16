@@ -9,11 +9,14 @@ A milestone is "reached" at the first step where it holds. It counts only if eve
 milestone was reached at an earlier-or-equal step: out-of-order achievement is not progress.
 Without a trace, milestones are evaluated on the final state only and their order cannot be
 verified; a milestone that no longer holds at the end is then unreached.
+
+A milestone that already holds in the setup state is free credit for doing nothing. It is
+excluded from the count entirely (reported in ``held_before``) and never earns progress.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from rtlenv.domain_protocol import hash_state, patch
@@ -28,6 +31,7 @@ class ProgressResult:
     reached_at: list[int | None]
     trace_valid: bool
     reason: str | None = None
+    held_before: list[int] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -37,6 +41,7 @@ class ProgressResult:
             "reached_at": self.reached_at,
             "trace_valid": self.trace_valid,
             "reason": self.reason,
+            "held_before": self.held_before,
         }
 
 
@@ -71,32 +76,53 @@ def compute_progress(
     if total == 0:
         return ProgressResult(rate=0.0, counted=0, total=0, reached_at=[], trace_valid=True)
     matchers = [parse(m) for m in milestones]
+    held_before = [i for i, m in enumerate(matchers) if m.evaluate(before, before).ok]
+    live = [i for i in range(total) if i not in held_before]
+    if not live:
+        return ProgressResult(
+            rate=0.0,
+            counted=0,
+            total=0,
+            reached_at=[None] * total,
+            trace_valid=True,
+            reason="every milestone already held in the setup state",
+            held_before=held_before,
+        )
     states, reason = replay(before, trace, after)
     if reason is not None:
         return ProgressResult(
             rate=0.0,
             counted=0,
-            total=total,
+            total=len(live),
             reached_at=[None] * total,
             trace_valid=False,
             reason=reason,
+            held_before=held_before,
         )
     if not trace:
         states = [after]  # step 0 = final state only
     reached: list[int | None] = []
-    for m in matchers:
-        step = next(
-            (i for i, s in enumerate(states, start=1 if trace else 0) if m.evaluate(before, s).ok),
-            None,
+    for i, m in enumerate(matchers):
+        if i in held_before:
+            reached.append(None)
+            continue
+        start = 1 if trace else 0
+        reached.append(
+            next((k for k, s in enumerate(states, start=start) if m.evaluate(before, s).ok), None)
         )
-        reached.append(step)
     counted = 0
     last = -1
-    for step in reached:
+    for i in live:
+        step = reached[i]
         if step is None or step < last:
             break
         counted += 1
         last = step
     return ProgressResult(
-        rate=counted / total, counted=counted, total=total, reached_at=reached, trace_valid=True
+        rate=counted / len(live),
+        counted=counted,
+        total=len(live),
+        reached_at=reached,
+        trace_valid=True,
+        held_before=held_before,
     )

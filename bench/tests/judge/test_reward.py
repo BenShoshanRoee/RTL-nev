@@ -267,3 +267,52 @@ def test_milestone_specs_are_validated_like_goal_matchers() -> None:
             },
             Rollout(before=toy(), after=toy(), trace=[], declared_done=False),
         )
+
+
+# ---- hardening: free credit must not exist ------------------------------------------------
+
+
+def test_milestone_that_already_holds_at_setup_earns_nothing() -> None:
+    """'Address selected' already true in the seed is not progress; it is an authoring smell."""
+    before = toy("a")  # a already holds
+    states = [before, toy("a", "b"), toy("a", "b", "c")]
+    r = compute_progress(MILESTONES, before, states[-1], make_trace(states))
+    assert r.trace_valid
+    assert r.held_before == [0]
+    # a is excluded from both numerator and denominator: b, c reached in order out of b..e
+    assert r.counted == 2 and r.total == 4 and r.rate == pytest.approx(0.5)
+    only_free = compute_progress(MILESTONES[:1], before, before, [])
+    assert only_free.counted == 0 and only_free.total == 0 and only_free.rate == 0.0
+    assert only_free.reason and "held" in only_free.reason
+
+
+def test_trivial_instance_pays_zero_even_though_the_goal_holds() -> None:
+    before = toy("e")  # goal already satisfied by the seed
+    v = judge(TOY_TASK, Rollout(before=before, after=before, trace=[], declared_done=True))
+    assert v.success is True  # state truth is untouched
+    assert v.reward == 0.0 and v.progress == 0.0
+    assert v.evidence["goal_held_before"] is True and v.evidence["trivial_instance"] is True
+    assert v.false_complete is False
+
+
+def test_side_effect_penalty_counts_violated_subtrees_not_leaf_changes() -> None:
+    task = {**TOY_TASK, "unchanged_subtrees": [["other"], ["extra"]], "milestones": []}
+    before = {**toy(), "extra": {"p": 1, "q": 2, "r": 3, "s": 4, "t": 5}}
+    one_subtree_many_leaves = {**toy("e"), "extra": {"p": 9, "q": 9, "r": 9, "s": 9, "t": 9}}
+    two_subtrees = {
+        **toy("e"),
+        "extra": {"p": 9, "q": 2, "r": 3, "s": 4, "t": 5},
+        "other": {"x": 2},
+    }
+    a = judge(
+        task, Rollout(before=before, after=one_subtree_many_leaves, trace=[], declared_done=False)
+    )
+    b = judge(task, Rollout(before=before, after=two_subtrees, trace=[], declared_done=False))
+    assert len(a.side_effects) == 5 and a.evidence["violated_subtrees"] == [["extra"]]
+    assert len(b.side_effects) == 2 and b.evidence["violated_subtrees"] == [["extra"], ["other"]]
+    assert a.reward > b.reward, (
+        "one damaged subtree must cost less than two, whatever the leaf count"
+    )
+    assert a.reward == pytest.approx(
+        compute_reward(success=False, progress=1.0, side_effects=1, false_complete=False)
+    )

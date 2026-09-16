@@ -8,7 +8,9 @@ declared completion. It never sees agent text: a model cannot talk its way to re
   false_complete declared_done and not success (penalised in 2.2.2)
   progress       fraction of the task's ordered milestones reached in order (trace replayed
                  and hash-verified); a task without milestones scores 1.0 iff the goal holds
-  reward         shaped: see reward.py (defaults documented there; task may override)
+  reward         shaped: see reward.py (defaults documented there; task may override). The
+                 side-effect penalty counts distinct protected subtrees violated, not leaf
+                 changes. A trivial instance (goal already held at setup) pays zero.
   evidence       goal results, goal_held_before (a trivial task), hashes, trace length
 """
 
@@ -57,6 +59,14 @@ def judge(
     goal_ok = all(r.ok for r in goal_results)
     protected = Unchanged(contract.unchanged_subtrees).evaluate(rollout.before, rollout.after)
     side_effects: list[dict[str, Any]] = [] if protected.ok else list(protected.evidence["changes"])
+    violated = sorted(
+        {
+            tuple(p)
+            for p in contract.unchanged_subtrees
+            for c in side_effects
+            if _prefix(p, c["path"])
+        }
+    )
     success = goal_ok and not side_effects
     goal_held_before = all(m.evaluate(rollout.before, rollout.before).ok for m in matchers)
     try:
@@ -70,12 +80,19 @@ def judge(
         prog = None
         progress = 1.0 if goal_ok else 0.0
     false_complete = bool(rollout.declared_done and not success)
-    reward = compute_reward(
-        success=success,
-        progress=progress,
-        side_effects=len(side_effects),
-        false_complete=false_complete,
-        weights=weights,
+    trivial = goal_held_before
+    if trivial:
+        progress = 0.0  # the goal held before the agent acted: nothing to credit
+    reward = (
+        0.0
+        if trivial
+        else compute_reward(
+            success=success,
+            progress=progress,
+            side_effects=len(violated),
+            false_complete=false_complete,
+            weights=weights,
+        )
     )
     evidence: dict[str, Any] = {
         "goal": [r.to_dict() for r in goal_results],
@@ -84,6 +101,8 @@ def judge(
         "protected_subtrees": contract.unchanged_subtrees,
         "judge_version": JUDGE_CONTRACT_VERSION,
         "reward_weights": weights,
+        "violated_subtrees": [list(p) for p in violated],
+        "trivial_instance": trivial,
         "trace_valid": prog.trace_valid if prog else True,
         "milestones": [
             {
@@ -140,3 +159,7 @@ def _path_exists(state: Any, path: list) -> bool:
         else:
             return False
     return True
+
+
+def _prefix(short: list, long: list) -> bool:
+    return len(short) <= len(long) and all(a == b for a, b in zip(short, long, strict=False))
